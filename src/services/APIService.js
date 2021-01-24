@@ -2,20 +2,19 @@ import * as TimeFormatUtils from '../utils/TimeFormatUtils'
 
 export default class APIService {
 	constructor() {
-		this.ownUsername = (window.location.pathname==="/")
+		this.ownUsername = (window.location.pathname==="/" || window.location.pathname==="/daily-clef" || window.location.pathname==="/daily-clef/")
 		this.hasMore = true
 
 		this.clips = []
 		this.labels = []
 		this.rawSessionFiles = []
 
-		const username = window.location.pathname.split('/').pop()
 		this.baseUrl = "https://midi-practice.herokuapp.com"
 		// this.baseUrl = "http://localhost:8000"
 
 		this.url = '/api' + window.location.pathname
 		this.urlPromise = null
-		if (window.location.pathname=="/") {
+		if (this.ownUsername === true) {
 			this.url = "/api/journal"
 		}
 		this.labelsURL = '/api/labels'
