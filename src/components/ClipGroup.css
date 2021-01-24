@@ -1,0 +1,20 @@
+.Collapsible__trigger {
+	cursor:pointer;
+	background-color: #134F5C;
+	color: white;
+	padding: 8px;
+	border-style: solid;
+	border-color: black;
+	width: auto;
+	display: block;
+	border-radius: 3px;
+	size: 14px;
+}
+
+.Collapsible {
+	margin: 8px;
+}
+
+.Collapsible__contentInner {
+	padding: 16px;
+}

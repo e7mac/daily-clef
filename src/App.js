@@ -4,6 +4,9 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import './App.css';
 
+import MusicLog from './components/MusicLog';
+import APIService from './services/APIService';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +19,7 @@ class App extends Component {
 
   componentDidMount() {
     if (this.state.logged_in) {
-      fetch('http://localhost:8000/core/current_user/', {
+      fetch('http://localhost:8000/api/current_user/', {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
@@ -24,6 +27,8 @@ class App extends Component {
         .then(res => res.json())
         .then(json => {
           this.setState({ username: json.username });
+          console.log('json')
+          console.log(json)
         });
     }
   }
@@ -50,7 +55,7 @@ class App extends Component {
 
   handle_signup = (e, data) => {
     e.preventDefault();
-    fetch('http://localhost:8000/core/users/', {
+    fetch('http://localhost:8000/api/users/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -102,7 +107,7 @@ class App extends Component {
         {form}
         <h3>
           {this.state.logged_in
-            ? `Hello, ${this.state.username}`
+            ? <div>`Hello, {this.state.username}`<MusicLog/></div>
             : 'Please Log In'}
         </h3>
       </div>
