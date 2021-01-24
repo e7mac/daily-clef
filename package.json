@@ -28,8 +28,7 @@
     "webmidi": "^2.5.1"
   },
   "scripts": {
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -b deploy -d build",
+    "deploy": "gh-pages -b deploy",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
