@@ -19,7 +19,7 @@ class App extends Component {
 
   componentDidMount() {
     if (this.state.logged_in) {
-      fetch('http://localhost:8000/api/current_user/', {
+      fetch('https://midi-practice.herokuapp.com/api/current_user/', {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
@@ -35,7 +35,7 @@ class App extends Component {
 
   handle_login = (e, data) => {
     e.preventDefault();
-    fetch('http://localhost:8000/token-auth/', {
+    fetch('https://midi-practice.herokuapp.com/token-auth/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ class App extends Component {
 
   handle_signup = (e, data) => {
     e.preventDefault();
-    fetch('http://localhost:8000/api/users/', {
+    fetch('https://midi-practice.herokuapp.com:8000/api/users/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
