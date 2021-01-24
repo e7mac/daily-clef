@@ -2,7 +2,7 @@
   "name": "daily-clef",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://e7mac.github.io/",
+  "homepage": "https://e7mac.github.io/daily-clef",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
@@ -28,12 +28,16 @@
     "webmidi": "^2.5.1"
   },
   "scripts": {
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -b deploy -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "eject": "react-scripts eject",
+
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -b master -d build",  
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
+
   },
   "eslintConfig": {
     "extends": [
