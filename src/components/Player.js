@@ -5,6 +5,8 @@ import './Player.css';
 export default function Player(props) {
 	const midiPlayerRef = useRef(null)
 
+	const status =""
+
 	useEffect(() => {
   		const m = midiPlayerRef.current
   		if (m!==null) {
