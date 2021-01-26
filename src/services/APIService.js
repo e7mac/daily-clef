@@ -19,7 +19,7 @@ export default class APIService {
 		}
 		this.labelsURL = '/api/labels'
 		this.rawSessionFilesURL = '/api/rawsessionfiles'
-		this.isLoggedInPromise = fetch(this.baseUrl + "/api/current_user").then(res => res.json())
+		this.isLoggedInPromise = this.apiCall("/api/current_user")
 	}
 
 	isLoggedIn() {
@@ -150,16 +150,22 @@ export default class APIService {
 	}	
 
 	apiCall(path) {
-		return fetch(this.baseUrl + path, {
+		return this.apiCall(path, {})
+	}
+
+	apiCall(path, params) {
+		const auth = {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
-      }).then(res => res.json())
+      }
+		const fullParams = { ...params, ...auth};
+		return fetch(this.baseUrl + path, fullParams).then(res => res.json())
 		.then(res => {
-			if (res["detail"]==="Signature has expired.") {
+			if (res["detail"]!==undefined) {
 				console.log("LOGOUT")
 				localStorage.removeItem('token');
-				// location.reload();
+				// location.reload();				
 			}
 			console.log(res)
 			return res
@@ -263,7 +269,7 @@ export default class APIService {
 	}
 
 	editClip(id, body, csrfToken) {
-		return fetch('/api/midiclips/' + id + '/', {
+		return this.apiCall('/api/midiclips/' + id + '/', {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
@@ -271,7 +277,6 @@ export default class APIService {
 			},
 			body: JSON.stringify(body)
 		})
-		.then(res => res.json())
 		.then(response => {
 			console.log(response)
 		})

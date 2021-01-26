@@ -60,10 +60,7 @@ export default function MusicLog(props) {
 		<a href="/"><h1>Music Log</h1></a>
 		<Navbar api={api} playingItem={playingItem} />
 		<LabelBar api={api} />
-		{loggedIn 
-			? <Upload api={api} />
-			: <br/ >
-		}		
+		<Upload api={api} />
 		{showCalendar 
 			? <DayPicker
       		onDayClick={handleDayClick}
