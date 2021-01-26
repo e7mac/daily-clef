@@ -155,10 +155,10 @@ export default class APIService {
 
 	apiCall(path, params) {
 		const auth = {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`
-        }
-      }
+			headers: {
+				Authorization: `JWT ${localStorage.getItem('token')}`
+			}
+		}
 		const fullParams = { ...params, ...auth};
 		return fetch(this.baseUrl + path, fullParams).then(res => res.json())
 		.then(res => {
@@ -167,7 +167,6 @@ export default class APIService {
 				localStorage.removeItem('token');
 				// location.reload();				
 			}
-			console.log(res)
 			return res
 		})
 	}
@@ -182,8 +181,6 @@ export default class APIService {
 					const clipgroupsets = this.transform(sessions)
 					this.hasMore = (response.next!==null)
 					this.url = response.next
-					console.log('this.url')
-					console.log(this.url)
 					this.urlPromise = null
 					return clipgroupsets
 				})
@@ -224,11 +221,11 @@ export default class APIService {
 			url = response.url
 			return this.uploadFileToS3(file, response.data, response.url)})
 		.then((response) => {
-						const body = new FormData();
-						body.append("file-url", url)
-						body.append("lastModified", lastModified);
-						body.append("submit", "Upload");
-						return this.uploadFile(body)
+			const body = new FormData();
+			body.append("file-url", url)
+			body.append("lastModified", lastModified);
+			body.append("submit", "Upload");
+			return this.uploadFile(body)
 		})
 		.catch(error => console.log("error: " + error));
 	}

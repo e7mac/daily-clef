@@ -17,8 +17,7 @@ export default function MusicLog(props) {
 	const [showCalendar, setShowCalendar] = useState(true)
 	const [loggedIn, setLoggedIn] = useState(false)
 	const [playingItem, setPlayingItem] = useState(null)
-
-	const api = new APIService()
+	const [api, setAPI] = useState(new APIService())
 
 	useEffect(() => {
   		loadCalendar()
