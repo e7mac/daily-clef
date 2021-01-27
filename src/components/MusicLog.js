@@ -18,8 +18,6 @@ export default function MusicLog(props) {
 	const [loggedIn, setLoggedIn] = useState(localStorage.getItem('token') ? true : false)
 	const [playingItem, setPlayingItem] = useState(null)
 
-	console.log(props)
-
 	useEffect(() => {
 		loadCalendar()
   	}, []) // notice the empty array
