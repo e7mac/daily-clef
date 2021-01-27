@@ -25,6 +25,7 @@ class App extends Component {
     script.async = true;
 
     document.body.appendChild(script);    
+    document.title = "Daily Clef"
   }
 
   handle_login = (e, data) => {
