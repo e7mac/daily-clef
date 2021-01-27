@@ -61,6 +61,12 @@ export default class ClipGetter {
 		let startTime = null
 		for (const i in clips) {
 			const clip = clips[i]
+			if (clip.title === null) {
+				clip.title = ""
+			}
+			if (clip.notes === null) {
+				clip.notes = ""
+			}
 			if (this.isEmptyObject(labelClips)) {
 				startTime = clip.date_played
 			}
