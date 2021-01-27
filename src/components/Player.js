@@ -5,7 +5,7 @@ import './Player.css';
 export default function Player(props) {
 	const midiPlayerRef = useRef(null)
 
-	const status =""
+	let status = ""
 
 	useEffect(() => {
   		const m = midiPlayerRef.current
@@ -32,6 +32,7 @@ export default function Player(props) {
 	if (props.playingItem !== null) {
 		const m = midiPlayerRef.current
 		m.src = props.playingItem.url
+		console.log(getLabel(props.playingItem))
 		status = getLabel(props.playingItem)
 	}
 

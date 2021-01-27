@@ -7,12 +7,7 @@ import './Navbar.css';
 
 export default function Navbar(props) {
 
-	const [logged_in, setLogged_in] = useState(false)
 	const [status, setStatus] = useState("")
-
-	props.api.isLoggedIn().then((loggedIn) => {
-		setLogged_in(loggedIn)
-	})
 
 	let timer = null
 
@@ -38,10 +33,6 @@ export default function Navbar(props) {
 	return (
 			<Navigation className="zIndex">
 			<div className="navbar" >
-				{logged_in 
-					? <a href="/logout">Sign out</a>
-					: <a href="/login">Sign in</a>
-				}
 				<Player playingItem={props.playingItem} />
 				<Recorder api={props.api} />
 				<div className="status">

@@ -13,42 +13,30 @@ class App extends Component {
     this.state = {
       displayed_form: '',
       logged_in: localStorage.getItem('token') ? true : false,
-      username: ''
+      username: '',
+      api: new APIService()
     };
   }
 
   componentDidMount() {
-    if (this.state.logged_in) {
-      fetch('https://midi-practice.herokuapp.com/api/current_user/', {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`
-        }
-      })
-        .then(res => res.json())
-        .then(json => {
-          this.setState({ username: json.username });
-          console.log('json')
-          console.log(json)
-        });
-    }
+    const script = document.createElement("script");
+
+    script.src = "https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.21.0/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.1.0";
+    script.async = true;
+
+    document.body.appendChild(script);    
   }
 
   handle_login = (e, data) => {
     e.preventDefault();
-    fetch('https://midi-practice.herokuapp.com/token-auth/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(res => res.json())
-      .then(json => {
-        localStorage.setItem('token', json.token);
+    this.state.api.handle_login(data)
+      .then(username => {
+        console.log('username')
+        console.log(username)
         this.setState({
           logged_in: true,
           displayed_form: '',
-          username: json.user.username
+          username: username
         });
       });
   };
@@ -74,7 +62,7 @@ class App extends Component {
   };
 
   handle_logout = () => {
-    localStorage.removeItem('token');
+    this.state.api.handle_logout()
     this.setState({ logged_in: false, username: '' });
   };
 
@@ -107,7 +95,7 @@ class App extends Component {
         {form}
         <h3>
           {this.state.logged_in
-            ? <div>`Hello, {this.state.username}`<MusicLog/></div>
+            ? <div>`Hello, {this.state.username}`<MusicLog api={this.state.api} /></div>
             : 'Please Log In'}
         </h3>
       </div>

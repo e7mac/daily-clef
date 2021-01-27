@@ -9,8 +9,8 @@ export default class APIService {
 		this.labels = []
 		this.rawSessionFiles = []
 
-		this.baseUrl = "https://midi-practice.herokuapp.com"
-		// this.baseUrl = "http://localhost:8000"
+		// this.baseUrl = "https://midi-practice.herokuapp.com"
+		this.baseUrl = "http://localhost:8000"
 
 		this.url = '/api' + window.location.pathname
 		this.urlPromise = null
@@ -21,6 +21,30 @@ export default class APIService {
 		this.rawSessionFilesURL = '/api/rawsessionfiles'
 		this.isLoggedInPromise = this.apiCall("/api/current_user")
 	}
+
+	handle_login(data) {
+		return fetch('https://midi-practice.herokuapp.com/token-auth/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+		.then(res => res.json())
+		.then(json => {
+			localStorage.setItem('token', json.token);
+			if (json.token !== null) {
+				return json.user.username
+			}
+			return false
+		});
+
+		;
+	}
+
+	  handle_logout = () => {
+	    localStorage.removeItem('token');
+	  };
 
 	isLoggedIn() {
 		return this.isLoggedInPromise
@@ -43,8 +67,8 @@ export default class APIService {
 
 	transform(sessions) {
 		let items = []
-		let clipgroupset = {
-		}
+		// let clipgroupset = {
+		// }
 		// if (this.state.url.includes("/item/")) {
 		// 	let groups = []
 		// 	for (const i in sessions) {
@@ -149,11 +173,7 @@ export default class APIService {
 		return sessions
 	}	
 
-	apiCall(path) {
-		return this.apiCall(path, {})
-	}
-
-	apiCall(path, params) {
+	apiCall(path, params = {}) {
 		const auth = {
 			headers: {
 				Authorization: `JWT ${localStorage.getItem('token')}`

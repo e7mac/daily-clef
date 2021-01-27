@@ -15,12 +15,11 @@ export default function MusicLog(props) {
 	const [clipgroupsets, setClipgroupsets] = useState([])
 	const [selectedDays, setSelectedDays] = useState([])
 	const [showCalendar, setShowCalendar] = useState(true)
-	const [loggedIn, setLoggedIn] = useState(false)
+	const [loggedIn, setLoggedIn] = useState(localStorage.getItem('token') ? true : false)
 	const [playingItem, setPlayingItem] = useState(null)
-	const [api, setAPI] = useState(new APIService())
 
 	useEffect(() => {
-  		loadCalendar()
+		loadCalendar()
   	}, []) // notice the empty array
 
 	const onRelabel = (clip_id, label_name) => {
@@ -28,14 +27,14 @@ export default function MusicLog(props) {
 	}
 
 	const loadClips = () => {
-		api.loadClips().then((clipgroupsets_) => {
+		props.api.loadClips().then((clipgroupsets_) => {
 			setClipgroupsets(clipgroupsets_)
 			setLoaded(true)
 		})
 	}
 
 	const loadCalendar = () => {
-		api.loadRawSessionFiles()
+		props.api.loadRawSessionFiles()
 		.then((rawsessionfiles) => {
 			console.log(rawsessionfiles)
 			const selectedDays_ = []
@@ -50,32 +49,32 @@ export default function MusicLog(props) {
 		setPlayingItem(item)
 	}
 
-  	const handleDayClick = (day) => {
-  		console.log(day)
-  	}
+	const handleDayClick = (day) => {
+		console.log(day)
+	}
 
 	return (
 		<div>
 		<a href="/"><h1>Music Log</h1></a>
-		<Navbar api={api} playingItem={playingItem} />
-		<LabelBar api={api} />
-		<Upload api={api} />
+		<Navbar api={props.api} playingItem={playingItem} />
+		<LabelBar api={props.api} />
+		<Upload api={props.api} />
 		{showCalendar 
 			? <DayPicker
-      		onDayClick={handleDayClick}
-      		selectedDays={selectedDays}
-      		/>
-      		: <br />
-      	}
+			onDayClick={handleDayClick}
+			selectedDays={selectedDays}
+			/>
+			: <br />
+		}
 		<InfiniteScroll
 		threshold={0}
 		pageStart={0}
 		loadMore={loadClips}
-		hasMore={api.hasMore}
+		hasMore={props.api.hasMore}
 		loader={<div className="text-center">loading data ...</div>}>
 		{clipgroupsets.map((item, index) => 
 			( 
-			<ClipGroupSet api={api} key={item.title} set={item} edit={api.ownUsername} onPlay={onPlay} onRelabel={onRelabel} />
+			<ClipGroupSet api={props.api} key={item.title} set={item} edit={props.api.ownUsername} onPlay={onPlay} onRelabel={onRelabel} />
 			)
 			)}
 			</InfiniteScroll>
