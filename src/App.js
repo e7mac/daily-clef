@@ -43,7 +43,7 @@ class App extends Component {
 
   handle_signup = (e, data) => {
     e.preventDefault();
-    fetch('https://midi-practice.herokuapp.com:8000/api/users/', {
+    fetch('https://midi-practice.herokuapp.com/api/users/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
