@@ -2,7 +2,6 @@ import * as TimeFormatUtils from '../utils/TimeFormatUtils'
 
 export default class APIService {
 	constructor() {
-		this.ownUsername = (window.location.pathname==="/" || window.location.pathname==="/daily-clef" || window.location.pathname==="/daily-clef/")
 		this.hasMore = true
 
 		this.clips = []
@@ -12,11 +11,10 @@ export default class APIService {
 		this.baseUrl = "https://midi-practice.herokuapp.com"
 		// this.baseUrl = "http://localhost:8000"
 
-		this.url = this.baseUrl + '/api' + window.location.pathname
-		this.urlPromise = null
-		if (this.ownUsername === true) {
-			this.url = this.baseUrl + "/api/journal"
-		}
+		this.clipsPromise = null
+		this.url = this.baseUrl + "/api/journal"
+		this.itemUrl = null
+
 		this.labelsURL = this.baseUrl + '/api/labels'
 		this.rawSessionFilesURL = this.baseUrl + '/api/rawsessionfiles'
 		this.isLoggedInPromise = this.apiCall(this.baseUrl + "/api/current_user")
@@ -193,21 +191,20 @@ export default class APIService {
 
 	loadClips() {
 		if (this.url!==null) {
-			if (this.urlPromise === null) {
-				this.urlPromise = this.apiCall(this.url)
+			if (this.clipsPromise === null) {
+				this.clipsPromise = this.apiCall(this.url)
 				.then((response) => {
-					console.log(response)
 					this.clips = this.clips.concat(response.results);
 					const sessions = this.createSessions(this.clips)
 					const clipgroupsets = this.transform(sessions)
 					this.hasMore = (response.next!==null)
 					this.url = response.next
-					this.urlPromise = null
+					this.clipsPromise = null
 					return clipgroupsets
 				})
 				.catch(error => console.log("error: " + error));
 			}
-			return this.urlPromise
+			return this.clipsPromise
 		}
 	}
 
@@ -221,6 +218,13 @@ export default class APIService {
 			})
 			.catch(error => console.log("error: " + error));
 		}
+	}
+
+
+	loadClipsForLabel(label) {
+		this.clips = []
+		this.url = this.baseUrl + "/api/journal/item/" + label
+		this.hasMore = true
 	}
 
 	loadRawSessionFiles() {

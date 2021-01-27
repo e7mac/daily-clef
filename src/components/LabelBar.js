@@ -17,7 +17,7 @@ export default function LabelBar(props) {
 		{
 			labels.map((label, index) => {
 				return (
-				<Label label={label.name} key={label.name} />
+				<Label label={label.name} key={label.name} loadClipsForLabel={props.loadClipsForLabel} />
 				)
 			})
 		}

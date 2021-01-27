@@ -3,9 +3,14 @@ import React from 'react';
 import './Label.css';
 
 export default function Label(props) {
+
+	const labelClicked = () => {
+		console.log(props.label)
+		props.loadClipsForLabel(props.label)
+	}
+
 	return (
-		<span className="label">
-		<a href={"/journal/item/" + props.label}>
-		{props.label}</a>
+		<span className="label" onClick={labelClicked}>
+		{props.label}
 		</span>);
 }

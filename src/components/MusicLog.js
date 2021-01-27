@@ -33,6 +33,12 @@ export default function MusicLog(props) {
 		})
 	}
 
+	const loadClipsForLabel = (label) => {
+		props.api.loadClipsForLabel(label)
+		setClipgroupsets([])
+		setLoaded(false)
+	}
+
 	const loadCalendar = () => {
 		props.api.loadRawSessionFiles()
 		.then((rawsessionfiles) => {
@@ -57,7 +63,7 @@ export default function MusicLog(props) {
 		<div>
 		<a href="/"><h1>Daily Clef</h1></a>
 		<Navbar api={props.api} playingItem={playingItem} handle_logout={props.handle_logout} />
-		<LabelBar api={props.api} />
+		<LabelBar api={props.api} loadClipsForLabel={loadClipsForLabel} />
 		<Upload api={props.api} />
 		{showCalendar 
 			? <DayPicker
