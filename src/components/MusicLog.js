@@ -27,7 +27,7 @@ export default function MusicLog(props) {
 	}
 
 	const loadClips = () => {
-		props.api.loadClips().then((clipgroupsets_) => {
+		props.api.clipGetter.loadClips().then((clipgroupsets_) => {
 			setClipgroupsets(clipgroupsets_)
 			setLoaded(true)
 		})
@@ -49,7 +49,6 @@ export default function MusicLog(props) {
 	const loadCalendar = () => {
 		props.api.loadRawSessionFiles()
 		.then((rawsessionfiles) => {
-			console.log(rawsessionfiles)
 			const selectedDays_ = []
 			for (const item of rawsessionfiles) {
 				selectedDays_.push(new Date(item['date_played']))
@@ -83,7 +82,7 @@ export default function MusicLog(props) {
 		threshold={0}
 		pageStart={0}
 		loadMore={loadClips}
-		hasMore={props.api.hasMore}
+		hasMore={props.api.clipGetter.hasMore}
 		loader={<div className="text-center">loading data ...</div>}>
 		{clipgroupsets.map((item, index) => 
 			( 
