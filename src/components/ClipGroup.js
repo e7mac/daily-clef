@@ -29,7 +29,6 @@ export default function ClipGroup(props) {
 		<div>
 		<Collapsible trigger={name + " (" + displayDuration(duration) + ")" }>
 		<div>
-		{name !== "No Label" && <a href={"journal/item/" + name}>Play History</a>}
 		{
 			clips.map((clip, index) => {
 				return (
