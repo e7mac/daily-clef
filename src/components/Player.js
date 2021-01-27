@@ -1,24 +1,55 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 import './Player.css';
 
-export default function Player(props) {
-	const midiPlayerRef = useRef(null)
+export default class Player extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			title: "",
+			status: "",
+		}
+		this.midiPlayerRef = React.createRef()
+		this.midiPlayerAutoplayOnSourceChange = this.midiPlayerAutoplayOnSourceChange.bind(this);
+	}
 
-	let status = ""
-
-	useEffect(() => {
-  		const m = midiPlayerRef.current
-  		if (m!==null) {
+	midiPlayerAutoplayOnSourceChange() {
+		const m = this.midiPlayerRef.current
 		m.addEventListener('load', () => {
 			if (m.playing===false) {
 				m.start();
 			}
-		})  			
-  		}
-  	}, [])
+			this.setState((prevState, props) => ({
+				status: this.getLabel(this.props.playingItem)
+			}));
+		})
+	}
 
-	const getLabel = (item) => {
+	componentDidMount() {
+		this.midiPlayerAutoplayOnSourceChange()
+
+	}
+
+	componentDidUpdate() {
+		const m = this.midiPlayerRef.current
+		if (this.props.playingItem !== null && m.src !== this.props.playingItem.url) {
+			const m = this.midiPlayerRef.current
+			m.src = this.props.playingItem.url
+			console.log(this.getLabel(this.props.playingItem))
+			this.setState({status: "Loading..."})
+		}
+	}
+
+	playItem(item) {
+		console.log(item)
+		this.midiPlayerRef.current.src = item.url
+		this.setState({
+			title: this.getLabel(item),
+			status: "Loading..."
+		})
+	}
+
+	getLabel(item) {
 		if (item.label !== null) {
 			return item.label.name
 		} else if (item.sight_reading===true) {
@@ -29,19 +60,12 @@ export default function Player(props) {
 		return ""
 	}
 
-	if (props.playingItem !== null) {
-		const m = midiPlayerRef.current
-		m.src = props.playingItem.url
-		console.log(getLabel(props.playingItem))
-		status = getLabel(props.playingItem)
-	}
-
-	return (
-		<span>
+	render() {
+		return (
 			<span>
-				<midi-player id="midi-player" sound-font="https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus" ref={midiPlayerRef} />
-				<span className="status">{status}</span>
+			<midi-player id="midi-player" sound-font="https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus" ref={this.midiPlayerRef} />
+			<span className="status">{this.state.status}</span>				
 			</span>
-		</span>
-		);
+			);
+	}
 }

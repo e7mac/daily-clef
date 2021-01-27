@@ -25,7 +25,7 @@ export default class Navbar extends React.Component {
 	}
 
 	refreshStatus() {
-		this.props.api.status().then((response) => {
+		this.props.api.getStatus().then((response) => {
 			const task_count = response.response
 			const status = (task_count.classification_tasks > 0 ? " Classifying ":"" )
 			+ (task_count.segmentation_tasks > 0 ? " Segmenting ":"" )
@@ -41,7 +41,7 @@ export default class Navbar extends React.Component {
 				<Navigation className="zIndex">
 				<div class="navbar" ref={this.navbarRef}>
 					
-					<Player ref={this.playerRef} />
+					<Player playingItem={this.props.playingItem} />
 					<Recorder api={this.props.api} />
 					<div className="status">
 					{this.state.status}
