@@ -8,20 +8,22 @@ export default class APIService {
 		// user details
 		this.baseUrl = "https://midi-practice.herokuapp.com"
 		// this.baseUrl = "http://localhost:8000"
-		
-		this.allClips = new ClipGetter(this, `${this.baseUrl}/api/journal`)
-  //     	const urlParams = new URLSearchParams(window.location.search);
-  //     	const u = urlParams.get('user');
-		// if (u!==null) {
-		// 	this.allClips = new ClipGetter(this, this.baseUrl + "/api/journal/" + u)
-		// }
 
+    	const urlParams = new URLSearchParams(window.location.search);
+      	const u = urlParams.get('user');
+		if (u!==null) {
+			console.log(u)
+			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/user/journal/${u}`)
+			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/user/labels/${u}`)
+			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/user/rawsessionfiles/${u}`)
+		} else {
+			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/journal`)
+			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels`)
+			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles`)
+		}
+  
 		this.clipGetter = this.allClips
 		this.clipsForLabel = {}
-
-		this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels`)
-		this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles`)
-
 		this.fileService = new APIFileService(this)
 	}
 
