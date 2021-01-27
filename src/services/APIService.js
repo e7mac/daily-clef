@@ -1,6 +1,7 @@
 import ClipGetter from './ClipGetter'
 import ModelGetter from './ModelGetter'
 import APIFileService from './APIFileService'
+import deepmerge from 'deepmerge'
 
 export default class APIService {
 	constructor() {
@@ -43,7 +44,7 @@ export default class APIService {
 				Authorization: `JWT ${localStorage.getItem('token')}`
 			}
 		}
-		const fullParams = { ...params, ...auth};
+		const fullParams = deepmerge(params, auth);
 		return fetch(url, fullParams).then(res => res.json())
 		.then(res => {
 			if (res["detail"]!==undefined) {

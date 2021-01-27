@@ -65,7 +65,7 @@ export default function ClipEdit(props) {
 		<p>
 		<input className="button" type="checkbox" checked={sight_reading} onChange={changeSightReading} />
 		Sight Read
-		<span className="item"><input type="checkbox" checked={technical} onChange={changeTechnical} />
+		<span className="item"><input className="button" type="checkbox" checked={technical} onChange={changeTechnical} />
 		Technical</span>
 		<span className="item"><Relabel api={props.api} clip_id={id} onRelabel={props.onRelabel} /></span>
 		</p>
