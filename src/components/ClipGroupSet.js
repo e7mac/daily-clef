@@ -20,7 +20,7 @@ export default function ClipGroupSet(props) {
 	return (
 		<div className="card">
 		<div className="container">
-		<h3>{title + " (" + TimeFormatUtils.formatDuration(duration) + ")"}</h3>
+		<h3>{`${title}(${TimeFormatUtils.formatDuration(duration)})`}</h3>
 		{
 			groups.map((group, index) => {
 				return (

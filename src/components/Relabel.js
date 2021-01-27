@@ -20,7 +20,7 @@ export default function Relabel(props) {
 	}
 
 	return (
-		<span id={"div-relabel-" + clip_id}>
+		<span id={`div-relabel-${clip_id}`}>
 		{
 			success
 			? " Done! Refresh to see results"

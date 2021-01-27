@@ -25,7 +25,7 @@ export default function ClipGroup(props) {
 
 	return (
 		<div>
-		<Collapsible trigger={name + " (" + displayDuration(duration) + ")" }>
+		<Collapsible trigger={`${name} (${displayDuration(duration)})`} >
 		<div>
 		{
 			clips.map((clip, index) => {

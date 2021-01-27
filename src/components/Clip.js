@@ -11,7 +11,9 @@ export default function Clip(props) {
 
 	useEffect(()=>{
 		props.api.getUser().then(user => {
-			setEdit(user.id === props.clip.user)
+			if (user!==null) {
+				setEdit(user.id === props.clip.user)
+			}
 		})
 	},[])
 
@@ -28,8 +30,8 @@ export default function Clip(props) {
 		<span className="item">{props.clip.key}</span>
 		<span className="item">{props.clip.tempo}bpm </span>
 		<span className="item">{TimeFormatUtils.formatTime(props.clip.date_played)}</span>
-		<span className="item"><Tempo clip_id={props.clip.id}/></span>
-		<a href={"https://e7mac.github.io/MIDIano/?url=" + props.clip.url} target="_blank">Synthesia</a>
+		<span className="item"><Tempo clip_id={props.clip.id} api={props.api} /></span>
+		<a href={`https://e7mac.github.io/MIDIano/?url=${props.clip.url}`} target="_blank">Synthesia</a>
 		{edit && 
 			<span className="item"><ClipEdit id={props.clip.id} api={props.api} sight_reading={props.clip.sight_reading} technical={props.clip.technical} onRelabel={props.onRelabel} notes={props.clip.notes} /></span>
 		}

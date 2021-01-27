@@ -190,7 +190,7 @@ export default class Recorder extends React.Component {
         	// a.readAsDataURL(blob);
     		// ---end
     		const lastModified = Math.floor(new Date().valueOf()/1000)
-    		const filename = lastModified.toString() + ".mid"
+    		const filename = `${lastModified.toString()}.mid`
     		const file = new File([blob], filename)
     		this.props.api.uploadFileFlow(file, lastModified).then(() => {
     			console.log("recorded file uploaded!")

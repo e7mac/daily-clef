@@ -8,23 +8,24 @@ export default class APIService {
 		this.baseUrl = "https://midi-practice.herokuapp.com"
 		// this.baseUrl = "http://localhost:8000"
 		
-		this.allClips = new ClipGetter(this, this.baseUrl + "/api/journal")
-		if (window.location.pathname!=="/daily-clef") {
-			const username = window.location.pathname.split('/daily-clef/')[1]
-			this.allClips = new ClipGetter(this, this.baseUrl + "/api/journal/" + username)
-		}
+		this.allClips = new ClipGetter(this, `${this.baseUrl}/api/journal`)
+  //     	const urlParams = new URLSearchParams(window.location.search);
+  //     	const u = urlParams.get('user');
+		// if (u!==null) {
+		// 	this.allClips = new ClipGetter(this, this.baseUrl + "/api/journal/" + u)
+		// }
 
 		this.clipGetter = this.allClips
 		this.clipsForLabel = {}
 
-		this.labelGetter = new ModelGetter(this, this.baseUrl + '/api/labels')
-		this.rawSessionFilesGetter = new ModelGetter(this, this.baseUrl + '/api/rawsessionfiles')
+		this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels`)
+		this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles`)
 
 		this.fileService = new APIFileService(this)
 	}
 
 	getUser() {
-		return this.apiCall(this.baseUrl + "/api/current_user")
+		return this.apiCall(`${this.baseUrl}/api/current_user`)
 		.then(
 			(response) => {
 				if (response.username.length > 0) {
@@ -34,7 +35,6 @@ export default class APIService {
 				}
 			})
 		.catch(error => console.log("error: " + error));
-
 	}
 
 	apiCall(url, params = {}) {
@@ -55,7 +55,7 @@ export default class APIService {
 	}
 
 	handle_login(data) {
-		return fetch(this.baseUrl + '/token-auth/', {
+		return fetch(`${this.baseUrl}/token-auth/`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ export default class APIService {
 	};
 
 	getStatus() {
-		return this.apiCall(this.baseUrl + "/api/status")
+		return this.apiCall(`${this.baseUrl}/api/status`)
 		.catch(error => console.log("error: " + error));
 	}
 
@@ -91,7 +91,7 @@ export default class APIService {
 
 	loadClipsForLabel(label) {
 		if (!(label in this.clipsForLabel)) {
-			this.clipsForLabel[label] = new ClipGetter(this, this.baseUrl + "/api/journal/item/" + label)
+			this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/journal/item/${label}`)
 		}
 		this.clipGetter = this.clipsForLabel[label]
 	}
@@ -105,7 +105,7 @@ export default class APIService {
 	}
 
 	editClip(id, body, csrfToken) {
-		return this.apiCall(this.baseUrl + '/api/midiclips/' + id + '/', {
+		return this.apiCall(`${this.baseUrl}/api/midiclips/${id}/`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ export default class APIService {
 	}	
 
 	relabelItem(id, label) {
-		const url = 'api/label_item/' + id + '/' + label
+		const url = `${this.baseUrl}/api/label_item/${id}/${label}`
 		return this.apiCall(url).catch(error => console.log("error: " + error));
 	}
 }

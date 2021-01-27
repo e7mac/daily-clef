@@ -20,7 +20,7 @@ export default class Tempo extends React.Component {
 	}
 
 	fn() {
-		const url = "/api/tempo/" + this.state.clip_id
+		const url = `${this.props.api.baseUrl}/api/tempo/${this.state.clip_id}`
 		fetch(url)
 		.then(res => res.json())
 		.then(

@@ -5,7 +5,6 @@ export default class ClipGetter {
 	constructor(api, url) {
 		this.hasMore = true
 		this.modelGetter = new ModelGetter(api, url)
-		console.log(url)
 	}
 
 	loadClips() {
