@@ -36,7 +36,8 @@ class App extends Component {
         this.setState({
           logged_in: true,
           displayed_form: '',
-          username: username
+          username: username,
+          api: new APIService()
         });
       });
   };

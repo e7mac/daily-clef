@@ -194,7 +194,6 @@ export default class APIService {
 	loadClips() {
 		if (this.url!==null) {
 			if (this.urlPromise === null) {
-				console.log('XXX' + this.url)
 				this.urlPromise = this.apiCall(this.url)
 				.then((response) => {
 					console.log(response)

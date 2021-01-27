@@ -4,7 +4,6 @@ import './LabelBar.css';
 import Label from './Label';
 
 export default function LabelBar(props) {
-
 	const [labels, setLabels] = useState([])
 
 	useEffect(()=>{
