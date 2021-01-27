@@ -39,7 +39,7 @@ export default class Navbar extends React.Component {
 	render() {
 		return (
 				<Navigation className="zIndex">
-				<div class="navbar" ref={this.navbarRef}>
+				<div className="navbar" ref={this.navbarRef}>
 					
 					<Player playingItem={this.props.playingItem} />
 					<Recorder api={this.props.api} />
