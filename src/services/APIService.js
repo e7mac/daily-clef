@@ -6,24 +6,25 @@ import deepmerge from 'deepmerge'
 export default class APIService {
 	constructor() {
 		// user details
-		this.baseUrl = "https://midi-practice.herokuapp.com"
-		// this.baseUrl = "http://localhost:8000"
+		// this.baseUrl = "https://midi-practice.herokuapp.com"
+		this.baseUrl = "http://localhost:8000"
 		this.demo = false
 		const urlParams = new URLSearchParams(window.location.search);
-		const u = urlParams.get('user');
+		this.demoUser = urlParams.get('user');
+		const u = this.demoUser
 		if (u!==null) {
+			this.demo = true
 			console.log(u)
 			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/user/journal/${u}`)
 			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/user/labels/${u}`)
 			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/user/rawsessionfiles/${u}`)
-			this.demo = true
 		} else {
 			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/journal`)
 			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels`)
 			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles`)
 		}
-
 		this.clipGetter = this.allClips
+
 		this.clipsForLabel = {}
 		this.fileService = new APIFileService(this)
 	}
@@ -32,7 +33,7 @@ export default class APIService {
 		if (this.demo) {
 			return null
 		}
-		return this.apiCall(`${this.baseUrl}/api/current_user`)
+		this.promise = this.apiCall(`${this.baseUrl}/api/current_user`)
 		.then(
 			(response) => {
 				if (response.username.length > 0) {
@@ -42,6 +43,7 @@ export default class APIService {
 				}
 			})
 		.catch(error => console.log("error: " + error));
+		return this.promise
 	}
 
 	apiCall(url, params = {}) {
@@ -55,6 +57,7 @@ export default class APIService {
 		}
 
 		const fullParams = deepmerge(params, auth);
+		console.log(fullParams)
 		return fetch(url, fullParams).then(res => res.json())
 		.then(res => {
 			if (res["detail"]!==undefined) {
@@ -97,14 +100,30 @@ export default class APIService {
 	}
 
 	resetLoadClips() {
+		const u = this.demoUser
+		if (u!==null) {
+			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/user/journal/${u}`)
+			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/user/labels/${u}`)
+			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/user/rawsessionfiles/${u}`)
+			this.demo = true
+		} else {
+			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/journal`)
+			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels`)
+			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles`)
+		}
 		this.clipGetter = this.allClips
 	}
 
 	loadClipsForLabel(label) {
-		if (!(label in this.clipsForLabel)) {
-			this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/journal/item/${label}`)
-		}
+		// if (!(label in this.clipsForLabel)) {
+			if (this.demo) {
+				this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/user/journal/item/${this.demoUser}/${label}`)
+			} else {
+				this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/journal/item/${label}`)
+			}			
+		// }
 		this.clipGetter = this.clipsForLabel[label]
+		console.log(this.clipGetter)
 	}
 
 	loadRawSessionFiles() {

@@ -20,7 +20,7 @@ export default class ModelGetter {
 				})
 				.catch(error => console.log("error: " + error));
 			}
-			return this.itemsPromise
 		}
+		return this.itemsPromise
 	}
 }

@@ -10,10 +10,14 @@ export default class APIFileService {
 			url = response.url
 			return this.uploadFileToS3(file, response.data, response.url)})
 		.then((response) => {
-			const body = new FormData();
-			body.append("file-url", url)
-			body.append("lastModified", lastModified);
-			body.append("submit", "Upload");
+			// const body = new FormData();
+			// body.append("file-url", url)
+			// body.append("lastModified", lastModified);
+			// body.append("submit", "Upload");
+			const body = {
+				"file-url": url,
+				"lastModified": lastModified,
+			}
 			return this.uploadFile(body)
 		})
 		.catch(error => console.log("error: " + error));
@@ -44,7 +48,10 @@ export default class APIFileService {
 	uploadFile(body) {
 		return this.api.apiCall(this.api.baseUrl + '/api/upload', {
 			method: 'POST',
-			body: body
+			body: JSON.stringify(body),
+			headers: {
+				'Content-Type': 'application/json'
+			},
 		})		
 		.then(
 			(response) => {

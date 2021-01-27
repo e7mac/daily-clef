@@ -36,14 +36,18 @@ export default function MusicLog(props) {
 	const resetLoadClips = (e) => {
 		e.preventDefault()
 		props.api.resetLoadClips()
-		setClipgroupsets([])
-		setLoaded(false)		
+		props.api.clipGetter.loadClips().then((clipgroupsets_) => {
+			setClipgroupsets(clipgroupsets_)
+			setLoaded(true)
+		})		
 	}
 
 	const loadClipsForLabel = (label) => {
 		props.api.loadClipsForLabel(label)
-		setClipgroupsets([])
-		setLoaded(false)
+		props.api.clipGetter.loadClips().then((clipgroupsets_) => {
+			setClipgroupsets(clipgroupsets_)
+			setLoaded(true)
+		})
 	}
 
 	const loadCalendar = () => {
@@ -70,7 +74,10 @@ export default function MusicLog(props) {
 		<a onClick={resetLoadClips}><h1 className="link">Daily Clef</h1></a>
 		<Navbar api={props.api} playingItem={playingItem} handle_logout={props.handle_logout} />
 		<LabelBar api={props.api} loadClipsForLabel={loadClipsForLabel} />
-		<Upload api={props.api} />
+		{ props.api.demo 
+			? <br />
+			: <Upload api={props.api} />
+		}					
 		{showCalendar 
 			? <DayPicker
 			onDayClick={handleDayClick}
