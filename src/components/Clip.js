@@ -10,11 +10,13 @@ export default function Clip(props) {
 	const [edit, setEdit] = useState(false)
 
 	useEffect(()=>{
-		props.api.getUser().then(user => {
-			if (user!==null) {
-				setEdit(user.id === props.clip.user)
-			}
-		})
+		if (!props.api.demo) {
+			props.api.getUser().then(user => {
+				if (user!==null) {
+					setEdit(user.id === props.clip.user)
+				}
+			})			
+		}
 	},[])
 
 
@@ -37,4 +39,4 @@ export default function Clip(props) {
 		}
 		<br/>
 		</div>);
-}
+	}

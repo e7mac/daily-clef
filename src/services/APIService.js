@@ -8,26 +8,30 @@ export default class APIService {
 		// user details
 		this.baseUrl = "https://midi-practice.herokuapp.com"
 		// this.baseUrl = "http://localhost:8000"
-
-    	const urlParams = new URLSearchParams(window.location.search);
-      	const u = urlParams.get('user');
+		this.demo = false
+		const urlParams = new URLSearchParams(window.location.search);
+		const u = urlParams.get('user');
 		if (u!==null) {
 			console.log(u)
 			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/user/journal/${u}`)
 			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/user/labels/${u}`)
 			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/user/rawsessionfiles/${u}`)
+			this.demo = true
 		} else {
 			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/journal`)
 			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels`)
 			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles`)
 		}
-  
+
 		this.clipGetter = this.allClips
 		this.clipsForLabel = {}
 		this.fileService = new APIFileService(this)
 	}
 
 	getUser() {
+		if (this.demo) {
+			return null
+		}
 		return this.apiCall(`${this.baseUrl}/api/current_user`)
 		.then(
 			(response) => {
@@ -41,16 +45,20 @@ export default class APIService {
 	}
 
 	apiCall(url, params = {}) {
-		const auth = {
+		let auth = {
 			headers: {
 				Authorization: `JWT ${localStorage.getItem('token')}`
 			}
 		}
+		if (this.demo) {
+			auth = {}
+		}
+
 		const fullParams = deepmerge(params, auth);
 		return fetch(url, fullParams).then(res => res.json())
 		.then(res => {
 			if (res["detail"]!==undefined) {
-				console.log("LOGOUT")
+				console.log(`LOGOUT from: ${url}`)
 				localStorage.removeItem('token');
 			}
 			return res

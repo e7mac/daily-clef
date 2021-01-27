@@ -10,6 +10,8 @@ import APIService from './services/APIService';
 class App extends Component {
   constructor(props) {
     super(props);
+    const urlParams = new URLSearchParams(window.location.search);
+    const u = urlParams.get('user');
     this.state = {
       displayed_form: '',
       logged_in: localStorage.getItem('token') ? true : false,
@@ -31,16 +33,14 @@ class App extends Component {
   handle_login = (e, data) => {
     e.preventDefault();
     this.state.api.handle_login(data)
-      .then(username => {
-        console.log('username')
-        console.log(username)
-        this.setState({
-          logged_in: true,
-          displayed_form: '',
-          username: username,
-          api: new APIService()
-        });
+    .then(username => {
+      this.setState({
+        logged_in: true,
+        displayed_form: '',
+        username: username,
+        api: new APIService()
       });
+    });
   };
 
   handle_signup = (e, data) => {
@@ -52,15 +52,15 @@ class App extends Component {
       },
       body: JSON.stringify(data)
     })
-      .then(res => res.json())
-      .then(json => {
-        localStorage.setItem('token', json.token);
-        this.setState({
-          logged_in: true,
-          displayed_form: '',
-          username: json.username
-        });
+    .then(res => res.json())
+    .then(json => {
+      localStorage.setItem('token', json.token);
+      this.setState({
+        logged_in: true,
+        displayed_form: '',
+        username: json.username
       });
+    });
   };
 
   handle_logout = () => {
@@ -71,14 +71,14 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h3>
-          {this.state.logged_in
-            ? <MusicLog api={this.state.api} handle_logout={this.handle_logout} />
-            : <LoginForm handle_login={this.handle_login} />
-          }
-        </h3>
+      <h3>
+      {this.state.logged_in || this.state.api.demo
+        ? <MusicLog api={this.state.api} handle_logout={this.handle_logout} />
+        : <LoginForm handle_login={this.handle_login} />
+      }
+      </h3>
       </div>
-    );
+      );
   }
 }
 
