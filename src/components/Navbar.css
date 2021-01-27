@@ -26,3 +26,7 @@
 .zIndex {
 	z-index: 10;
 }
+
+.link {
+	cursor: pointer;
+}

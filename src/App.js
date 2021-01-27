@@ -66,37 +66,14 @@ class App extends Component {
     this.setState({ logged_in: false, username: '' });
   };
 
-  display_form = form => {
-    this.setState({
-      displayed_form: form
-    });
-  };
-
   render() {
-    let form;
-    switch (this.state.displayed_form) {
-      case 'login':
-        form = <LoginForm handle_login={this.handle_login} />;
-        break;
-      case 'signup':
-        form = <SignupForm handle_signup={this.handle_signup} />;
-        break;
-      default:
-        form = null;
-    }
-
     return (
       <div className="App">
-        <Nav
-          logged_in={this.state.logged_in}
-          display_form={this.display_form}
-          handle_logout={this.handle_logout}
-        />
-        {form}
         <h3>
           {this.state.logged_in
-            ? <div>`Hello, {this.state.username}`<MusicLog api={this.state.api} /></div>
-            : 'Please Log In'}
+            ? <MusicLog api={this.state.api} handle_logout={this.handle_logout} />
+            : <LoginForm handle_login={this.handle_login} />
+          }
         </h3>
       </div>
     );

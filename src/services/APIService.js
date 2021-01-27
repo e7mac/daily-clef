@@ -12,18 +12,36 @@ export default class APIService {
 		this.baseUrl = "https://midi-practice.herokuapp.com"
 		// this.baseUrl = "http://localhost:8000"
 
-		this.url = '/api' + window.location.pathname
+		this.url = this.baseUrl + '/api' + window.location.pathname
 		this.urlPromise = null
 		if (this.ownUsername === true) {
-			this.url = "/api/journal"
+			this.url = this.baseUrl + "/api/journal"
 		}
-		this.labelsURL = '/api/labels'
-		this.rawSessionFilesURL = '/api/rawsessionfiles'
-		this.isLoggedInPromise = this.apiCall("/api/current_user")
+		this.labelsURL = this.baseUrl + '/api/labels'
+		this.rawSessionFilesURL = this.baseUrl + '/api/rawsessionfiles'
+		this.isLoggedInPromise = this.apiCall(this.baseUrl + "/api/current_user")
+	}
+
+	apiCall(url, params = {}) {
+		const auth = {
+			headers: {
+				Authorization: `JWT ${localStorage.getItem('token')}`
+			}
+		}
+		const fullParams = { ...params, ...auth};
+		return fetch(url, fullParams).then(res => res.json())
+		.then(res => {
+			if (res["detail"]!==undefined) {
+				console.log("LOGOUT")
+				localStorage.removeItem('token');
+				// location.reload();				
+			}
+			return res
+		})
 	}
 
 	handle_login(data) {
-		return fetch('https://midi-practice.herokuapp.com/token-auth/', {
+		return fetch(this.baseUrl + '/token-auth/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -61,7 +79,7 @@ export default class APIService {
 	}
 
 	status() {
-		return this.apiCall("/api/status")
+		return this.apiCall(this.baseUrl + "/api/status")
 		.catch(error => console.log("error: " + error));
 	}
 
@@ -173,29 +191,13 @@ export default class APIService {
 		return sessions
 	}	
 
-	apiCall(path, params = {}) {
-		const auth = {
-			headers: {
-				Authorization: `JWT ${localStorage.getItem('token')}`
-			}
-		}
-		const fullParams = { ...params, ...auth};
-		return fetch(this.baseUrl + path, fullParams).then(res => res.json())
-		.then(res => {
-			if (res["detail"]!==undefined) {
-				console.log("LOGOUT")
-				localStorage.removeItem('token');
-				// location.reload();				
-			}
-			return res
-		})
-	}
-
 	loadClips() {
 		if (this.url!==null) {
 			if (this.urlPromise === null) {
+				console.log('XXX' + this.url)
 				this.urlPromise = this.apiCall(this.url)
 				.then((response) => {
+					console.log(response)
 					this.clips = this.clips.concat(response.results);
 					const sessions = this.createSessions(this.clips)
 					const clipgroupsets = this.transform(sessions)
@@ -251,7 +253,7 @@ export default class APIService {
 	}
 
 	getSignedRequest(file) {
-		return this.apiCall("/api/sign_s3?file_name="+file.name+"&file_type="+file.type)
+		return this.apiCall(this.baseUrl + "/api/sign_s3?file_name="+file.name+"&file_type="+file.type)
 	}
 
 	uploadFileToS3(file, s3Data, url) {
@@ -273,7 +275,7 @@ export default class APIService {
 	}
 
 	uploadFile(body) {
-		return this.apiCall('/api/upload', {
+		return this.apiCall(this.baseUrl + '/api/upload', {
 			method: 'POST',
 			body: body
 		})		
@@ -286,7 +288,7 @@ export default class APIService {
 	}
 
 	editClip(id, body, csrfToken) {
-		return this.apiCall('/api/midiclips/' + id + '/', {
+		return this.apiCall(this.baseUrl + '/api/midiclips/' + id + '/', {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',

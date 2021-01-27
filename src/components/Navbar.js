@@ -30,6 +30,11 @@ export default function Navbar(props) {
 		})
 	}
 
+	const logout = () => {
+		console.log("discord")
+		props.handle_logout()
+	}
+
 	return (
 			<Navigation className="zIndex">
 			<div className="navbar" >
@@ -37,6 +42,7 @@ export default function Navbar(props) {
 				<Recorder api={props.api} />
 				<div className="status">
 				{status}
+				<div className="link" onClick={logout}>Logout</div>
 				</div>
 			</div>
 			</Navigation>

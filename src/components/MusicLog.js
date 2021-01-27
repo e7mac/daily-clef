@@ -57,8 +57,8 @@ export default function MusicLog(props) {
 
 	return (
 		<div>
-		<a href="/"><h1>Music Log</h1></a>
-		<Navbar api={props.api} playingItem={playingItem} />
+		<a href="/"><h1>Daily Clef</h1></a>
+		<Navbar api={props.api} playingItem={playingItem} handle_logout={props.handle_logout} />
 		<LabelBar api={props.api} />
 		<Upload api={props.api} />
 		{showCalendar 
