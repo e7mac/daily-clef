@@ -6,10 +6,8 @@ import Clip from './Clip';
 import './ClipGroup.css';
 
 export default function ClipGroup(props) {
-
 	const [name, setName] = useState(props.group.name)
 	const [clips, setClips] = useState(props.group.clips)
-	const [edit, setEdit] = useState(props.edit)
 
 	const displayDuration = (time) => {
 		const min =  Math.floor(time / 60);
@@ -32,7 +30,7 @@ export default function ClipGroup(props) {
 		{
 			clips.map((clip, index) => {
 				return (
-					<Clip api={props.api} key={clip.id} clip={clip} edit={edit} onRelabel={props.onRelabel} onPlay={props.onPlay} />
+					<Clip api={props.api} key={clip.id} clip={clip} onRelabel={props.onRelabel} onPlay={props.onPlay} />
 					)
 			})
 		}

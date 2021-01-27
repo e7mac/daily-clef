@@ -87,7 +87,7 @@ export default function MusicLog(props) {
 		loader={<div className="text-center">loading data ...</div>}>
 		{clipgroupsets.map((item, index) => 
 			( 
-			<ClipGroupSet api={props.api} key={item.title} set={item} edit={props.api.ownUsername} onPlay={onPlay} onRelabel={onRelabel} />
+			<ClipGroupSet api={props.api} key={item.title} set={item} onPlay={onPlay} onRelabel={onRelabel} />
 			)
 			)}
 			</InfiniteScroll>

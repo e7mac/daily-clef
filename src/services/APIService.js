@@ -2,6 +2,10 @@ import * as TimeFormatUtils from '../utils/TimeFormatUtils'
 
 export default class APIService {
 	constructor() {
+		// user details
+		this.user_id = null
+		this.username = null
+
 		this.hasMore = true
 
 		this.clips = []
@@ -18,6 +22,7 @@ export default class APIService {
 		this.labelsURL = this.baseUrl + '/api/labels'
 		this.rawSessionFilesURL = this.baseUrl + '/api/rawsessionfiles'
 		this.isLoggedInPromise = this.apiCall(this.baseUrl + "/api/current_user")
+		this.isLoggedIn()
 	}
 
 	apiCall(url, params = {}) {
@@ -67,6 +72,8 @@ export default class APIService {
 		.then(
 			(response) => {
 				if (response.username.length > 0) {
+					this.username = response.username
+					this.user_id = response.id
 					return true
 				} else {
 					return false

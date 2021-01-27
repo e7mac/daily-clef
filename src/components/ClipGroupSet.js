@@ -7,7 +7,6 @@ import './ClipGroupSet.css';
 
 export default function ClipGroupSet(props) {
 
-	const [edit, setEdit] = useState(props.edit)
 	const [groups, setGroups] = useState(props.set.groups)
 	const [title, setTitle] = useState(props.set.title)
 
@@ -25,7 +24,7 @@ export default function ClipGroupSet(props) {
 		{
 			groups.map((group, index) => {
 				return (
-				<ClipGroup api={props.api} key={group.name} group={group} edit={edit} onRelabel={props.onRelabel} onPlay={props.onPlay} />
+				<ClipGroup api={props.api} key={group.name} group={group} onRelabel={props.onRelabel} onPlay={props.onPlay} />
 				)
 			})
 		}
