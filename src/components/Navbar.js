@@ -1,50 +1,54 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 import Player from './Player'
 import Recorder from './Recorder'
 import Navigation from "react-sticky-nav";
 import './Navbar.css';
 
-export default function Navbar(props) {
+export default class Navbar extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			status: ""
+		}
+		this.refreshStatus = this.refreshStatus.bind(this);		
+		this.timer = null
+	}
 
-	const [status, setStatus] = useState("")
+	componentDidMount() {
+		this.timer = setInterval(this.refreshStatus, 3000);
+	}
 
-	let timer = null
+	componentWillUnmount() {
+		clearInterval(this.timer);
+		this.timer = null;
+	}
 
-	useEffect(() => {
-  		timer = setInterval(refreshStatus, 3000);
-  
-  		return () => {
-    		clearInterval(timer);
-			timer = null;
-  		}
-	}, []) // notice the empty array
-
-	const refreshStatus = () => {
-		props.api.getStatus().then((response) => {
+	refreshStatus() {
+		this.props.api.status().then((response) => {
 			const task_count = response.response
 			const status = (task_count.classification_tasks > 0 ? " Classifying ":"" )
 			+ (task_count.segmentation_tasks > 0 ? " Segmenting ":"" )
 			+ (task_count.transcription_tasks > 0 ? " Transcribing ":"" )
-			setStatus(status)
+			this.setState({
+				status: status
+			})
 		})
 	}
 
-	const logout = () => {
-		console.log("discord")
-		props.handle_logout()
-	}
-
-	return (
-			<Navigation className="zIndex">
-			<div className="navbar" >
-				<Player playingItem={props.playingItem} />
-				<Recorder api={props.api} />
-				<div className="status">
-				{status}
-				<div className="link" onClick={logout}>Logout</div>
+	render() {
+		return (
+				<Navigation className="zIndex">
+				<div class="navbar" ref={this.navbarRef}>
+					
+					<Player ref={this.playerRef} />
+					<Recorder api={this.props.api} />
+					<div className="status">
+					{this.state.status}
+					<div className="link" onClick={this.props.handle_logout}>Logout</div>
+					</div>
 				</div>
-			</div>
-			</Navigation>
-		);
+				</Navigation>
+			);
+	}
 }
