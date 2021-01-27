@@ -9,6 +9,11 @@ export default class APIService {
 		// this.baseUrl = "http://localhost:8000"
 		
 		this.allClips = new ClipGetter(this, this.baseUrl + "/api/journal")
+		if (window.location.pathname!=="/daily-clef") {
+			const username = window.location.pathname.split('/daily-clef/')[1]
+			this.allClips = new ClipGetter(this, this.baseUrl + "/api/journal/" + username)
+		}
+
 		this.clipGetter = this.allClips
 		this.clipsForLabel = {}
 
