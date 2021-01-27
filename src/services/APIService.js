@@ -220,6 +220,11 @@ export default class APIService {
 		}
 	}
 
+	resetLoadClips() {
+		this.clips = []
+		this.url = this.baseUrl + "/api/journal"		
+		this.hasMore = true
+	}
 
 	loadClipsForLabel(label) {
 		this.clips = []

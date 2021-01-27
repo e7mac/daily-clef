@@ -33,6 +33,13 @@ export default function MusicLog(props) {
 		})
 	}
 
+	const resetLoadClips = (e) => {
+		e.preventDefault()
+		props.api.resetLoadClips()
+		setClipgroupsets([])
+		setLoaded(false)		
+	}
+
 	const loadClipsForLabel = (label) => {
 		props.api.loadClipsForLabel(label)
 		setClipgroupsets([])
@@ -61,7 +68,7 @@ export default function MusicLog(props) {
 
 	return (
 		<div>
-		<a href="/"><h1>Daily Clef</h1></a>
+		<a onClick={resetLoadClips}><h1 className="link">Daily Clef</h1></a>
 		<Navbar api={props.api} playingItem={playingItem} handle_logout={props.handle_logout} />
 		<LabelBar api={props.api} loadClipsForLabel={loadClipsForLabel} />
 		<Upload api={props.api} />
