@@ -65,8 +65,6 @@ export default class APIService {
 			}
 			return false
 		});
-
-		;
 	}
 
 	handle_logout = () => {
