@@ -3,17 +3,14 @@ import * as TimeFormatUtils from '../utils/TimeFormatUtils'
 export default class APIService {
 	constructor() {
 		// user details
-		this.user_id = null
-		this.username = null
-
+		this.baseUrl = "https://midi-practice.herokuapp.com"
+		// this.baseUrl = "http://localhost:8000"
+		
 		this.hasMore = true
 
 		this.clips = []
 		this.labels = []
-		this.rawSessionFiles = []
-
-		this.baseUrl = "https://midi-practice.herokuapp.com"
-		// this.baseUrl = "http://localhost:8000"
+		this.rawSessionFiles = []	
 
 		this.clipsPromise = null
 		this.url = this.baseUrl + "/api/journal"
@@ -21,8 +18,21 @@ export default class APIService {
 
 		this.labelsURL = this.baseUrl + '/api/labels'
 		this.rawSessionFilesURL = this.baseUrl + '/api/rawsessionfiles'
-		this.isLoggedInPromise = this.apiCall(this.baseUrl + "/api/current_user")
-		this.isLoggedIn()
+	}
+
+
+	getUser() {
+		return this.apiCall(this.baseUrl + "/api/current_user")
+		.then(
+			(response) => {
+				if (response.username.length > 0) {
+					return response
+				} else {
+					return null
+				}
+			})
+		.catch(error => console.log("error: " + error));
+
 	}
 
 	apiCall(url, params = {}) {
@@ -37,7 +47,6 @@ export default class APIService {
 			if (res["detail"]!==undefined) {
 				console.log("LOGOUT")
 				localStorage.removeItem('token');
-				// location.reload();				
 			}
 			return res
 		})
@@ -63,27 +72,11 @@ export default class APIService {
 		;
 	}
 
-	  handle_logout = () => {
-	    localStorage.removeItem('token');
-	  };
+	handle_logout = () => {
+		localStorage.removeItem('token');
+	};
 
-	isLoggedIn() {
-		return this.isLoggedInPromise
-		.then(
-			(response) => {
-				if (response.username.length > 0) {
-					this.username = response.username
-					this.user_id = response.id
-					return true
-				} else {
-					return false
-				}
-			})
-		.catch(error => console.log("error: " + error));
-		
-	}
-
-	status() {
+	getStatus() {
 		return this.apiCall(this.baseUrl + "/api/status")
 		.catch(error => console.log("error: " + error));
 	}

@@ -21,7 +21,7 @@ export default function Navbar(props) {
 	}, []) // notice the empty array
 
 	const refreshStatus = () => {
-		props.api.status().then((response) => {
+		props.api.getStatus().then((response) => {
 			const task_count = response.response
 			const status = (task_count.classification_tasks > 0 ? " Classifying ":"" )
 			+ (task_count.segmentation_tasks > 0 ? " Segmenting ":"" )
