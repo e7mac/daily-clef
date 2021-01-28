@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { Accordion, Card, Button, ListGroup } from 'react-bootstrap';
+import { Accordion, Card, Button, ListGroup, Spinner } from 'react-bootstrap';
 
 import APIService from '../services/APIService'
 import ClipGroupSet from './ClipGroupSet';
@@ -91,7 +91,7 @@ export default function MusicLog(props) {
 		pageStart={0}
 		loadMore={loadClips}
 		hasMore={props.api.clipGetter.hasMore}
-		loader={<div className="text-center">loading data ...</div>}>
+		loader={<Spinner animation="border" variant="secondary" />}>
 		{clipgroupsets.map((item, index) => 
 			( 
 			<Card><ClipGroupSet api={props.api} key={item.title} set={item} onPlay={onPlay} onRelabel={onRelabel} /></Card>
