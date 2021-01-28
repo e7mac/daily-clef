@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 
+import { Button } from 'react-bootstrap';
+
 import './Relabel.css';
 
 export default function Relabel(props) {
@@ -26,9 +28,7 @@ export default function Relabel(props) {
 			? " Done! Refresh to see results"
 			:<span>
 			<input type="text" ref={labelRef} />
-			<span className="button" onClick={relabelItem}>
-				Relabel
-			</span>
+			<Button variant="info" onClick={relabelItem}>Relabel</Button>
 			</span>
 		}
 		</span>

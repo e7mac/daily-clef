@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 
+import { Container, Row, Col } from 'react-bootstrap';
+
 import Relabel from './Relabel';
 
 import './ClipEdit.css';
@@ -61,13 +63,21 @@ export default function ClipEdit(props) {
 	}
 
 	return (
-		<div>
+		<Container>
+		<Row>
+		<Col>
 		<input className="button" type="checkbox" checked={sight_reading} onChange={changeSightReading} />
 		Sight Read
 		<span className="item"><input className="button" type="checkbox" checked={technical} onChange={changeTechnical} />
 		Technical</span>
+		</Col>
+		<Col>
 		<span className="item"><Relabel api={props.api} clip_id={id} onRelabel={props.onRelabel} /></span>
+		</Col>
+		<Col>
 		Notes:<input ref={notesRef} type="text" value={notes} onChange={changeNotes} />
-		</div>
+		</Col>
+		</Row>
+		</Container>
 		);
 }

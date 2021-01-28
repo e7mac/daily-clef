@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 import Tempo from './Tempo';
 import ClipEdit from './ClipEdit';
@@ -49,7 +49,7 @@ export default function Clip(props) {
 				<span className="item"><Tempo clip_id={props.clip.id} api={props.api} /></span>
 				</Col>
 				<Col>
-				<a href={`https://e7mac.github.io/MIDIano/?url=${props.clip.url}`} target="_blank">Synthesia</a>
+				<a href={`https://e7mac.github.io/MIDIano/?url=${props.clip.url}`} target="_blank"><Button variant="info">Synthesia</Button></a>
 				</Col>
 			</Row>
 			<Row>

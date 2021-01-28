@@ -1,6 +1,7 @@
 import React from 'react';
 import { Chart } from 'react-charts'
 import { Resizable, ResizableBox } from 'react-resizable';
+import { Button } from 'react-bootstrap';
 
 import Relabel from './Relabel';
 import './Tempo.css';
@@ -70,7 +71,7 @@ export default class Tempo extends React.Component {
 				?     <ResizableBox width={200} height={200} minConstraints={[100, 100]} maxConstraints={[500, 500]}>
       <Chart data={data} axes={axes} series={series} tooltip />
     </ResizableBox>
-					: <span className="button" onClick={this.fn}>Tempo</span>
+					: <Button variant="info" onClick={this.fn}>Tempo</Button>
 				}
 
 				</span>);

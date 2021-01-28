@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Alert } from 'react-bootstrap';
 
+import { Row, Col } from 'react-bootstrap';
+
 import Player from './Player'
 import Recorder from './Recorder'
 import Navigation from "react-sticky-nav";
@@ -44,8 +46,14 @@ export default class Navbar extends React.Component {
 	render() {
 		return (
 				<Navigation className="zIndex">
-				<div className="navbar" ref={this.navbarRef}>
+				<div className="navbar">
+				<Row>
+				<Col>
 					<Player playingItem={this.props.playingItem} />
+				</Col>
+				</Row>
+				<Row>
+					<Col>				
 					<Recorder api={this.props.api} />
 					{
 						this.state.status.length > 0
@@ -54,6 +62,8 @@ export default class Navbar extends React.Component {
 						  </Alert>
 						: <br/>
 					}
+					</Col>
+				</Row>
 				</div>
 				</Navigation>
 			);
