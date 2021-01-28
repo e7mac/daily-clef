@@ -8,6 +8,7 @@ import LabelBar from './components/LabelBar'
 import MusicLog from './components/MusicLog';
 import APIService from './services/APIService';
 import Upload from './components/Upload'
+import Recorder from './components/Recorder'
 import Player from './components/Player'
 import PlayCalendar from './components/PlayCalendar'
 
@@ -22,10 +23,12 @@ class App extends Component {
       username: '',
       api: new APIService(),
       clipgroupsets: [],
-      playingItem: null
+      playingItem: null,
+      record: false
     };
     this.loadClips = this.loadClips.bind(this);
     this.onPlay = this.onPlay.bind(this);
+    this.onRecord = this.onRecord.bind(this);
   }
 
   componentDidMount() {
@@ -100,6 +103,12 @@ class App extends Component {
       })
   }
 
+  onRecord = () => {
+    this.setState({
+      record: true
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -107,10 +116,10 @@ class App extends Component {
         <Navbar.Brand href="/">Daily Clef</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-        {this.state.api.demo || !this.state.api.demo
+        {this.state.logged_in || this.state.api.demo
           ? <React.Fragment><Nav className="mr-auto">
             <Upload api={this.state.api} />
-            <Nav.Link onClick={this.handle_logout}>Record</Nav.Link>
+            <Nav.Link onClick={this.record}>Record</Nav.Link>
             <LabelBar api={this.state.api} loadClipsForLabel={this.loadClipsForLabel} />
             <Player playingItem={this.state.playingItem} />
           </Nav>
@@ -121,6 +130,10 @@ class App extends Component {
         </Navbar.Collapse>
       </Navbar>
       <Container>
+      {this.state.record
+        ?  <Recorder/>
+        : <br/>
+      }
       {this.state.logged_in || this.state.api.demo
         ? <React.Fragment><PlayCalendar api={this.state.api}/><MusicLog onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips}/></React.Fragment>
         : <LoginForm handle_login={this.handle_login} />
