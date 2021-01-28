@@ -38,3 +38,7 @@
     transform: rotate(360deg);
   }
 }
+
+.panel-body { /* parent container of the menu */
+    overflow: inherit !important;
+}

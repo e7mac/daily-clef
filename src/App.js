@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
-import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Container, Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import './App.css';
+import LabelBar from './components/LabelBar'
 
 import MusicLog from './components/MusicLog';
 import APIService from './services/APIService';
+import Upload from './components/Upload'
+import Player from './components/Player'
 
 class App extends Component {
   constructor(props) {
@@ -69,16 +72,29 @@ class App extends Component {
     this.setState({ logged_in: false, username: '' });
   };
 
+  loadClipsForLabel = (label) => {
+    this.state.api.loadClipsForLabel(label)
+    this.state.api.clipGetter.loadClips().then((clipgroupsets_) => {
+      console.log(clipgroupsets_)
+      // setClipgroupsets(clipgroupsets_)
+      // setLoaded(true)
+    })
+  }
+
   render() {
     return (
       <div className="App">
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="light" expand="lg" className="panel-body">
         <Navbar.Brand href="/">Daily Clef</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
+            <Upload api={this.state.api} />
+            <Nav.Link onClick={this.handle_logout}>Record</Nav.Link>
+            <LabelBar api={this.state.api} loadClipsForLabel={this.loadClipsForLabel} />
+            <Player playingItem={this.props.playingItem} />
           </Nav>
+          <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
         </Navbar.Collapse>
       </Navbar>      
       <Container>

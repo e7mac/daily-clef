@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
 
+import { Form, Button } from 'react-bootstrap';
+
 import './Upload.css';
 
 export default function Upload(props) {
@@ -7,7 +9,6 @@ export default function Upload(props) {
 	const fileRef = useRef(null)
 
 	const submitClicked = (e) => {
-		e.preventDefault()
 		const fileInput = fileRef.current
   		const files = fileInput.files;
   		for (let file of files) {
@@ -20,12 +21,18 @@ export default function Upload(props) {
   		}
 	}
 
+	const upload = (e) => {
+		fileRef.current.click()
+	}
+
 	return (
 		<span>
-			<form onSubmit={submitClicked}>
-			<input ref={fileRef} type="file" name="files" />
-			<input type="submit" name="submit" value="Upload" />
-			</form>
+		<Form hidden={true}>
+  			<Form.Group>
+    			<Form.File onChange={submitClicked} ref={fileRef}/>
+  			</Form.Group>
+		</Form>
+			<Button variant="outline-success" onClick={upload}>Upload</Button>
 		</span>
 	);
 }

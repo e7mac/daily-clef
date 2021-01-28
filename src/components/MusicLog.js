@@ -7,7 +7,6 @@ import ClipGroupSet from './ClipGroupSet';
 import InfiniteScroll from 'react-infinite-scroller'
 import Navbar from './Navbar'
 import LabelBar from './LabelBar'
-import Upload from './Upload'
 import DayPicker from 'react-day-picker';
 
 import 'react-day-picker/lib/style.css';
@@ -73,12 +72,6 @@ export default function MusicLog(props) {
 
 	return (
 		<div>
-		<Navbar api={props.api} playingItem={playingItem} />
-		<LabelBar api={props.api} loadClipsForLabel={loadClipsForLabel} />
-		{ props.api.demo 
-			? <br />
-			: <Card><Upload api={props.api} /></Card>
-		}
 		{showCalendar 
 			? <Card><DayPicker
 			onDayClick={handleDayClick}

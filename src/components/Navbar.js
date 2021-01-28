@@ -48,11 +48,6 @@ export default class Navbar extends React.Component {
 				<Navigation className="zIndex">
 				<div className="navbar">
 				<Row>
-				<Col>
-					<Player playingItem={this.props.playingItem} />
-				</Col>
-				</Row>
-				<Row>
 					<Col>				
 					<Recorder api={this.props.api} />
 					{
