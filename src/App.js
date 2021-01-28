@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LoginForm from './components/LoginForm';
-import SignupForm from './components/SignupForm';
-import { Container, Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
+import { Alert, Container, Navbar, Nav } from 'react-bootstrap';
 import './App.css';
 import LabelBar from './components/LabelBar'
 
@@ -15,8 +14,6 @@ import PlayCalendar from './components/PlayCalendar'
 class App extends Component {
   constructor(props) {
     super(props);
-    const urlParams = new URLSearchParams(window.location.search);
-    const u = urlParams.get('user');
     this.state = {
       displayed_form: '',
       logged_in: localStorage.getItem('token') ? true : false,
@@ -24,8 +21,12 @@ class App extends Component {
       api: new APIService(),
       clipgroupsets: [],
       playingItem: null,
-      record: false
+      record: false,
+      status: "",
     };
+    this.refreshStatus = this.refreshStatus.bind(this);
+    this.timer = null
+
     this.loadClips = this.loadClips.bind(this);
     this.onPlay = this.onPlay.bind(this);
     this.onRecord = this.onRecord.bind(this);
@@ -39,6 +40,30 @@ class App extends Component {
 
     document.body.appendChild(script);    
     document.title = "Daily Clef"
+
+    if (this.state.logged_in || this.state.api.demo) {
+      this.timer = setInterval(this.refreshStatus, 3000);
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    this.timer = null;
+  }
+
+  refreshStatus() {
+    this.state.api.getStatus().then((response) => {
+      console.log(response)
+      const task_count = response.response
+      const status = 
+      (task_count.conversion_tasks > 0 ? " Converting ":"" )
+      + (task_count.transcription_tasks > 0 ? " Transcribing ":"" )
+      + (task_count.segmentation_tasks > 0 ? " Segmenting ":"" )
+      + (task_count.classification_tasks > 0 ? " Classifying ":"" )
+      this.setState({
+        status: status
+      })
+    })
   }
 
   handle_login = (e, data) => {
@@ -122,6 +147,13 @@ class App extends Component {
             <Nav.Link onClick={this.onRecord}>Record</Nav.Link>
             <LabelBar api={this.state.api} loadClipsForLabel={this.loadClipsForLabel} />
             <Player playingItem={this.state.playingItem} />
+            {
+              this.state.status.length > 0
+              ? <Alert key={0} variant='secondary'>
+                {this.state.status}
+                </Alert>
+              : <br/>
+            }            
           </Nav>
           <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
           </React.Fragment>
