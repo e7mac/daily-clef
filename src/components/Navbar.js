@@ -48,10 +48,6 @@ export default class Navbar extends React.Component {
 					<Recorder api={this.props.api} />
 					<div className="status">
 					{this.state.status}
-					{ this.props.api.demo 
-						? <br />
-						: <div className="link" onClick={this.props.handle_logout}>Logout</div>
-					}
 					</div>
 				</div>
 				</Navigation>

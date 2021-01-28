@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+import { Accordion, Card, Button, ListGroup } from 'react-bootstrap';
+
 import APIService from '../services/APIService'
 import ClipGroupSet from './ClipGroupSet';
 import InfiniteScroll from 'react-infinite-scroller'
@@ -71,18 +73,17 @@ export default function MusicLog(props) {
 
 	return (
 		<div>
-		<a onClick={resetLoadClips}><h1 className="link">Daily Clef</h1></a>
-		<Navbar api={props.api} playingItem={playingItem} handle_logout={props.handle_logout} />
+		<Navbar api={props.api} playingItem={playingItem} />
 		<LabelBar api={props.api} loadClipsForLabel={loadClipsForLabel} />
 		{ props.api.demo 
 			? <br />
-			: <Upload api={props.api} />
-		}					
+			: <Card><Upload api={props.api} /></Card>
+		}
 		{showCalendar 
-			? <DayPicker
+			? <Card><DayPicker
 			onDayClick={handleDayClick}
 			selectedDays={selectedDays}
-			/>
+			/></Card>
 			: <br />
 		}
 		<InfiniteScroll
@@ -93,7 +94,7 @@ export default function MusicLog(props) {
 		loader={<div className="text-center">loading data ...</div>}>
 		{clipgroupsets.map((item, index) => 
 			( 
-			<ClipGroupSet api={props.api} key={item.title} set={item} onPlay={onPlay} onRelabel={onRelabel} />
+			<Card><ClipGroupSet api={props.api} key={item.title} set={item} onPlay={onPlay} onRelabel={onRelabel} /></Card>
 			)
 			)}
 			</InfiniteScroll>

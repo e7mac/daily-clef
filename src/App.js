@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Nav from './components/Nav';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
+import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import './App.css';
 
 import MusicLog from './components/MusicLog';
@@ -72,15 +72,24 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <h3>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand href="/">Daily Clef</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>      
+      <Container>
       {this.state.logged_in || this.state.api.demo
-        ? <MusicLog api={this.state.api} handle_logout={this.handle_logout} />
+        ? <MusicLog api={this.state.api} />
         : <LoginForm handle_login={this.handle_login} />
       }
-      </h3>
+      </Container>
       </div>
       );
+    }
   }
-}
 
-export default App;
+  export default App;

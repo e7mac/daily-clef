@@ -25,7 +25,7 @@ export default function Clip(props) {
 	}
 
 	return (
-		<div className="card">
+		<div>
 		<br/>
 		<span className="btn"><img onClick={playURL} src="https://static.vecteezy.com/system/resources/thumbnails/000/630/395/small/illust58-7477-01.jpg" width="30px" height="30px" /></span>
 		<span className="item">{TimeFormatUtils.formatDuration(props.clip.duration)}</span>

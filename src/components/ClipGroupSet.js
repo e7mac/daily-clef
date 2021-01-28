@@ -18,9 +18,8 @@ export default function ClipGroupSet(props) {
 	})
 
 	return (
-		<div className="card">
-		<div className="container">
-		<h3>{`${title}(${TimeFormatUtils.formatDuration(duration)})`}</h3>
+		<div>
+		<h5>{`${title}(${TimeFormatUtils.formatDuration(duration)})`}</h5>
 		{
 			groups.map((group, index) => {
 				return (
@@ -28,7 +27,6 @@ export default function ClipGroupSet(props) {
 				)
 			})
 		}
-		</div>
 		</div>
 		);
 }
