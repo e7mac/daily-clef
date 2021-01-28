@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from 'react-bootstrap';
+import { Alert, Card, Button } from 'react-bootstrap';
 
 import './Recorder.css';
 import { encode } from 'json-midi-encoder';
@@ -64,7 +64,6 @@ export default class Recorder extends React.Component {
 				}
 			}
 		})
-		console.log('XXX 2' + recorder)
 	}
 
 	startTimer() {
@@ -215,6 +214,7 @@ export default class Recorder extends React.Component {
 		const activeNotes = [...this.state.activeNotes]
 		return (
 			<span className="recorder">
+			<Card>
 			{this.state.available
 				? <span>{this.state.recording
 					? <span><Button variant="success" onClick={this.stopRecord}>Stop (vol: {this.state.velocity})</Button>
@@ -230,8 +230,14 @@ export default class Recorder extends React.Component {
 				    </span>
 				    : <Button variant="success" onClick={this.startRecord}>Record</Button>
 				}</span>
-				: <br />
+
+				:   <Alert key='0' variant='primary'>
+						<p>No compatible MIDI devices found</p>
+						<p>Please use Google Chrome and ensure your MIDI controller is connected!</p>
+						This also doesn't work on an iPad so please use a computer
+					</Alert>
 			}
+			</Card>
 			</span>
 			);
 		}
