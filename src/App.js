@@ -119,7 +119,7 @@ class App extends Component {
         {this.state.logged_in || this.state.api.demo
           ? <React.Fragment><Nav className="mr-auto">
             <Upload api={this.state.api} />
-            <Nav.Link onClick={this.record}>Record</Nav.Link>
+            <Nav.Link onClick={this.onRecord}>Record</Nav.Link>
             <LabelBar api={this.state.api} loadClipsForLabel={this.loadClipsForLabel} />
             <Player playingItem={this.state.playingItem} />
           </Nav>
@@ -131,12 +131,10 @@ class App extends Component {
       </Navbar>
       <Container>
       {this.state.record
-        ?  <Recorder/>
-        : <br/>
-      }
-      {this.state.logged_in || this.state.api.demo
-        ? <React.Fragment><PlayCalendar api={this.state.api}/><MusicLog onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips}/></React.Fragment>
-        : <LoginForm handle_login={this.handle_login} />
+        ?  <Recorder api={this.state.api}/>
+        : this.state.logged_in || this.state.api.demo
+            ? <React.Fragment><PlayCalendar api={this.state.api}/><MusicLog onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips}/></React.Fragment>
+            : <LoginForm handle_login={this.handle_login} />
       }
       </Container>
       </div>
