@@ -9,6 +9,7 @@ import MusicLog from './components/MusicLog';
 import APIService from './services/APIService';
 import Upload from './components/Upload'
 import Player from './components/Player'
+import PlayCalendar from './components/PlayCalendar'
 
 class App extends Component {
   constructor(props) {
@@ -19,8 +20,12 @@ class App extends Component {
       displayed_form: '',
       logged_in: localStorage.getItem('token') ? true : false,
       username: '',
-      api: new APIService()
+      api: new APIService(),
+      clipgroupsets: [],
+      playingItem: null
     };
+    this.loadClips = this.loadClips.bind(this);
+    this.onPlay = this.onPlay.bind(this);
   }
 
   componentDidMount() {
@@ -74,11 +79,25 @@ class App extends Component {
 
   loadClipsForLabel = (label) => {
     this.state.api.loadClipsForLabel(label)
-    this.state.api.clipGetter.loadClips().then((clipgroupsets_) => {
-      console.log(clipgroupsets_)
-      // setClipgroupsets(clipgroupsets_)
-      // setLoaded(true)
+    this.state.api.clipGetter.loadClips().then((clipgroupsets) => {
+      this.setState({
+        clipgroupsets: clipgroupsets
+      })      
     })
+  }
+
+  loadClips = () => {
+    this.state.api.clipGetter.loadClips().then((clipgroupsets) => {
+      this.setState({
+        clipgroupsets: clipgroupsets
+      })
+    })
+  }
+
+  onPlay = (item) => {
+      this.setState({
+        playingItem: item
+      })
   }
 
   render() {
@@ -88,18 +107,22 @@ class App extends Component {
         <Navbar.Brand href="/">Daily Clef</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
+        {this.state.api.demo || !this.state.api.demo
+          ? <React.Fragment><Nav className="mr-auto">
             <Upload api={this.state.api} />
             <Nav.Link onClick={this.handle_logout}>Record</Nav.Link>
             <LabelBar api={this.state.api} loadClipsForLabel={this.loadClipsForLabel} />
-            <Player playingItem={this.props.playingItem} />
+            <Player playingItem={this.state.playingItem} />
           </Nav>
           <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
+          </React.Fragment>
+          :""
+        }
         </Navbar.Collapse>
-      </Navbar>      
+      </Navbar>
       <Container>
       {this.state.logged_in || this.state.api.demo
-        ? <MusicLog api={this.state.api} />
+        ? <React.Fragment><PlayCalendar api={this.state.api}/><MusicLog onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips}/></React.Fragment>
         : <LoginForm handle_login={this.handle_login} />
       }
       </Container>

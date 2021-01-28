@@ -8,7 +8,6 @@ export default class ClipGetter {
 	}
 
 	loadClips() {
-		console.log(this.modelGetter)
 		return this.modelGetter.loadItems()
 		.then(items => {
 			const sessions = this.createSessions(items)
