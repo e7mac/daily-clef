@@ -113,7 +113,7 @@ class App extends Component {
     return (
       <div className="App">
       <Navbar bg="light" expand="lg" className="panel-body">
-        <Navbar.Brand href="/">Daily Clef</Navbar.Brand>
+        <Navbar.Brand href="/daily-clef">Daily Clef</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
         {this.state.logged_in || this.state.api.demo
