@@ -30,6 +30,8 @@ class App extends Component {
     this.loadClips = this.loadClips.bind(this);
     this.onPlay = this.onPlay.bind(this);
     this.onRecord = this.onRecord.bind(this);
+    this.startTimer = this.startTimer.bind(this);
+    this.endTimer = this.endTimer.bind(this);
   }
 
   componentDidMount() {
@@ -42,13 +44,21 @@ class App extends Component {
     document.title = "Daily Clef"
 
     if (this.state.logged_in || this.state.api.demo) {
-      this.timer = setInterval(this.refreshStatus, 3000);
+      this.startTimer()
     }
   }
 
-  componentWillUnmount() {
+  startTimer() {
+    this.timer = setInterval(this.refreshStatus, 3000);
+  }
+
+  endTimer() {
     clearInterval(this.timer);
-    this.timer = null;
+    this.timer = null;    
+  }
+
+  componentWillUnmount() {
+    this.endTimer()
   }
 
   refreshStatus() {
@@ -101,6 +111,7 @@ class App extends Component {
   };
 
   handle_logout = () => {
+    this.endTimer()
     this.state.api.handle_logout()
     this.setState({ logged_in: false, username: '' });
   };
