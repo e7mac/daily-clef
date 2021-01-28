@@ -57,7 +57,6 @@ export default class APIService {
 		}
 
 		const fullParams = deepmerge(params, auth);
-		console.log(fullParams)
 		return fetch(url, fullParams).then(res => res.json())
 		.then(res => {
 			if (res["detail"]!==undefined) {

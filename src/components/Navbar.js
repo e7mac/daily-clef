@@ -28,9 +28,11 @@ export default class Navbar extends React.Component {
 		this.props.api.getStatus().then((response) => {
 			console.log(response)
 			const task_count = response.response
-			const status = (task_count.classification_tasks > 0 ? " Classifying ":"" )
-			+ (task_count.segmentation_tasks > 0 ? " Segmenting ":"" )
+			const status = 
+			(task_count.conversion_tasks > 0 ? " Converting ":"" )
 			+ (task_count.transcription_tasks > 0 ? " Transcribing ":"" )
+			+ (task_count.segmentation_tasks > 0 ? " Segmenting ":"" )
+			+ (task_count.classification_tasks > 0 ? " Classifying ":"" )
 			this.setState({
 				status: status
 			})
