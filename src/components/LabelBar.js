@@ -33,11 +33,11 @@ export default function LabelBar(props) {
 								</ListGroup.Item>
 								)
 							})
-						}  						
+						}
 					</ListGroup>
 				</Accordion.Collapse>
 			</Card>
-		</Accordion>		
+		</Accordion>
 		</div>
 		);
 }

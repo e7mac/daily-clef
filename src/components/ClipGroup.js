@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Collapsible from 'react-collapsible';
 
+import { ListGroup } from 'react-bootstrap';
+
 import Clip from './Clip';
 
 import './ClipGroup.css';
@@ -26,15 +28,15 @@ export default function ClipGroup(props) {
 	return (
 		<div>
 		<Collapsible trigger={`${name} (${displayDuration(duration)})`} >
-		<div>
+		<ListGroup>
 		{
 			clips.map((clip, index) => {
-				return (
-					<Clip api={props.api} key={clip.id} clip={clip} onRelabel={props.onRelabel} onPlay={props.onPlay} />
-					)
+			return (
+				<ListGroup.Item><Clip api={props.api} key={clip.id} clip={clip} onRelabel={props.onRelabel} onPlay={props.onPlay} /></ListGroup.Item>
+			)
 			})
 		}
-		</div>
+		</ListGroup>
 		</Collapsible>
 		</div>);
 }

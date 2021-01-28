@@ -62,15 +62,12 @@ export default function ClipEdit(props) {
 
 	return (
 		<div>
-		<p>
 		<input className="button" type="checkbox" checked={sight_reading} onChange={changeSightReading} />
 		Sight Read
 		<span className="item"><input className="button" type="checkbox" checked={technical} onChange={changeTechnical} />
 		Technical</span>
 		<span className="item"><Relabel api={props.api} clip_id={id} onRelabel={props.onRelabel} /></span>
-		</p>
-		<p>Notes:<input ref={notesRef} type="text" value={notes} onChange={changeNotes} />
-		</p>
+		Notes:<input ref={notesRef} type="text" value={notes} onChange={changeNotes} />
 		</div>
 		);
 }

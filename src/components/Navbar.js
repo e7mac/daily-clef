@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Alert } from 'react-bootstrap';
+
 import Player from './Player'
 import Recorder from './Recorder'
 import Navigation from "react-sticky-nav";
@@ -13,7 +15,6 @@ export default class Navbar extends React.Component {
 		}
 		this.refreshStatus = this.refreshStatus.bind(this);		
 		this.timer = null
-		console.log('XXX NAVBAR')
 	}
 
 	componentDidMount() {
@@ -46,9 +47,13 @@ export default class Navbar extends React.Component {
 				<div className="navbar" ref={this.navbarRef}>
 					<Player playingItem={this.props.playingItem} />
 					<Recorder api={this.props.api} />
-					<div className="status">
-					{this.state.status}
-					</div>
+					{
+						this.state.status.length > 0
+						? <Alert key={0} variant='secondary'>
+							{this.state.status}
+						  </Alert>
+						: <br/>
+					}
 				</div>
 				</Navigation>
 			);

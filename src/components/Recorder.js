@@ -28,7 +28,6 @@ export default class Recorder extends React.Component {
 
 		this.recordTimer = null
 		this.noteRecorded = false
-		console.log('XXX REECORDER')
 	}
 
 	componentDidMount() {
@@ -39,18 +38,13 @@ export default class Recorder extends React.Component {
 		// 		})
 		// 	})
 		// })
-		console.log('XXX REECORDER MPOUNT')
 		const recorder = this;
-		console.log('XXX ' + recorder)
 		WebMidi.enable(function (err) {
 			if (err) {
 				console.log("WebMidi could not be enabled.", err);
-				console.log('XXX REECORDER MPOUNT ERR')
 			} else {
-				console.log('XXX REECORDER MPOUNT HERE')
 				console.log("WebMidi enabled!");
 				for (const i in WebMidi.inputs) {
-					console.log('XXXXXXX')
 					recorder.setState({
 						available: true
 					})					
