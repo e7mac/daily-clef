@@ -10,10 +10,6 @@ export default class APIFileService {
 			url = response.url
 			return this.uploadFileToS3(file, response.data, response.url)})
 		.then((response) => {
-			// const body = new FormData();
-			// body.append("file-url", url)
-			// body.append("lastModified", lastModified);
-			// body.append("submit", "Upload");
 			const body = {
 				"file-url": url,
 				"lastModified": lastModified,

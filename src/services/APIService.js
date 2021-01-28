@@ -7,6 +7,18 @@ export default class APIService {
 	constructor() {
 		// user details
 		this.baseUrl = "https://midi-practice.herokuapp.com"
+		this.userPromise = this.apiCall(`${this.baseUrl}/api/current_user`)
+		.then(
+			(response) => {
+				console.log("get user")
+				if (response.username.length > 0) {
+					return response
+				} else {
+					return null
+				}
+			})
+		.catch(error => console.log("error: " + error));
+
 		// this.baseUrl = "http://localhost:8000"
 		this.demo = false
 		const urlParams = new URLSearchParams(window.location.search);
@@ -33,17 +45,7 @@ export default class APIService {
 		if (this.demo) {
 			return null
 		}
-		this.promise = this.apiCall(`${this.baseUrl}/api/current_user`)
-		.then(
-			(response) => {
-				if (response.username.length > 0) {
-					return response
-				} else {
-					return null
-				}
-			})
-		.catch(error => console.log("error: " + error));
-		return this.promise
+		return this.userPromise
 	}
 
 	apiCall(url, params = {}) {
