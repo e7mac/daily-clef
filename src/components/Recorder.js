@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Button } from 'react-bootstrap';
+
 import './Recorder.css';
 import { encode } from 'json-midi-encoder';
 import WebMidi from 'webmidi';
@@ -215,7 +217,7 @@ export default class Recorder extends React.Component {
 			<span className="recorder">
 			{this.state.available
 				? <span>{this.state.recording
-					? <span onClick={this.stopRecord} > Stop  (vol: {this.state.velocity})
+					? <span><Button variant="success" onClick={this.stopRecord}>Stop (vol: {this.state.velocity})</Button>
 					<Piano
 					activeNotes={activeNotes}
 					noteRange={{ first: 60, last: 88 }}
@@ -226,7 +228,7 @@ export default class Recorder extends React.Component {
 				    width={1000}
 				    />				
 				    </span>
-				    : <span onClick={this.startRecord} > Rec </span>
+				    : <Button variant="success" onClick={this.startRecord}>Record</Button>
 				}</span>
 				: <br />
 			}

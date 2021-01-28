@@ -4,3 +4,7 @@
 	padding: 12px 12px 12px 12px;
 	cursor: pointer;
 }
+
+.button {
+	background-color: red;
+}
