@@ -34,12 +34,13 @@ class App extends Component {
     e.preventDefault();
     this.state.api.handle_login(data)
     .then(username => {
-      this.setState({
-        logged_in: true,
-        displayed_form: '',
-        username: username,
-        api: new APIService()
-      });
+      window.location.reload()
+      // this.setState({
+        // logged_in: true,
+        // displayed_form: '',
+        // username: username,
+        // api: new APIService()
+      // });
     });
   };
 

@@ -13,6 +13,7 @@ export default class Navbar extends React.Component {
 		}
 		this.refreshStatus = this.refreshStatus.bind(this);		
 		this.timer = null
+		console.log('XXX NAVBAR')
 	}
 
 	componentDidMount() {
@@ -44,10 +45,7 @@ export default class Navbar extends React.Component {
 				<Navigation className="zIndex">
 				<div className="navbar" ref={this.navbarRef}>
 					<Player playingItem={this.props.playingItem} />
-					{ this.props.api.demo 
-						? <br />
-						: <Recorder api={this.props.api} />
-					}					
+					<Recorder api={this.props.api} />
 					<div className="status">
 					{this.state.status}
 					{ this.props.api.demo 
