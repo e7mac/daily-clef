@@ -25,14 +25,18 @@ export default class LabelBar extends React.Component {
 	render() {
 		return (
 		<NavDropdown title="Pieces" id="basic-nav-dropdown">
-			{this.state.labels.map((label, index) => {
+		{
+			this.state.labels.length > 0 
+			? this.state.labels.map((label, index) => {
 				return (
 				<NavDropdown.Item>
 					<Label label={label.name} key={label.name} loadClipsForLabel={this.props.loadClipsForLabel} />
 				</NavDropdown.Item>
 				)
 			})
-			}
+			: <NavDropdown.Item>As you label pieces, they will appear here</NavDropdown.Item>
+
+		}
 		</NavDropdown>
 		);
 	}
