@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LoginForm from './components/LoginForm';
+import LoginContainer from './components/LoginContainer';
 import { Alert, Container, Navbar, Nav } from 'react-bootstrap';
 import './App.css';
 import LabelBar from './components/LabelBar'
@@ -188,7 +188,7 @@ class App extends Component {
         ?  <Recorder api={this.state.api}/>
         : this.state.logged_in || this.state.api.demo
             ? <React.Fragment><PlayCalendar api={this.state.api}/><MusicLog onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips}/></React.Fragment>
-            : <LoginForm handle_login={this.handle_login} />
+            : <LoginContainer handle_login={this.handle_login}/>
       }
       </Container>
       </div>
