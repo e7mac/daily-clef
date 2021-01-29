@@ -43,7 +43,7 @@ class App extends Component {
     document.body.appendChild(script);    
     document.title = "Daily Clef"
 
-    if (this.state.logged_in || this.state.api.demo) {
+    if (this.state.logged_in && !this.state.api.demo) {
       this.startTimer()
     }
   }
