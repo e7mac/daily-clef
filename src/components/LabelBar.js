@@ -15,21 +15,17 @@ export default class LabelBar extends React.Component {
 	}
 	
 	componentDidMount() {
-		const a = this;
-		setTimeout(function(){ 
-			a.props.api.loadLabels().then((labels) => {
-			a.setState({
+		this.props.api.loadLabels().then((labels) => {
+			this.setState({
 				labels: labels
 			})
 		})
-		}, 1000);
 	}
 
 	render() {
 		return (
 		<NavDropdown title="Pieces" id="basic-nav-dropdown">
 			{this.state.labels.map((label, index) => {
-				console.log(label)
 				return (
 				<NavDropdown.Item>
 					<Label label={label.name} key={label.name} loadClipsForLabel={this.props.loadClipsForLabel} />
