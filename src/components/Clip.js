@@ -19,7 +19,7 @@ export default function Clip(props) {
 				}
 			})			
 		}
-	},[])
+	})
 
 
 	const playURL = () => {
@@ -31,7 +31,7 @@ export default function Clip(props) {
 		<Container>
 			<Row>
 				<Col sm="auto">
-				<span className="btn"><img onClick={playURL} src="https://static.vecteezy.com/system/resources/thumbnails/000/630/395/small/illust58-7477-01.jpg" width="30px" height="30px" /></span>
+				<span className="btn"><img alt="play" onClick={playURL} src="https://static.vecteezy.com/system/resources/thumbnails/000/630/395/small/illust58-7477-01.jpg" width="30px" height="30px" /></span>
 				</Col>
 				<Col sm="auto">
 				<span className="item">{TimeFormatUtils.formatDuration(props.clip.duration)}</span>
@@ -49,7 +49,7 @@ export default function Clip(props) {
 				<span className="item"><Tempo clip_id={props.clip.id} api={props.api} /></span>
 				</Col>
 				<Col sm="auto">
-				<a href={`https://e7mac.github.io/MIDIano/?url=${props.clip.url}`} target="_blank"><Button variant="info">Synthesia</Button></a>
+				<a href={`https://e7mac.github.io/MIDIano/?url=${props.clip.url}`} target="_blank" rel="noopener noreferrer"><Button variant="info">Synthesia</Button></a>
 				</Col>
 			</Row>
 			<Row>

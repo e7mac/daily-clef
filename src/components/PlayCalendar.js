@@ -14,7 +14,7 @@ export default function PlayCalendar(props) {
 		console.log(day)
 	}
 
-	const loadCalendar = () => {
+	useEffect(() => {
 		props.api.loadRawSessionFiles()
 		.then((rawsessionfiles) => {
 			const selectedDays_ = []
@@ -23,11 +23,7 @@ export default function PlayCalendar(props) {
 			}
 			setSelectedDays(selectedDays_)
 		})
-	}
-
-	useEffect(() => {
-		loadCalendar()
-  	}, [loadCalendar]) // notice the empty array
+  	})
 
 	return (
 		<Card>
