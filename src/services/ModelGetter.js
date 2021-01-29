@@ -12,6 +12,7 @@ export default class ModelGetter {
 			if (this.itemsPromise === null) {
 				this.itemsPromise = this.api.apiCall(this.url)
 				.then((response) => {
+					console.log('xxx' + this.url + this.itemsPromise + JSON.stringify(response))
 					this.items = this.items.concat(response.results);
 					this.hasMore = (response.next!==null)
 					this.url = response.next

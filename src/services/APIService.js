@@ -5,8 +5,8 @@ import deepmerge from 'deepmerge'
 
 export default class APIService {
 	constructor() {
-		// user details
 		this.baseUrl = "https://midi-practice.herokuapp.com"
+		// this.baseUrl = "http://localhost:8000"
 		this.userPromise = this.apiCall(`${this.baseUrl}/api/current_user`)
 		.then(
 			(response) => {
@@ -19,7 +19,6 @@ export default class APIService {
 			})
 		.catch(error => console.log("error: " + error));
 
-		// this.baseUrl = "http://localhost:8000"
 		this.demo = false
 		const urlParams = new URLSearchParams(window.location.search);
 		this.demoUser = urlParams.get('user');

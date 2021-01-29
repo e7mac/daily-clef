@@ -1,29 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { NavDropdown } from 'react-bootstrap';
 
 import './LabelBar.css';
 import Label from './Label';
 
-export default function LabelBar(props) {
-	const [labels, setLabels] = useState([])
+export default class LabelBar extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			labels: []
+		}
 
-	useEffect(()=>{
-		props.api.loadLabels().then((labels) => {
-			setLabels(labels)
+	}
+	
+	componentDidMount() {
+		const a = this;
+		setTimeout(function(){ 
+			a.props.api.loadLabels().then((labels) => {
+			a.setState({
+				labels: labels
+			})
 		})
-	},[])
+		}, 1000);
+	}
 
-	return (
+	render() {
+		return (
 		<NavDropdown title="Pieces" id="basic-nav-dropdown">
-			{labels.map((label, index) => {
+			{this.state.labels.map((label, index) => {
+				console.log(label)
 				return (
 				<NavDropdown.Item>
-				<Label label={label.name} key={label.name} loadClipsForLabel={props.loadClipsForLabel} />
+					<Label label={label.name} key={label.name} loadClipsForLabel={this.props.loadClipsForLabel} />
 				</NavDropdown.Item>
 				)
 			})
 			}
 		</NavDropdown>
 		);
+	}
 }
