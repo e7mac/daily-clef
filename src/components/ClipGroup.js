@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Collapsible from 'react-collapsible';
 
 import { ListGroup } from 'react-bootstrap';

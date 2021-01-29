@@ -14,10 +14,6 @@ export default function PlayCalendar(props) {
 		console.log(day)
 	}
 
-	useEffect(() => {
-		loadCalendar()
-  	}, []) // notice the empty array
-
 	const loadCalendar = () => {
 		props.api.loadRawSessionFiles()
 		.then((rawsessionfiles) => {
@@ -28,6 +24,10 @@ export default function PlayCalendar(props) {
 			setSelectedDays(selectedDays_)
 		})
 	}
+
+	useEffect(() => {
+		loadCalendar()
+  	}, [loadCalendar]) // notice the empty array
 
 	return (
 		<Card>

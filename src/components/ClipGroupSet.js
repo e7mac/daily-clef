@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import ClipGroup from './ClipGroup';
 import * as TimeFormatUtils from '../utils/TimeFormatUtils'
