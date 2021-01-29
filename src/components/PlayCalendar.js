@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { Card } from 'react-bootstrap';
 import DayPicker from 'react-day-picker';
@@ -6,31 +6,39 @@ import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import './PlayCalendar.css';
 
-export default function PlayCalendar(props) {
+export default class PlayCalendar extends React.Component {
 
-	const [selectedDays, setSelectedDays] = useState([])
+	constructor(props) {
+		super(props)
+		this.state = {
+			selectedDays: []
+		}
+	}
 
-	const handleDayClick = (day) => {
+	handleDayClick = (day) => {
 		console.log(day)
 	}
 
-	useEffect(() => {
-		props.api.loadRawSessionFiles()
+	componentDidMount() {
+		this.props.api.loadRawSessionFiles()
 		.then((rawsessionfiles) => {
-			const selectedDays_ = []
+			const selectedDays = []
 			for (const item of rawsessionfiles) {
-				selectedDays_.push(new Date(item['date_played']))
+				selectedDays.push(new Date(item['date_played']))
 			}
-			setSelectedDays(selectedDays_)
+			this.setState({
+				selectedDays: selectedDays
+			})
 		})
-  	})
-
-	return (
-		<Card>
-			<DayPicker
-				onDayClick={handleDayClick}
-				selectedDays={selectedDays}
-			/>
-		</Card>
-	);
+	}
+	render() {
+		return (
+			<Card>
+				<DayPicker
+					onDayClick={this.handleDayClick}
+					selectedDays={this.state.selectedDays}
+				/>
+			</Card>
+		);
+	}
 }
