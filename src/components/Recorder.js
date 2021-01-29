@@ -6,7 +6,7 @@ import './Recorder.css';
 import { encode } from 'json-midi-encoder';
 import WebMidi from 'webmidi';
 
-import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
+import { Piano } from 'react-piano';
 import 'react-piano/dist/styles.css';
 
 // import SoundFontPlayer from "soundfont-player";
@@ -111,7 +111,7 @@ export default class Recorder extends React.Component {
 			}
 		}
 		const activeNotes = new Set(this.state.activeNotes)
-		const index = activeNotes.delete(pitch)
+		activeNotes.delete(pitch)
 		this.setState({
 			velocity: 0,
 			activeNotes: activeNotes

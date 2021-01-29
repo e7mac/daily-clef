@@ -7,7 +7,7 @@ export default class APIService {
 	constructor() {
 		this.baseUrl = "https://midi-practice.herokuapp.com"
 		// this.baseUrl = "http://localhost:8000"
-		this.userPromise = this.apiCall(`${this.baseUrl}/api/current_user`)
+		this.userPromise = this.apiCall(`${this.baseUrl}/api/current_user/`)
 		.then(
 			(response) => {
 				console.log("get user")
@@ -26,13 +26,13 @@ export default class APIService {
 		if (u!==null) {
 			this.demo = true
 			console.log(u)
-			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/user/journal/${u}`)
-			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/user/labels/${u}`)
-			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/user/rawsessionfiles/${u}`)
+			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/user/journal/${u}/`)
+			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/user/labels/${u}/`)
+			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/user/rawsessionfiles/${u}/`)
 		} else {
-			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/journal`)
-			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels`)
-			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles`)
+			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/journal/`)
+			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels/`)
+			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/`)
 		}
 		this.clipGetter = this.allClips
 
@@ -50,13 +50,13 @@ export default class APIService {
 	apiCall(url, params = {}) {
 		let auth = {
 			headers: {
-				Authorization: `JWT ${localStorage.getItem('token')}`
+				Authorization: `JWT ${localStorage.getItem('token')}`,
+				'Content-Type': 'application/json'
 			}
 		}
 		if (this.demo) {
 			auth = {}
 		}
-
 		const fullParams = deepmerge(params, auth);
 		return fetch(url, fullParams).then(res => res.json())
 		.then(res => {
@@ -91,7 +91,7 @@ export default class APIService {
 	};
 
 	getStatus() {
-		return this.apiCall(`${this.baseUrl}/api/status`)
+		return this.apiCall(`${this.baseUrl}/api/status/`)
 		.catch(error => console.log("error: " + error));
 	}
 
@@ -102,14 +102,14 @@ export default class APIService {
 	resetLoadClips() {
 		const u = this.demoUser
 		if (u!==null) {
-			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/user/journal/${u}`)
-			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/user/labels/${u}`)
-			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/user/rawsessionfiles/${u}`)
+			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/user/journal/${u}/`)
+			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/user/labels/${u}/`)
+			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/user/rawsessionfiles/${u}/`)
 			this.demo = true
 		} else {
-			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/journal`)
-			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels`)
-			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles`)
+			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/journal/`)
+			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels/`)
+			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/`)
 		}
 		this.clipGetter = this.allClips
 	}
@@ -117,9 +117,9 @@ export default class APIService {
 	loadClipsForLabel(label) {
 		// if (!(label in this.clipsForLabel)) {
 			if (this.demo) {
-				this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/user/journal/item/${this.demoUser}/${label}`)
+				this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/user/journal/item/${this.demoUser}/${label}/`)
 			} else {
-				this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/journal/item/${label}`)
+				this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/journal/item/${label}/`)
 			}			
 		// }
 		this.clipGetter = this.clipsForLabel[label]
@@ -150,7 +150,7 @@ export default class APIService {
 	}	
 
 	relabelItem(id, label) {
-		const url = `${this.baseUrl}/api/label_item/${id}/${label}`
+		const url = `${this.baseUrl}/api/label_item/${id}/${label}/`
 		return this.apiCall(url).catch(error => console.log("error: " + error));
 	}
 }

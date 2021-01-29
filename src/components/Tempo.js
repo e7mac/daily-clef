@@ -1,9 +1,8 @@
 import React from 'react';
 import { Chart } from 'react-charts'
-import { Resizable, ResizableBox } from 'react-resizable';
+import { ResizableBox } from 'react-resizable';
 import { Button } from 'react-bootstrap';
 
-import Relabel from './Relabel';
 import './Tempo.css';
 
 export default class Tempo extends React.Component {

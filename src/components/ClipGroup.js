@@ -8,9 +8,6 @@ import Clip from './Clip';
 import './ClipGroup.css';
 
 export default function ClipGroup(props) {
-	const [name, setName] = useState(props.group.name)
-	const [clips, setClips] = useState(props.group.clips)
-
 	const displayDuration = (time) => {
 		const min =  Math.floor(time / 60);
 		const sec = time % 60;
@@ -21,16 +18,16 @@ export default function ClipGroup(props) {
 	}
 
 	let duration = 0
-	clips.map((clip) => {
+	props.group.clips.forEach((clip) => {
 		duration = duration + clip.duration
 	})
 
 	return (
 		<div>
-		<Collapsible trigger={`${name} (${displayDuration(duration)})`} >
+		<Collapsible trigger={`${props.group.name} (${displayDuration(duration)})`} >
 		<ListGroup>
 		{
-			clips.map((clip, index) => {
+			props.group.clips.map((clip, index) => {
 			return (
 				<ListGroup.Item><Clip api={props.api} key={clip.id} clip={clip} onRelabel={props.onRelabel} onPlay={props.onPlay} /></ListGroup.Item>
 			)
