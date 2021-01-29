@@ -30,25 +30,25 @@ export default function Clip(props) {
 		<div>
 		<Container>
 			<Row>
-				<Col>
+				<Col sm="auto">
 				<span className="btn"><img onClick={playURL} src="https://static.vecteezy.com/system/resources/thumbnails/000/630/395/small/illust58-7477-01.jpg" width="30px" height="30px" /></span>
 				</Col>
-				<Col>
+				<Col sm="auto">
 				<span className="item">{TimeFormatUtils.formatDuration(props.clip.duration)}</span>
 				</Col>
-				<Col>				
+				<Col sm="auto">		
 				<span className="item">{props.clip.key}</span>
 				</Col>
-				<Col>
+				<Col sm="auto">
 				<span className="item">{props.clip.tempo}bpm </span>
 				</Col>
-				<Col>
+				<Col sm="auto">
 				<span className="item">{TimeFormatUtils.formatTime(props.clip.date_played)}</span>
 				</Col>
-				<Col>
+				<Col sm="auto">
 				<span className="item"><Tempo clip_id={props.clip.id} api={props.api} /></span>
 				</Col>
-				<Col>
+				<Col sm="auto">
 				<a href={`https://e7mac.github.io/MIDIano/?url=${props.clip.url}`} target="_blank"><Button variant="info">Synthesia</Button></a>
 				</Col>
 			</Row>
