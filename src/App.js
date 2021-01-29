@@ -114,6 +114,7 @@ class App extends Component {
     this.endTimer()
     this.state.api.handle_logout()
     this.setState({ logged_in: false, username: '' });
+    window.location.reload()
   };
 
   loadClipsForLabel = (label) => {
@@ -154,8 +155,14 @@ class App extends Component {
         <Navbar.Collapse id="basic-navbar-nav">
         {this.state.logged_in || this.state.api.demo
           ? <React.Fragment><Nav className="mr-auto">
-            <Upload api={this.state.api} />
-            <Nav.Link onClick={this.onRecord}>Record</Nav.Link>
+          {
+            this.state.logged_in
+            ? <React.Fragment>
+                <Upload api={this.state.api} />
+                <Nav.Link onClick={this.onRecord}>Record</Nav.Link>
+              </React.Fragment>
+            : ""
+          }
             <LabelBar api={this.state.api} loadClipsForLabel={this.loadClipsForLabel} />
             <Player playingItem={this.state.playingItem} />
             {
@@ -164,9 +171,13 @@ class App extends Component {
                 {this.state.status}
                 </Alert>
               : <br/>
-            }            
+            }
           </Nav>
-          <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
+          {
+            this.state.logged_in
+            ? <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
+            : ""
+          }          
           </React.Fragment>
           :""
         }
