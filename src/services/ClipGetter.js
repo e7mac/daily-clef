@@ -43,6 +43,19 @@ export default class ClipGetter {
 		return clean
 	}
 
+	earliestTime(labelClips) {
+		let time = Date.now()
+		for (const key in labelClips) {
+			const clips = labelClips[key]
+			for (const clip of clips) {
+				if (new Date(clip.date_played) < new Date(time)) {
+					time = clip.date_played
+				}
+			}
+		}
+		return time
+	}
+
 	isEmptyObject(obj) {
 		for(var prop in obj) {
 			if (Object.prototype.hasOwnProperty.call(obj, prop)) {
@@ -58,17 +71,12 @@ export default class ClipGetter {
 		let labelClips = {}
 		let sessions = []
 		let session = {}
-		let startTime = null
-		for (const i in clips) {
-			const clip = clips[i]
+		for (const clip of clips) {
 			if (clip.title === null) {
 				clip.title = ""
 			}
 			if (clip.notes === null) {
 				clip.notes = ""
-			}
-			if (this.isEmptyObject(labelClips)) {
-				startTime = clip.date_played
 			}
 			if (lastRaw === clip.run.id || this.isEmptyObject(labelClips)) {
 				lastRaw = clip.run.id
@@ -78,16 +86,15 @@ export default class ClipGetter {
 				labelClips[this.label(clip)].push(clip)
 			} else {
 				lastRaw = clip.run.id
-				session = {"time": startTime, "labels": this.create_json_format_for_labelclips(labelClips)}
+				session = {"time": this.earliestTime(labelClips), "labels": this.create_json_format_for_labelclips(labelClips)}
 				sessions.push(session)
 				labelClips = {}
 				labelClips[this.label(clip)] = []
 				labelClips[this.label(clip)].push(clip)
-				startTime = clip.date_played
 			}
 		}
 		if (!this.isEmptyObject(labelClips)) {
-			session = {"time": startTime, "labels": this.create_json_format_for_labelclips(labelClips)}
+			session = {"time": this.earliestTime(labelClips), "labels": this.create_json_format_for_labelclips(labelClips)}
 			sessions.push(session)
 		}
 		return sessions
