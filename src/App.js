@@ -149,7 +149,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <Navbar bg="light" expand="lg" className="panel-body">
+      <Navbar bg="light" expand="lg" className="panel-body" sticky="top">
         <Navbar.Brand href="/daily-clef">Daily Clef</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
