@@ -6,39 +6,40 @@ export default class APIFileService {
 	uploadFileFlow(file, lastModified) {
 		let url = null
 		return this.getSignedRequest(file)
-		.then((response) => {
-			url = response.url
-			return this.uploadFileToS3(file, response.data, response.url)})
-		.then((response) => {
-			const body = {
-				"file-url": url,
-				"lastModified": lastModified,
-			}
-			return this.uploadFile(body)
-		})
-		.catch(error => console.log("error: " + error));
+			.then((response) => {
+				url = response.url
+				return this.uploadFileToS3(file, response.data, response.url)
+			})
+			.then((response) => {
+				const body = {
+					"file-url": url,
+					"lastModified": lastModified,
+				}
+				return this.uploadFile(body)
+			})
+			.catch(error => console.log("error: " + error));
 	}
 
 	getSignedRequest(file) {
-		return this.api.apiCall(this.api.baseUrl + "/api/sign_s3/?file_name="+file.name+"&file_type="+file.type)
+		return this.api.apiCall(this.api.baseUrl + "/api/sign_s3/?file_name=" + file.name + "&file_type=" + file.type)
 	}
 
 	uploadFileToS3(file, s3Data, url) {
 		var postData = new FormData();
-		for(const key in s3Data.fields){
+		for (const key in s3Data.fields) {
 			postData.append(key, s3Data.fields[key]);
 		}
 		postData.append('file', file);
-		
+
 		return fetch(s3Data.url, {
 			method: 'POST',
 			body: postData
 		})
-		.then(
-			(response) => {
-				console.log("uploaded to s3!")
-				return response
-			});
+			.then(
+				(response) => {
+					console.log("uploaded to s3!")
+					return response
+				});
 	}
 
 	uploadFile(body) {
@@ -48,12 +49,12 @@ export default class APIFileService {
 			headers: {
 				'Content-Type': 'application/json'
 			},
-		})		
-		.then(
-			(response) => {
-				console.log("uploaded!")
-				return response
-			})
-		.catch(error => console.log("error: " + error));
+		})
+			.then(
+				(response) => {
+					console.log("uploaded!")
+					return response
+				})
+			.catch(error => console.log("error: " + error));
 	}
 }

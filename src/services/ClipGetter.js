@@ -9,19 +9,19 @@ export default class ClipGetter {
 
 	loadClips() {
 		return this.modelGetter.loadItems()
-		.then(items => {
-			const sessions = this.createSessions(items)
-			const clipgroupsets = this.transform(sessions)
-			this.hasMore = this.modelGetter.hasMore
-			return clipgroupsets
-		})
+			.then(items => {
+				const sessions = this.createSessions(items)
+				const clipgroupsets = this.transform(sessions)
+				this.hasMore = this.modelGetter.hasMore
+				return clipgroupsets
+			})
 	}
-	
+
 	label(clip) {
-		if (clip.label===null) {
-			if (clip.sight_reading===true) {
+		if (clip.label === null) {
+			if (clip.sight_reading === true) {
 				return "Sight Reading"
-			} else if (clip.technical===true) {
+			} else if (clip.technical === true) {
 				return "Technical"
 			} else {
 				return "No Label"
@@ -57,7 +57,7 @@ export default class ClipGetter {
 	}
 
 	isEmptyObject(obj) {
-		for(var prop in obj) {
+		for (var prop in obj) {
 			if (Object.prototype.hasOwnProperty.call(obj, prop)) {
 				return false;
 			}
@@ -86,7 +86,7 @@ export default class ClipGetter {
 				labelClips[this.label(clip)].push(clip)
 			} else {
 				lastRaw = clip.run.id
-				session = {"time": this.earliestTime(labelClips), "labels": this.create_json_format_for_labelclips(labelClips)}
+				session = { "time": this.earliestTime(labelClips), "labels": this.create_json_format_for_labelclips(labelClips) }
 				sessions.push(session)
 				labelClips = {}
 				labelClips[this.label(clip)] = []
@@ -94,7 +94,7 @@ export default class ClipGetter {
 			}
 		}
 		if (!this.isEmptyObject(labelClips)) {
-			session = {"time": this.earliestTime(labelClips), "labels": this.create_json_format_for_labelclips(labelClips)}
+			session = { "time": this.earliestTime(labelClips), "labels": this.create_json_format_for_labelclips(labelClips) }
 			sessions.push(session)
 		}
 		return sessions
@@ -125,16 +125,16 @@ export default class ClipGetter {
 		// 	clipgroupset.groups = groups
 		// 	items.push(clipgroupset)
 		// } else {
-			for (const i in sessions) {
-				const session = sessions[i]
-				const clipgroupset = {
-					title: TimeFormatUtils.formatDateTime(session.time), 
-					date: session.time,
-					groups: session.labels
-				}
-				items.push(clipgroupset)
+		for (const i in sessions) {
+			const session = sessions[i]
+			const clipgroupset = {
+				title: TimeFormatUtils.formatDateTime(session.time),
+				date: session.time,
+				groups: session.labels
 			}
+			items.push(clipgroupset)
+		}
 		// }
 		return items
-	}	
+	}
 }

@@ -8,17 +8,17 @@ export default class ModelGetter {
 	}
 
 	loadItems() {
-		if (this.url!==null) {
+		if (this.url !== null) {
 			if (this.itemsPromise === null) {
 				this.itemsPromise = this.api.apiCall(this.url)
-				.then((response) => {
-					this.items = this.items.concat(response.results);
-					this.hasMore = (response.next!==null)
-					this.url = response.next
-					this.itemsPromise = null
-					return this.items
-				})
-				.catch(error => console.log("error: " + error));
+					.then((response) => {
+						this.items = this.items.concat(response.results);
+						this.hasMore = (response.next !== null)
+						this.url = response.next
+						this.itemsPromise = null
+						return this.items
+					})
+					.catch(error => console.log("error: " + error));
 			}
 		}
 		return this.itemsPromise
