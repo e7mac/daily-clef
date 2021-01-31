@@ -37,15 +37,13 @@ class App extends Component {
   componentDidMount() {
 
     const scripts_srcs = [
-      "https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/focus-visible@5",
-      "https://midi-practice.s3-us-west-1.amazonaws.com/js/core.js",
-      "https://midi-practice.s3-us-west-1.amazonaws.com/js/midi-player.min.js",
+      "https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,gh/e7mac/js-dist@1.0.0/core.js,npm/focus-visible@5,gh/e7mac/js-dist@1.0.0/midi-player.min.js",
     ]
 
     for (const scripts_src of scripts_srcs) {
       const script = document.createElement("script");
       script.src = scripts_src;
-      script.async = true;
+      // script.async = true;
       document.body.appendChild(script);   
     }
 
