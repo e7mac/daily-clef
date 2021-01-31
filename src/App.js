@@ -43,7 +43,7 @@ class App extends Component {
     for (const scripts_src of scripts_srcs) {
       const script = document.createElement("script");
       script.src = scripts_src;
-      // script.async = true;
+      script.async = true;
       document.body.appendChild(script);   
     }
 
