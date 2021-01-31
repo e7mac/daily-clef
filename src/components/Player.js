@@ -42,6 +42,7 @@ export default class Player extends React.Component {
 
 	playItem(item) {
 		console.log(item)
+		eval("Tone.start()")
 		this.midiPlayerRef.current.src = item.url
 		this.setState({
 			title: this.getLabel(item),
