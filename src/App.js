@@ -157,7 +157,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <Navbar bg="light" expand="lg" className="panel-body" sticky="top">
+      <Navbar bg="light" expand="lg" className="panel-body">
         <Navbar.Brand href="/daily-clef">Daily Clef</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -172,7 +172,6 @@ class App extends Component {
             : ""
           }
             <LabelBar api={this.state.api} loadClipsForLabel={this.loadClipsForLabel} />
-            <Player playingItem={this.state.playingItem} />
             {
               this.state.status.length > 0
               ? <Alert key={0} variant='secondary'>
@@ -190,7 +189,7 @@ class App extends Component {
           :""
         }
         </Navbar.Collapse>
-      </Navbar>
+      </Navbar>  
       <Container>
       {this.state.record
         ?  <Recorder api={this.state.api}/>
@@ -199,6 +198,18 @@ class App extends Component {
             : <LoginContainer handle_login={this.handle_login}/>
       }
       </Container>
+      <Navbar bg="light" expand="lg" className="panel-body" fixed="bottom">
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+        {this.state.logged_in || this.state.api.demo
+          ? <React.Fragment><Nav className="mr-auto">
+            <Player playingItem={this.state.playingItem} />
+          </Nav>
+          </React.Fragment>
+          :""
+        }
+        </Navbar.Collapse>
+      </Navbar>      
       </div>
       );
     }
