@@ -42,3 +42,7 @@
 .panel-body { /* parent container of the menu */
     overflow: inherit !important;
 }
+
+.container-infinite-scroll {
+  margin-bottom: 80px;
+}

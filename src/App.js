@@ -188,7 +188,7 @@ class App extends Component {
         }
         </Navbar.Collapse>
       </Navbar>  
-      <Container>
+      <Container className="container-infinite-scroll">
       {this.state.record
         ?  <Recorder api={this.state.api}/>
         : this.state.logged_in || this.state.api.demo
