@@ -10,6 +10,7 @@ import Upload from './components/Upload'
 import Recorder from './components/Recorder'
 import Player from './components/Player'
 import PlayCalendar from './components/PlayCalendar'
+import unmute from './lib/unmute'
 
 class App extends Component {
   constructor(props) {
@@ -52,6 +53,10 @@ class App extends Component {
     if (this.state.logged_in && !this.state.api.demo) {
       this.startTimer()
     }
+    let context = (window.AudioContext || window.webkitAudioContext) ?
+      new (window.AudioContext || window.webkitAudioContext)() : null;
+      // Pass it to unmute if the context exists... ie WebAudio is supported
+      if (context) unmute(context);
   }
 
   startTimer() {
