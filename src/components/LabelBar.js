@@ -25,6 +25,8 @@ export default class LabelBar extends React.Component {
 	render() {
 		return (
 			<NavDropdown title="Pieces" id="basic-nav-dropdown">
+				<NavDropdown.Item onClick={this.props.loadAllClips}>All</NavDropdown.Item>
+				<NavDropdown.Divider />
 				{
 					this.state.labels.length > 0
 						? this.state.labels.map((label, index) => {

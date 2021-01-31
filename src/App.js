@@ -137,10 +137,21 @@ class App extends Component {
     })
   }
 
+  loadAllClips = (label) => {
+    this.state.api.resetLoadClips()
+    this.state.api.clipGetter.loadClips().then((clipgroupsets) => {
+      this.setState({
+        clipgroupsets: clipgroupsets,
+        record: false
+      })
+    })
+  }
+
   loadClips = () => {
     this.state.api.clipGetter.loadClips().then((clipgroupsets) => {
       this.setState({
-        clipgroupsets: clipgroupsets
+        clipgroupsets: clipgroupsets,
+        record: false
       })
     })
   }
@@ -174,7 +185,7 @@ class App extends Component {
                     </React.Fragment>
                     : ""
                 }
-                <LabelBar api={this.state.api} loadClipsForLabel={this.loadClipsForLabel} />
+                <LabelBar api={this.state.api} loadAllClips={this.loadAllClips} loadClipsForLabel={this.loadClipsForLabel} />
                 {
                   this.state.status.length > 0
                     ? <Alert key={0} variant='secondary'>
