@@ -24,6 +24,7 @@ export default function Clip(props) {
 
 	const playURL = () => {
 		props.onPlay(props.clip)
+		eval("Tone.start()")
 	}
 
 	return (
