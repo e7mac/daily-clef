@@ -39,7 +39,7 @@ class App extends Component {
     const scripts_srcs = [
       "https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/focus-visible@5",
       "https://midi-practice.s3-us-west-1.amazonaws.com/js/core.js",
-      "https://midi-practice.s3-us-west-1.amazonaws.com/js/midi-player.js",
+      "https://midi-practice.s3-us-west-1.amazonaws.com/js/midi-player.min.js",
     ]
 
     for (const scripts_src of scripts_srcs) {
@@ -198,7 +198,7 @@ class App extends Component {
             : <LoginContainer handle_login={this.handle_login}/>
       }
       </Container>
-      <Navbar bg="light" expand="lg" className="panel-body" fixed="bottom">
+      <Navbar bg="light" className="panel-body" fixed="bottom">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
         {this.state.logged_in || this.state.api.demo
