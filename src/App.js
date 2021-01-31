@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LoginContainer from './components/LoginContainer';
-import { Alert, Container, Navbar, Nav } from 'react-bootstrap';
+import { Alert, Container, Collapse, Navbar, Nav } from 'react-bootstrap';
 import './App.css';
 import LabelBar from './components/LabelBar'
 
@@ -45,7 +45,7 @@ class App extends Component {
       const script = document.createElement("script");
       script.src = scripts_src;
       script.async = true;
-      document.body.appendChild(script);   
+      document.body.appendChild(script);
     }
 
     document.title = "Daily Clef"
@@ -55,8 +55,8 @@ class App extends Component {
     }
     let context = (window.AudioContext || window.webkitAudioContext) ?
       new (window.AudioContext || window.webkitAudioContext)() : null;
-      // Pass it to unmute if the context exists... ie WebAudio is supported
-      if (context) unmute(context);
+    // Pass it to unmute if the context exists... ie WebAudio is supported
+    if (context) unmute(context);
   }
 
   startTimer() {
@@ -65,7 +65,7 @@ class App extends Component {
 
   endTimer() {
     clearInterval(this.timer);
-    this.timer = null;    
+    this.timer = null;
   }
 
   componentWillUnmount() {
@@ -76,11 +76,11 @@ class App extends Component {
     this.state.api.getStatus().then((response) => {
       console.log(response)
       const task_count = response.response
-      const status = 
-      (task_count.conversion_tasks > 0 ? " Converting ":"" )
-      + (task_count.transcription_tasks > 0 ? " Transcribing ":"" )
-      + (task_count.segmentation_tasks > 0 ? " Segmenting ":"" )
-      + (task_count.classification_tasks > 0 ? " Classifying ":"" )
+      const status =
+        (task_count.conversion_tasks > 0 ? " Converting " : "")
+        + (task_count.transcription_tasks > 0 ? " Transcribing " : "")
+        + (task_count.segmentation_tasks > 0 ? " Segmenting " : "")
+        + (task_count.classification_tasks > 0 ? " Classifying " : "")
       this.setState({
         status: status
       })
@@ -90,15 +90,15 @@ class App extends Component {
   handle_login = (e, data) => {
     e.preventDefault();
     this.state.api.handle_login(data)
-    .then(username => {
-      window.location.reload()
-      // this.setState({
+      .then(username => {
+        window.location.reload()
+        // this.setState({
         // logged_in: true,
         // displayed_form: '',
         // username: username,
         // api: new APIService()
-      // });
-    });
+        // });
+      });
   };
 
   handle_signup = (e, data) => {
@@ -110,15 +110,15 @@ class App extends Component {
       },
       body: JSON.stringify(data)
     })
-    .then(res => res.json())
-    .then(json => {
-      localStorage.setItem('token', json.token);
-      this.setState({
-        logged_in: true,
-        displayed_form: '',
-        username: json.username
+      .then(res => res.json())
+      .then(json => {
+        localStorage.setItem('token', json.token);
+        this.setState({
+          logged_in: true,
+          displayed_form: '',
+          username: json.username
+        });
       });
-    });
   };
 
   handle_logout = () => {
@@ -133,7 +133,7 @@ class App extends Component {
     this.state.api.clipGetter.loadClips().then((clipgroupsets) => {
       this.setState({
         clipgroupsets: clipgroupsets
-      })      
+      })
     })
   }
 
@@ -146,9 +146,9 @@ class App extends Component {
   }
 
   onPlay = (item) => {
-      this.setState({
-        playingItem: item
-      })
+    this.setState({
+      playingItem: item
+    })
   }
 
   onRecord = () => {
@@ -160,62 +160,60 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <Navbar bg="light" expand="lg" className="panel-body">
-        <Navbar.Brand href="/daily-clef">Daily Clef</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-        {this.state.logged_in || this.state.api.demo
-          ? <React.Fragment><Nav className="mr-auto">
-          {
-            this.state.logged_in
-            ? <React.Fragment>
-                <Upload api={this.state.api} />
-                <Nav.Link onClick={this.onRecord}>Record</Nav.Link>
+        <Navbar bg="dark" variant="dark" expand="lg" className="panel-body">
+          <Navbar.Brand href="/daily-clef">Daily Clef</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            {this.state.logged_in || this.state.api.demo
+              ? <React.Fragment><Nav className="mr-auto">
+                {
+                  this.state.logged_in
+                    ? <React.Fragment>
+                      <Upload api={this.state.api} />
+                      <Nav.Link onClick={this.onRecord}>Record</Nav.Link>
+                    </React.Fragment>
+                    : ""
+                }
+                <LabelBar api={this.state.api} loadClipsForLabel={this.loadClipsForLabel} />
+                {
+                  this.state.status.length > 0
+                    ? <Alert key={0} variant='secondary'>
+                      {this.state.status}
+                    </Alert>
+                    : <br />
+                }
+              </Nav>
+                {
+                  this.state.logged_in
+                    ? <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
+                    : ""
+                }
               </React.Fragment>
-            : ""
-          }
-            <LabelBar api={this.state.api} loadClipsForLabel={this.loadClipsForLabel} />
-            {
-              this.state.status.length > 0
-              ? <Alert key={0} variant='secondary'>
-                {this.state.status}
-                </Alert>
-              : <br/>
+              : ""
             }
-          </Nav>
-          {
-            this.state.logged_in
-            ? <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
-            : ""
-          }          
-          </React.Fragment>
-          :""
-        }
-        </Navbar.Collapse>
-      </Navbar>  
-      <Container className="container-infinite-scroll">
-      {this.state.record
-        ?  <Recorder api={this.state.api}/>
-        : this.state.logged_in || this.state.api.demo
-            ? <React.Fragment><PlayCalendar api={this.state.api}/><MusicLog onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips}/></React.Fragment>
-            : <LoginContainer handle_login={this.handle_login}/>
-      }
-      </Container>
-      <Navbar bg="light" className="panel-body" fixed="bottom">
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-        {this.state.logged_in || this.state.api.demo
-          ? <React.Fragment><Nav className="mr-auto">
-            <Player playingItem={this.state.playingItem} />
-          </Nav>
-          </React.Fragment>
-          :""
-        }
-        </Navbar.Collapse>
-      </Navbar>      
+          </Navbar.Collapse>
+        </Navbar>
+        <Container className="container-infinite-scroll">
+          {this.state.record
+            ? <Recorder api={this.state.api} />
+            : this.state.logged_in || this.state.api.demo
+              ? <React.Fragment><PlayCalendar api={this.state.api} /><MusicLog onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips} /></React.Fragment>
+              : <LoginContainer handle_login={this.handle_login} />
+          }
+        </Container>
+        <Collapse in={this.state.playingItem}>
+          <Navbar bg="dark" className="panel-body" fixed="bottom">
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                <Player playingItem={this.state.playingItem} />
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+        </Collapse>
       </div>
-      );
-    }
+    );
   }
+}
 
-  export default App;
+export default App;

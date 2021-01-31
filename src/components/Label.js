@@ -11,6 +11,6 @@ export default function Label(props) {
 
 	return (
 		<span className="label" onClick={labelClicked}>
-		{props.label}
+			{props.label}
 		</span>);
 }

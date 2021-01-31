@@ -9,7 +9,7 @@ import './ClipGroup.css';
 
 export default function ClipGroup(props) {
 	const displayDuration = (time) => {
-		const min =  Math.floor(time / 60);
+		const min = Math.floor(time / 60);
 		const sec = time % 60;
 		let sec_min = (min < 10 ? "0" : "");
 		sec_min = sec_min + min + ":" + (sec < 10 ? "0" : "");
@@ -24,16 +24,16 @@ export default function ClipGroup(props) {
 
 	return (
 		<div>
-		<Collapsible trigger={`${props.group.name} (${displayDuration(duration)})`} >
-		<ListGroup>
-		{
-			props.group.clips.map((clip, index) => {
-			return (
-				<ListGroup.Item><Clip api={props.api} key={clip.id} clip={clip} onRelabel={props.onRelabel} onPlay={props.onPlay} /></ListGroup.Item>
-			)
-			})
-		}
-		</ListGroup>
-		</Collapsible>
+			<Collapsible trigger={`${props.group.name} (${displayDuration(duration)})`} >
+				<ListGroup>
+					{
+						props.group.clips.map((clip, index) => {
+							return (
+								<ListGroup.Item><Clip api={props.api} key={clip.id} clip={clip} onRelabel={props.onRelabel} onPlay={props.onPlay} /></ListGroup.Item>
+							)
+						})
+					}
+				</ListGroup>
+			</Collapsible>
 		</div>);
 }

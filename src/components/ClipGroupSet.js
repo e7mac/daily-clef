@@ -16,14 +16,14 @@ export default function ClipGroupSet(props) {
 
 	return (
 		<div>
-		<h5>{`${props.set.title} (${TimeFormatUtils.formatDuration(duration)})`}</h5>
-		{
-			props.set.groups.map((group, index) => {
-				return (
-				<ClipGroup api={props.api} key={group.name} group={group} onRelabel={props.onRelabel} onPlay={props.onPlay} />
-				)
-			})
-		}
+			<h5>{`${props.set.title} (${TimeFormatUtils.formatDuration(duration)})`}</h5>
+			{
+				props.set.groups.map((group, index) => {
+					return (
+						<ClipGroup api={props.api} key={group.name} group={group} onRelabel={props.onRelabel} onPlay={props.onPlay} />
+					)
+				})
+			}
 		</div>
-		);
+	);
 }

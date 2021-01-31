@@ -16,7 +16,7 @@ export default class Player extends React.Component {
 	midiPlayerAutoplayOnSourceChange() {
 		const m = this.midiPlayerRef.current
 		m.addEventListener('load', () => {
-			if (m.playing===false) {
+			if (m.playing === false) {
 				m.start();
 			}
 			this.setState((prevState, props) => ({
@@ -36,7 +36,7 @@ export default class Player extends React.Component {
 			const m = this.midiPlayerRef.current
 			m.src = this.props.playingItem.url
 			console.log(this.getLabel(this.props.playingItem))
-			this.setState({status: "Loading..."})
+			this.setState({ status: "Loading..." })
 		}
 	}
 
@@ -52,9 +52,9 @@ export default class Player extends React.Component {
 	getLabel(item) {
 		if (item.label !== null) {
 			return item.label.name
-		} else if (item.sight_reading===true) {
+		} else if (item.sight_reading === true) {
 			return "Sight Reading"
-		} else if (item.technical===true) {
+		} else if (item.technical === true) {
 			return "Technical"
 		}
 		return ""
@@ -63,9 +63,9 @@ export default class Player extends React.Component {
 	render() {
 		return (
 			<span>
-			<midi-player id="midi-player" sound-font="https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus" ref={this.midiPlayerRef} />
-			<span className="status">{this.state.status}</span>				
+				<midi-player id="midi-player" sound-font="https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus" ref={this.midiPlayerRef} />
+				<span className="status" centered>{this.state.status}</span>
 			</span>
-			);
+		);
 	}
 }

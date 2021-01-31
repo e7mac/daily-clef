@@ -38,46 +38,46 @@ export default function ClipEdit(props) {
 	const changeNotes = (e) => {
 		const notes = e.target.value
 		setNotes(notes)
-		if (notesTimer!==null) {
+		if (notesTimer !== null) {
 			clearTimeout(notesTimer);
 		}
-		notesTimer = setTimeout( () => {
+		notesTimer = setTimeout(() => {
 			const notes = notesRef.current.value
 			editClip({
 				'notes': notes
 			})
-		}, 
-		2000);
+		},
+			2000);
 	}
 
 	const readCsrfToken = () => {
 		var name = "csrftoken"
 		var nameEQ = name + "=";
 		var ca = document.cookie.split(';');
-		for(var i=0;i < ca.length;i++) {
+		for (var i = 0; i < ca.length; i++) {
 			var c = ca[i];
-			while (c.charAt(0)===' ') c = c.substring(1,c.length);
-			if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
+			while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
 		}
 		return null;
 	}
 
 	return (
 		<Container>
-		<Row>
-		<Col>
-		<input className="button" type="checkbox" checked={sight_reading} onChange={changeSightReading} />
+			<Row>
+				<Col>
+					<input className="button" type="checkbox" checked={sight_reading} onChange={changeSightReading} />
 		Sight Read
 		<span className="item"><input className="button" type="checkbox" checked={technical} onChange={changeTechnical} />
 		Technical</span>
-		</Col>
-		<Col>
-		<span className="item"><Relabel api={props.api} clip_id={id} onRelabel={props.onRelabel} /></span>
-		</Col>
-		<Col>
-		Notes:<input ref={notesRef} type="text" value={notes} onChange={changeNotes} />
-		</Col>
-		</Row>
+				</Col>
+				<Col>
+					<span className="item"><Relabel api={props.api} clip_id={id} onRelabel={props.onRelabel} /></span>
+				</Col>
+				<Col>
+					Notes:<input ref={notesRef} type="text" value={notes} onChange={changeNotes} />
+				</Col>
+			</Row>
 		</Container>
-		);
+	);
 }

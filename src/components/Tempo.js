@@ -22,32 +22,32 @@ export default class Tempo extends React.Component {
 	fn() {
 		const url = `${this.props.api.baseUrl}/api/tempo/${this.state.clip_id}`
 		fetch(url)
-		.then(res => res.json())
-		.then(
-			(result) => {
-				const time = []
-				const step = result.data.duration / result.data.tempo_curve.length
-				for (const i in result.data.tempo_curve) {
-					const timeStep = step * i
-					time.push(timeStep)
-				}
-				this.setState({
-					success: true,
-					data: result.data,
-					tempo_curve: result.data.tempo_curve,
-					time: time
+			.then(res => res.json())
+			.then(
+				(result) => {
+					const time = []
+					const step = result.data.duration / result.data.tempo_curve.length
+					for (const i in result.data.tempo_curve) {
+						const timeStep = step * i
+						time.push(timeStep)
+					}
+					this.setState({
+						success: true,
+						data: result.data,
+						tempo_curve: result.data.tempo_curve,
+						time: time
+					})
 				})
-			})
 
 	}
 
 	render() {
 		let packagedData = []
 		const step = this.state.data.duration / this.state.data.tempo_curve.length
-		for(let i = 0; i < this.state.data.tempo_curve.length; i++){
+		for (let i = 0; i < this.state.data.tempo_curve.length; i++) {
 			const datum = this.state.data.tempo_curve[i]
 			packagedData.push({
-				primary: i*step,
+				primary: i * step,
 				secondary: datum
 			})
 		}
@@ -57,22 +57,22 @@ export default class Tempo extends React.Component {
 			data: packagedData
 		}]
 		const axes = [
-       { primary: true, type: 'linear', position: 'bottom' },
-       { type: 'linear', position: 'left' },		
+			{ primary: true, type: 'linear', position: 'bottom' },
+			{ type: 'linear', position: 'left' },
 		]
 		const series = {
-      showPoints: false,
-    }
+			showPoints: false,
+		}
 		return (
 			<span>
-			{
-				this.state.success 
-				?     <ResizableBox width={200} height={200} minConstraints={[100, 100]} maxConstraints={[500, 500]}>
-      <Chart data={data} axes={axes} series={series} tooltip />
-    </ResizableBox>
-					: <Button variant="info" onClick={this.fn}>Tempo</Button>
+				{
+					this.state.success
+						? <ResizableBox width={200} height={200} minConstraints={[100, 100]} maxConstraints={[500, 500]}>
+							<Chart data={data} axes={axes} series={series} tooltip />
+						</ResizableBox>
+						: <Button variant="info" onClick={this.fn}>Tempo</Button>
 				}
 
-				</span>);
+			</span>);
 	}
 }
