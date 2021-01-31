@@ -35,12 +35,20 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const script = document.createElement("script");
 
-    script.src = "https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.21.0/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.1.0";
-    script.async = true;
+    const scripts_srcs = [
+      "https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/focus-visible@5",
+      "https://midi-practice.s3-us-west-1.amazonaws.com/js/core.js",
+      "https://midi-practice.s3-us-west-1.amazonaws.com/js/midi-player.js",
+    ]
 
-    document.body.appendChild(script);    
+    for (const scripts_src of scripts_srcs) {
+      const script = document.createElement("script");
+      script.src = scripts_src;
+      script.async = true;
+      document.body.appendChild(script);   
+    }
+
     document.title = "Daily Clef"
 
     if (this.state.logged_in && !this.state.api.demo) {
