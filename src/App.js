@@ -33,6 +33,8 @@ class App extends Component {
     this.onRecord = this.onRecord.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.endTimer = this.endTimer.bind(this);
+
+    this.setStatus = this.setStatus.bind(this);
   }
 
   componentDidMount() {
@@ -168,6 +170,12 @@ class App extends Component {
     })
   }
 
+  setStatus = (status) => {
+    this.setState({
+      status: status
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -180,7 +188,7 @@ class App extends Component {
                 {
                   this.state.logged_in
                     ? <React.Fragment>
-                      <Upload api={this.state.api} />
+                      <Upload api={this.state.api} setStatus={this.setStatus} />
                       <Nav.Link onClick={this.onRecord}>Record</Nav.Link>
                     </React.Fragment>
                     : ""

@@ -1,5 +1,5 @@
 .recorder {
-	color: white;
+	color: black;
 	size: 8px;
 	padding: 12px 12px 12px 12px;
 	cursor: pointer;
@@ -7,4 +7,8 @@
 
 .button {
 	background-color: red;
+}
+
+.recorder-card {
+	height: 10rem;
 }

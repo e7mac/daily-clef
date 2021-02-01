@@ -13,10 +13,11 @@ export default function Upload(props) {
 		const files = fileInput.files;
 		for (let file of files) {
 			const modified = Math.floor(file.lastModified / 1000);
+			props.setStatus("Uploading...")
 			props.api.uploadFileFlow(file, modified)
 				.then(() => {
 					fileInput.value = ''
-					alert("file uploaded! thanks!")
+					props.setStatus("✅ Uploaded")
 				})
 		}
 	}

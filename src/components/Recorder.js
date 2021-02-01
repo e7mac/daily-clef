@@ -9,6 +9,8 @@ import WebMidi from 'webmidi';
 import { Piano } from 'react-piano';
 import 'react-piano/dist/styles.css';
 
+import { formatDuration } from '../utils/TimeFormatUtils'
+
 // import SoundFontPlayer from "soundfont-player";
 
 export default class Recorder extends React.Component {
@@ -18,9 +20,17 @@ export default class Recorder extends React.Component {
 			available: false,
 			recording: false,
 			velocity: 0,
-			activeNotes: new Set()
+			activeNotes: new Set(),
+			startTime: null,
+			noteRecorded: false,
+			message: null,
+			recordDuration: null
 		}
+
 		this.track = null
+		this.recordTimer = null
+		this.recordingDurationTimer = null
+
 		this.startRecord = this.startRecord.bind(this);
 		this.stopRecord = this.stopRecord.bind(this);
 		this.recordNoteOn = this.recordNoteOn.bind(this);
@@ -28,8 +38,12 @@ export default class Recorder extends React.Component {
 		this.recordCC = this.recordCC.bind(this);
 		this.recordEvent = this.recordEvent.bind(this);
 
-		this.recordTimer = null
-		this.noteRecorded = false
+		this.startRecordTimeoutTimer = this.startRecordTimeoutTimer.bind(this);
+		this.startRecordDurationTimer = this.startRecordDurationTimer.bind(this);
+		this.endRecordTimeoutTimer = this.endRecordTimeoutTimer.bind(this);
+		this.endRecordDurationTimer = this.endRecordDurationTimer.bind(this);
+		this.refreshTimer = this.refreshTimer.bind(this);
+
 	}
 
 	componentDidMount() {
@@ -59,29 +73,45 @@ export default class Recorder extends React.Component {
 		})
 	}
 
-	startTimer() {
+	startRecordTimeoutTimer() {
 		this.recordTimer = setTimeout(() => {
 			console.log("timer hit!")
 			this.stopRecord()
 			this.startRecord()
-		},
-			15 * 60 * 1000); // 15 minutes
+		}, 15 * 60 * 1000); // 15 minutes
+	}
+
+	startRecordDurationTimer() {
+		this.recordingDurationTimer = setInterval(() => {
+			const recordDuration = formatDuration(Math.floor(this.epochTime() - this.state.startTime))
+			this.setState({
+				message: `Recording ${recordDuration}`,
+				recordDuration: recordDuration
+			})
+		}, 1000);
+	}
+
+	endRecordDurationTimer() {
+		if (this.recordingDurationTimer !== null) {
+			clearTimeout(this.recordingDurationTimer);
+			this.recordingDurationTimer = null;
+		}
 	}
 
 	refreshTimer() {
-		this.endTimer()
-		this.startTimer()
+		this.endRecordTimeoutTimer()
+		this.startRecordTimeoutTimer()
 	}
 
-	endTimer() {
+	endRecordTimeoutTimer() {
 		if (this.recordTimer !== null) {
 			clearTimeout(this.recordTimer);
+			this.recordTimer = null;
 		}
 	}
 
 
 	recordNoteOn(pitch, velocity) {
-		this.noteRecorded = true
 		const event = {
 			"noteOn": {
 				"noteNumber": pitch,
@@ -92,7 +122,8 @@ export default class Recorder extends React.Component {
 		activeNotes.add(pitch)
 		this.setState({
 			velocity: velocity,
-			activeNotes: activeNotes
+			activeNotes: activeNotes,
+			noteRecorded: true
 		})
 		this.recordEvent(event)
 	}
@@ -138,7 +169,6 @@ export default class Recorder extends React.Component {
 	}
 
 	startRecord() {
-		this.noteRecorded = false
 		this.lastTime = this.epochTime()
 		this.track = [
 			{
@@ -147,16 +177,22 @@ export default class Recorder extends React.Component {
 			},
 		];
 		this.setState({
-			recording: true
+			recording: true,
+			noteRecorded: false,
+			startTime: this.epochTime()
 		})
-		this.startTimer()
+		this.startRecordTimeoutTimer()
+		this.startRecordDurationTimer()
 	}
 
 
 	stopRecord() {
-		this.endTimer()
+		this.endRecordDurationTimer()
+		this.endRecordTimeoutTimer()
+		const message = `Uploading recording of duration ${this.state.recordDuration}...`
 		this.setState({
-			recording: false
+			recording: false,
+			message: message
 		})
 
 		this.track.push({
@@ -164,7 +200,7 @@ export default class Recorder extends React.Component {
 			"endOfTrack": true
 		})
 
-		if (this.noteRecorded === true) {
+		if (this.state.noteRecorded === true) {
 			let midiFile = this.newMidiTrack()
 			midiFile.tracks.push(this.track)
 
@@ -188,6 +224,9 @@ export default class Recorder extends React.Component {
 					const file = new File([blob], filename)
 					this.props.api.uploadFileFlow(file, lastModified).then(() => {
 						console.log("recorded file uploaded!")
+						this.setState({
+							message: "✅ Recording Uploaded!"
+						})
 					})
 				})
 		}
@@ -208,30 +247,43 @@ export default class Recorder extends React.Component {
 		return (
 			<span className="recorder">
 				<Card>
+
+					{this.state.message !== null
+						? <Alert key='0' variant='info'>
+							<h5>{this.state.message}</h5>
+						</Alert>
+						: ""
+					}
 					{this.state.available
-						? <span>{this.state.recording
-							? <span><Button variant="success" onClick={this.stopRecord}>Stop (vol: {this.state.velocity})</Button>
-								<Piano
-									activeNotes={activeNotes}
-									noteRange={{ first: 60, last: 88 }}
-									playNote={(midiNumber) => {
-									}}
-									stopNote={(midiNumber) => {
-									}}
-									width={1000}
-								/>
+						? <p>{this.state.recording
+							? <span>
+								<p>
+									<Button variant="primary" onClick={this.stopRecord}>
+										Stop (vol: {this.state.velocity})
+									</Button>
+								</p>
+								<p className="recorder-card">
+									<Piano
+										activeNotes={activeNotes}
+										noteRange={{ first: 45, last: 88 }}
+										playNote={(midiNumber) => {
+										}}
+										stopNote={(midiNumber) => {
+										}}
+									/>
+								</p>
 							</span>
-							: <Button variant="success" onClick={this.startRecord}>Record</Button>
-						}</span>
+							: <Button variant="danger" onClick={this.startRecord}>Record</Button>
+						}</p>
 
 						: <Alert key='0' variant='primary'>
 							<p>No compatible MIDI devices found</p>
-							<p>Please use Google Chrome and ensure your MIDI controller is connected!</p>
+							<p>Connect your MIDI controller, use Chrome and refresh!</p>
 						This also doesn't work on an iPad so please use a computer
 					</Alert>
 					}
 				</Card>
-			</span>
+			</span >
 		);
 	}
 
