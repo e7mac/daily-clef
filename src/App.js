@@ -134,6 +134,9 @@ class App extends Component {
 
   loadClipsForLabel = (label) => {
     this.state.api.loadClipsForLabel(label)
+    this.setState({
+      clipgroupsets: []
+    })
     this.state.api.clipGetter.loadClips().then((clipgroupsets) => {
       this.setState({
         clipgroupsets: clipgroupsets
@@ -143,6 +146,9 @@ class App extends Component {
 
   loadAllClips = (label) => {
     this.state.api.resetLoadClips()
+    this.setState({
+      clipgroupsets: []
+    })
     this.state.api.clipGetter.loadClips().then((clipgroupsets) => {
       this.setState({
         clipgroupsets: clipgroupsets,
@@ -152,7 +158,7 @@ class App extends Component {
   }
 
   loadClips = () => {
-    this.state.api.clipGetter.loadClips().then((clipgroupsets) => {
+    this.state.api.clipGetter.loadMoreClips().then((clipgroupsets) => {
       this.setState({
         clipgroupsets: clipgroupsets,
         record: false

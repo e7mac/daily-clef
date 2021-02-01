@@ -17,6 +17,16 @@ export default class ClipGetter {
 			})
 	}
 
+	loadMoreClips() {
+		return this.modelGetter.loadMoreItems()
+			.then(items => {
+				const sessions = this.createSessions(items)
+				const clipgroupsets = this.transform(sessions)
+				this.hasMore = this.modelGetter.hasMore
+				return clipgroupsets
+			})
+	}
+
 	label(clip) {
 		if (clip.label === null) {
 			if (clip.sight_reading === true) {

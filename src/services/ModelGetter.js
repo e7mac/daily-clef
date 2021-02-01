@@ -9,12 +9,13 @@ export default class ModelGetter {
 
 	loadItems() {
 		if (this.url !== null) {
-			if (this.hasMore) {
+			if (this.itemsPromise === null) {
 				this.itemsPromise = this.api.apiCall(this.url, {
 					method: 'GET'
 				})
 					.then((response) => {
 						this.items = this.items.concat(response.results);
+
 						this.hasMore = (response.next !== null)
 						this.url = response.next
 						return this.items
@@ -24,4 +25,22 @@ export default class ModelGetter {
 		}
 		return this.itemsPromise
 	}
+
+	loadMoreItems() {
+		if (this.url !== null && this.hasMore) {
+			this.itemsPromise = this.api.apiCall(this.url, {
+				method: 'GET'
+			})
+				.then((response) => {
+					this.items = this.items.concat(response.results);
+
+					this.hasMore = (response.next !== null)
+					this.url = response.next
+					return this.items
+				})
+				.catch(error => console.log("error: " + error));
+		}
+		return this.itemsPromise
+	}
+
 }

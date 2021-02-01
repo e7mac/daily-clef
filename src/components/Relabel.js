@@ -35,6 +35,7 @@ export default function Relabel(props) {
 					? " Done! Refresh to see results"
 					: <span>
 						<Typeahead ref={labelRef}
+							id="relabel"
 							labelKey="name"
 							options={options}
 						/>
