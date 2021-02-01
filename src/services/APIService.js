@@ -102,30 +102,18 @@ export default class APIService {
 	}
 
 	resetLoadClips() {
-		const u = this.demoUser
-		if (u !== null) {
-			this.demo = true
-			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/midiclips/?user=${u}/`)
-			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels/?user=${u}/`)
-			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/?user=${u}/`)
-		} else {
-			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/midiclips/`)
-			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels/`)
-			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/`)
-		}
 		this.clipGetter = this.allClips
 	}
 
 	loadClipsForLabel(label) {
-		// if (!(label in this.clipsForLabel)) {
-		if (this.demo) {
-			this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/midiclips/?user=${this.demoUser}&label=${label}/`)
-		} else {
-			this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/midiclips/?label=${label}/`)
+		if (!(label in this.clipsForLabel)) {
+			if (this.demo) {
+				this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/midiclips/?user=${this.demoUser}&label=${label}/`)
+			} else {
+				this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/midiclips/?label=${label}/`)
+			}
 		}
-		// }
 		this.clipGetter = this.clipsForLabel[label]
-		console.log(this.clipGetter)
 	}
 
 	loadRawSessionFiles() {
