@@ -11,6 +11,8 @@ import 'react-piano/dist/styles.css';
 
 import { formatDuration } from '../utils/TimeFormatUtils'
 
+import NoSleep from '../lib/nosleep'
+
 // import SoundFontPlayer from "soundfont-player";
 
 export default class Recorder extends React.Component {
@@ -24,7 +26,8 @@ export default class Recorder extends React.Component {
 			startTime: null,
 			noteRecorded: false,
 			message: null,
-			recordDuration: null
+			recordDuration: null,
+			noSleep: new NoSleep()
 		}
 
 		this.track = null
@@ -169,6 +172,7 @@ export default class Recorder extends React.Component {
 	}
 
 	startRecord() {
+		this.state.noSleep.enable()
 		this.lastTime = this.epochTime()
 		this.track = [
 			{
@@ -199,7 +203,7 @@ export default class Recorder extends React.Component {
 			"delta": 0,
 			"endOfTrack": true
 		})
-
+		this.state.noSleep.disable()
 		if (this.state.noteRecorded === true) {
 			let midiFile = this.newMidiTrack()
 			midiFile.tracks.push(this.track)
