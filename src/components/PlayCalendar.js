@@ -15,8 +15,12 @@ export default class PlayCalendar extends React.Component {
 		}
 	}
 
-	handleDayClick = (day) => {
+	onDayClick = (day) => {
 		console.log(day)
+	}
+
+	monthChange = (month) => {
+		console.log(month)
 	}
 
 	componentDidMount() {
@@ -35,8 +39,9 @@ export default class PlayCalendar extends React.Component {
 		return (
 			<Card>
 				<DayPicker
-					onDayClick={this.handleDayClick}
+					onDayClick={this.onDayClick}
 					selectedDays={this.state.selectedDays}
+					onMonthChange={this.monthChange}
 				/>
 			</Card>
 		);

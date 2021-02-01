@@ -26,7 +26,7 @@ export default class Player extends React.Component {
 			}));
 		})
 		m.addEventListener('start', () => {
-			this.state.noSleep.enabled()
+			this.state.noSleep.enable()
 		})
 		m.addEventListener('stop', () => {
 			this.state.noSleep.disable()
