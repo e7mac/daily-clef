@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './Player.css';
+import NoSleep from '../lib/nosleep'
 
 export default class Player extends React.Component {
 	constructor(props) {
@@ -8,6 +9,7 @@ export default class Player extends React.Component {
 		this.state = {
 			title: "",
 			status: "",
+			noSleep: new NoSleep()
 		}
 		this.midiPlayerRef = React.createRef()
 		this.midiPlayerAutoplayOnSourceChange = this.midiPlayerAutoplayOnSourceChange.bind(this);
@@ -23,6 +25,13 @@ export default class Player extends React.Component {
 				status: this.getLabel(this.props.playingItem)
 			}));
 		})
+		m.addEventListener('start', () => {
+			this.state.noSleep.enabled()
+		})
+		m.addEventListener('stop', () => {
+			this.state.noSleep.disable()
+		})
+
 	}
 
 	componentDidMount() {
