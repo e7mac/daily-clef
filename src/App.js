@@ -12,6 +12,8 @@ import Player from './components/Player'
 import PlayCalendar from './components/PlayCalendar'
 import unmute from './lib/unmute'
 
+import logo from './logo.svg'
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -180,7 +182,7 @@ class App extends Component {
     return (
       <div className="App">
         <Navbar bg="dark" variant="dark" expand="lg" className="panel-body">
-          <Navbar.Brand href="/daily-clef">Daily Clef</Navbar.Brand>
+          <Navbar.Brand href="/daily-clef" className="brand"><img src={logo} className="logo" alt="logo" />Daily Clef</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             {this.state.logged_in || this.state.api.demo
