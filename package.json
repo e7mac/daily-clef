@@ -9,6 +9,7 @@
     "midi-writer-js": "^1.7.4",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.3",
+    "react-bootstrap-typeahead": "^5.1.4",
     "react-charts": "^2.0.0-beta.7",
     "react-collapsible": "^2.8.1",
     "react-day-picker": "^7.4.8",

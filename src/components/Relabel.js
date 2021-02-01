@@ -1,17 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import { Button } from 'react-bootstrap';
+import { Typeahead } from 'react-bootstrap-typeahead';
 
 import './Relabel.css';
 
 export default function Relabel(props) {
 
 	const [success, setSuccess] = useState(false)
+	const [options, setOptions] = useState([])
 
 	const labelRef = useRef(null)
 
 	const relabelItem = () => {
-		const label = labelRef.current.value
+		const label = labelRef.current.getInput().value
 		props.onRelabel(props.clip_id, label)
 		props.api.relabelItem(props.clip_id, label)
 			.then((response) => {
@@ -20,13 +22,22 @@ export default function Relabel(props) {
 			})
 	}
 
+	useEffect(() => {
+		props.api.loadLabels().then((labels) => {
+			setOptions(labels)
+		})
+	}, [props.api]);
+
 	return (
 		<span id={`div-relabel-${props.clip_id}`}>
 			{
 				success
 					? " Done! Refresh to see results"
 					: <span>
-						<input type="text" ref={labelRef} />
+						<Typeahead ref={labelRef}
+							labelKey="name"
+							options={options}
+						/>
 						<Button variant="info" onClick={relabelItem}>Relabel</Button>
 					</span>
 			}

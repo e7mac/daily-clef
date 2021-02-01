@@ -9,7 +9,7 @@ export default class ModelGetter {
 
 	loadItems() {
 		if (this.url !== null) {
-			if (this.itemsPromise === null) {
+			if (this.hasMore) {
 				this.itemsPromise = this.api.apiCall(this.url, {
 					method: 'GET'
 				})
@@ -17,7 +17,6 @@ export default class ModelGetter {
 						this.items = this.items.concat(response.results);
 						this.hasMore = (response.next !== null)
 						this.url = response.next
-						this.itemsPromise = null
 						return this.items
 					})
 					.catch(error => console.log("error: " + error));
