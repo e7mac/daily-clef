@@ -184,24 +184,25 @@ class App extends Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             {this.state.logged_in || this.state.api.demo
-              ? <React.Fragment><Nav className="mr-auto">
-                {
-                  this.state.logged_in
-                    ? <React.Fragment>
-                      <Upload api={this.state.api} setStatus={this.setStatus} />
-                      <Nav.Link onClick={this.onRecord}>Record</Nav.Link>
-                    </React.Fragment>
-                    : ""
-                }
-                <LabelBar api={this.state.api} loadAllClips={this.loadAllClips} loadClipsForLabel={this.loadClipsForLabel} />
-                {
-                  this.state.status.length > 0
-                    ? <Alert key={0} variant='secondary'>
-                      {this.state.status}
-                    </Alert>
-                    : <br />
-                }
-              </Nav>
+              ? <React.Fragment>
+                <Nav className="mr-auto">
+                  {
+                    this.state.logged_in
+                      ? <React.Fragment>
+                        <Upload api={this.state.api} setStatus={this.setStatus} />
+                        <Nav.Link onClick={this.onRecord}>Record</Nav.Link>
+                      </React.Fragment>
+                      : ""
+                  }
+                  <LabelBar api={this.state.api} loadAllClips={this.loadAllClips} loadClipsForLabel={this.loadClipsForLabel} />
+                  {
+                    this.state.status.length > 0
+                      ? <Alert key={0} variant='secondary'>
+                        {this.state.status}
+                      </Alert>
+                      : <br />
+                  }
+                </Nav>
                 {
                   this.state.logged_in
                     ? <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
