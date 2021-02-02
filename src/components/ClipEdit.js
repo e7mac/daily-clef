@@ -79,7 +79,7 @@ export default class ClipEdit extends React.Component {
 						<Relabel api={this.props.api} clip={this.props.clip} onRelabel={this.props.onRelabel} />
 					</Col>
 					<Col sm="auto">
-						<Form.Control type="text" placeholder="Notes" value={this.state.notes} onChange={this.changeNotes} />
+						<Form.Control type="text" placeholder="Add Notes" value={this.state.notes} onChange={this.changeNotes} />
 					</Col>
 				</Row>
 			</Container >

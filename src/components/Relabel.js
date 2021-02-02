@@ -26,7 +26,7 @@ export default class Relabel extends React.Component {
 			this.props.api.relabelItem(this.props.clip.id, label)
 				.then((response) => {
 					this.setState({ success: true })
-					this.props.onRelabel(this.props.clip.id, label)
+					// this.props.onRelabel(this.props.clip.id, label)
 				})
 		}, 2000);
 	}
@@ -46,7 +46,7 @@ export default class Relabel extends React.Component {
 						? " Done! Refresh to see results"
 						: <span>
 							<Typeahead ref={this.labelRef}
-								placeholder="Label"
+								placeholder="Add Label"
 								defaultInputValue={oldLabel}
 								id="relabel"
 								labelKey="name"
