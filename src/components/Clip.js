@@ -56,7 +56,7 @@ export default function Clip(props) {
 				<Row>
 					<Col>
 						{edit &&
-							<span className="item"><ClipEdit id={props.clip.id} api={props.api} sight_reading={props.clip.sight_reading} technical={props.clip.technical} onRelabel={props.onRelabel} notes={props.clip.notes} /></span>
+							<span className="item"><ClipEdit clip={props.clip} api={props.api} sight_reading={props.clip.sight_reading} technical={props.clip.technical} onRelabel={props.onRelabel} notes={props.clip.notes} /></span>
 						}
 					</Col>
 				</Row>

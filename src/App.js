@@ -172,6 +172,10 @@ class App extends Component {
     })
   }
 
+  onRelabel = (clip_id, label_name) => {
+    console.log(clip_id, label_name)
+  }
+
   onRecord = () => {
     this.setState({
       record: true

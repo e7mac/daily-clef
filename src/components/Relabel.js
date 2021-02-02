@@ -1,47 +1,61 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 
 import { Button } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 import './Relabel.css';
 
-export default function Relabel(props) {
-
-	const [success, setSuccess] = useState(false)
-	const [options, setOptions] = useState([])
-
-	const labelRef = useRef(null)
-
-	const relabelItem = () => {
-		const label = labelRef.current.getInput().value
-		props.onRelabel(props.clip_id, label)
-		props.api.relabelItem(props.clip_id, label)
-			.then((response) => {
-				setSuccess(true)
-				console.log(response)
-			})
+export default class Relabel extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			success: false,
+			options: []
+		}
+		this.labelRef = React.createRef()
+		this.relabelTimer = null
 	}
 
-	useEffect(() => {
-		props.api.loadLabels().then((labels) => {
-			setOptions(labels)
-		})
-	}, [props.api]);
+	relabelItem = () => {
+		const label = this.labelRef.current.getInput().value
+		console.log(label)
+		if (this.relabelTimer !== null) {
+			clearTimeout(this.relabelTimer);
+		}
+		this.relabelTimer = setTimeout(() => {
+			this.props.api.relabelItem(this.props.clip.id, label)
+				.then((response) => {
+					this.setState({ success: true })
+					this.props.onRelabel(this.props.clip.id, label)
+				})
+		}, 2000);
+	}
 
-	return (
-		<span id={`div-relabel-${props.clip_id}`}>
-			{
-				success
-					? " Done! Refresh to see results"
-					: <span>
-						<Typeahead ref={labelRef}
-							id="relabel"
-							labelKey="name"
-							options={options}
-						/>
-						<Button variant="info" onClick={relabelItem}>Relabel</Button>
-					</span>
-			}
-		</span>
-	);
+	componentDidMount() {
+		this.props.api.loadLabels().then((labels) => {
+			this.setState({ options: labels })
+		})
+	}
+
+	render() {
+		const oldLabel = this.props.clip.label ? this.props.clip.label.name : ""
+		return (
+			<span id={`div-relabel-${this.props.clip.id}`}>
+				{
+					this.state.success
+						? " Done! Refresh to see results"
+						: <span>
+							<Typeahead ref={this.labelRef}
+								placeholder="Label"
+								defaultInputValue={oldLabel}
+								id="relabel"
+								labelKey="name"
+								options={this.state.options}
+								onInputChange={this.relabelItem}
+							/>
+						</span>
+				}
+			</span >
+		);
+	}
 }

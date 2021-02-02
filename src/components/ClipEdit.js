@@ -10,7 +10,6 @@ export default class ClipEdit extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			id: props.id,
 			sight_reading: props.sight_reading,
 			technical: props.technical,
 			notes: props.notes
@@ -21,7 +20,7 @@ export default class ClipEdit extends React.Component {
 
 	editClip = (body) => {
 		console.log(body)
-		this.props.api.editClip(this.state.id, body, this.readCsrfToken())
+		this.props.api.editClip(this.props.clip.id, body, this.readCsrfToken())
 	}
 
 	changeSightReading = () => {
@@ -77,7 +76,7 @@ export default class ClipEdit extends React.Component {
 						<Form.Check inline label="Technical" type="checkbox" checked={this.state.technical} onChange={this.changeTechnical} />
 					</Col>
 					<Col sm="auto">
-						<Relabel api={this.props.api} clip_id={this.state.id} onRelabel={this.props.onRelabel} />
+						<Relabel api={this.props.api} clip={this.props.clip} onRelabel={this.props.onRelabel} />
 					</Col>
 					<Col sm="auto">
 						<Form.Control type="text" placeholder="Notes" value={this.state.notes} onChange={this.changeNotes} />

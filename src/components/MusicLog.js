@@ -7,10 +7,6 @@ import InfiniteScroll from 'react-infinite-scroller'
 
 export default function MusicLog(props) {
 
-	const onRelabel = (clip_id, label_name) => {
-		console.log(clip_id, label_name)
-	}
-
 	return (
 		<InfiniteScroll
 			threshold={0}
@@ -19,7 +15,7 @@ export default function MusicLog(props) {
 			hasMore={props.api.clipGetter.hasMore}
 			loader={<Card className="justify-content-center"><Spinner animation="border" variant="secondary" /></Card>}>
 			{props.items.map((item, index) =>
-				<Card><ClipGroupSet api={props.api} key={item.title} set={item} onPlay={props.onPlay} onRelabel={onRelabel} /></Card>
+				<Card><ClipGroupSet api={props.api} key={item.title} set={item} onPlay={props.onPlay} onRelabel={props.onRelabel} /></Card>
 			)}
 		</InfiniteScroll>
 	);
