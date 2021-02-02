@@ -70,16 +70,16 @@ export default class ClipEdit extends React.Component {
 		return (
 			<Container>
 				<Row>
-					<Col>
-						<input className="button" type="checkbox" checked={this.sight_reading} onChange={this.changeSightReading} />
-		Sight Read
-		<span className="item"><input className="button" type="checkbox" checked={this.technical} onChange={this.changeTechnical} />
-		Technical</span>
+					<Col sm="auto">
+						<Form.Check inline label="Sightread" type="checkbox" checked={this.state.sight_reading} onChange={this.changeSightReading} />
 					</Col>
-					<Col>
-						<span className="item"><Relabel api={this.props.api} clip_id={this.state.id} onRelabel={this.props.onRelabel} /></span>
+					<Col sm="auto">
+						<Form.Check inline label="Technical" type="checkbox" checked={this.state.technical} onChange={this.changeTechnical} />
 					</Col>
-					<Col>
+					<Col sm="auto">
+						<Relabel api={this.props.api} clip_id={this.state.id} onRelabel={this.props.onRelabel} />
+					</Col>
+					<Col sm="auto">
 						<Form.Control type="text" placeholder="Notes" value={this.state.notes} onChange={this.changeNotes} />
 					</Col>
 				</Row>
