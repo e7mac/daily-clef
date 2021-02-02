@@ -1,21 +1,13 @@
-import React from 'react';
-import Collapsible from 'react-collapsible';
-
 import { ListGroup } from 'react-bootstrap';
+import Collapsible from 'react-collapsible';
+import React from 'react';
 
+import { formatDuration } from '../utils/TimeFormatUtils'
 import Clip from './Clip';
 
 import './ClipGroup.css';
 
 export default function ClipGroup(props) {
-	const displayDuration = (time) => {
-		const min = Math.floor(time / 60);
-		const sec = time % 60;
-		let sec_min = (min < 10 ? "0" : "");
-		sec_min = sec_min + min + ":" + (sec < 10 ? "0" : "");
-		sec_min = sec_min + sec;
-		return sec_min;
-	}
 
 	let duration = 0
 	props.group.clips.forEach((clip) => {
@@ -24,7 +16,7 @@ export default function ClipGroup(props) {
 
 	return (
 		<div>
-			<Collapsible trigger={`${props.group.name} (${displayDuration(duration)})`} >
+			<Collapsible trigger={`${props.group.name} (${formatDuration(duration)})`} >
 				<ListGroup>
 					{
 						props.group.clips.map((clip, index) => {

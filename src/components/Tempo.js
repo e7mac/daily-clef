@@ -1,7 +1,7 @@
-import React from 'react';
+import { Button } from 'react-bootstrap';
 import { Chart } from 'react-charts'
 import { ResizableBox } from 'react-resizable';
-import { Button } from 'react-bootstrap';
+import React from 'react';
 
 import './Tempo.css';
 

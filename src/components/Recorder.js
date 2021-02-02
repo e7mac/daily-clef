@@ -1,17 +1,15 @@
-import React from 'react';
-
 import { Alert, Card, Button } from 'react-bootstrap';
-
-import './Recorder.css';
 import { encode } from 'json-midi-encoder';
+import { Piano } from 'react-piano';
+import React from 'react';
 import WebMidi from 'webmidi';
 
-import { Piano } from 'react-piano';
 import 'react-piano/dist/styles.css';
 
 import { formatDuration } from '../utils/TimeFormatUtils'
-
 import NoSleep from '../lib/nosleep'
+
+import './Recorder.css';
 
 // import SoundFontPlayer from "soundfont-player";
 

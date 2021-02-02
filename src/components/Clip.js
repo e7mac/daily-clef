@@ -1,10 +1,9 @@
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 
-import { Container, Row, Col, Button } from 'react-bootstrap';
-
-import Tempo from './Tempo';
-import ClipEdit from './ClipEdit';
 import * as TimeFormatUtils from '../utils/TimeFormatUtils'
+import ClipEdit from './ClipEdit';
+import Tempo from './Tempo';
 
 import './Clip.css';
 

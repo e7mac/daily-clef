@@ -1,9 +1,9 @@
+import { NavDropdown } from 'react-bootstrap';
 import React from 'react';
 
-import { NavDropdown } from 'react-bootstrap';
+import Label from './Label';
 
 import './LabelBar.css';
-import Label from './Label';
 
 export default class LabelBar extends React.Component {
 	constructor(props) {

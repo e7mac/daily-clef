@@ -1,9 +1,9 @@
-import React from 'react';
-
 import { Card } from 'react-bootstrap';
 import DayPicker from 'react-day-picker';
+import React from 'react';
 
 import 'react-day-picker/lib/style.css';
+
 import './PlayCalendar.css';
 
 export default class PlayCalendar extends React.Component {

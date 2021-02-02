@@ -1,7 +1,8 @@
+import deepmerge from 'deepmerge'
+
+import APIFileService from './APIFileService'
 import ClipGetter from './ClipGetter'
 import ModelGetter from './ModelGetter'
-import APIFileService from './APIFileService'
-import deepmerge from 'deepmerge'
 
 export default class APIService {
 	constructor() {

@@ -1,7 +1,8 @@
 import React from 'react';
 
-import './Player.css';
 import NoSleep from '../lib/nosleep'
+
+import './Player.css';
 
 export default class Player extends React.Component {
 	constructor(props) {

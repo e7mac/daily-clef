@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ClipGroup from './ClipGroup';
 import * as TimeFormatUtils from '../utils/TimeFormatUtils'
+import ClipGroup from './ClipGroup';
 
 import './ClipGroupSet.css';
 

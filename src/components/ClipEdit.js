@@ -1,6 +1,5 @@
-import React from 'react';
-
 import { Container, Row, Col, Form } from 'react-bootstrap';
+import React from 'react';
 
 import Relabel from './Relabel';
 

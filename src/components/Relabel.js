@@ -1,7 +1,6 @@
-import React from 'react';
-
 import { Button } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import React from 'react';
 
 import './Relabel.css';
 

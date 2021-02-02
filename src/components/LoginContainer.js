@@ -1,9 +1,9 @@
+import { Card, Container, Row, Col } from 'react-bootstrap';
 import React from 'react';
 
-import { Card, Container, Row, Col } from 'react-bootstrap';
+import LoginForm from './LoginForm';
 
 import './LoginContainer.css';
-import LoginForm from './LoginForm';
 
 export default function LoginContainer(props) {
 	return (

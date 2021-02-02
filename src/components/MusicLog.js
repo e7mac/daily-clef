@@ -1,9 +1,8 @@
+import { Card, Spinner } from 'react-bootstrap';
+import InfiniteScroll from 'react-infinite-scroller'
 import React from 'react';
 
-import { Card, Spinner } from 'react-bootstrap';
-
 import ClipGroupSet from './ClipGroupSet';
-import InfiniteScroll from 'react-infinite-scroller'
 
 export default function MusicLog(props) {
 
