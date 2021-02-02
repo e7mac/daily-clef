@@ -21,7 +21,6 @@ export default function Clip(props) {
 		}
 	})
 
-
 	const playURL = () => {
 		props.onPlay(props.clip)
 		// eslint-disable-next-line
