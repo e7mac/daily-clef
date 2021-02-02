@@ -22,13 +22,13 @@ export default class Relabel extends React.Component {
 		if (this.relabelTimer !== null) {
 			clearTimeout(this.relabelTimer);
 		}
-		this.relabelTimer = setTimeout(() => {
-			this.props.api.relabelItem(this.props.clip.id, label)
-				.then((response) => {
-					this.setState({ success: true })
-					// this.props.onRelabel(this.props.clip.id, label)
-				})
-		}, 2000);
+		// this.relabelTimer = setTimeout(() => {
+		this.props.api.relabelItem(this.props.clip.id, label)
+			.then((response) => {
+				this.setState({ success: true })
+				// this.props.onRelabel(this.props.clip.id, label)
+			})
+		// }, 2000);
 	}
 
 	componentDidMount() {
@@ -51,8 +51,8 @@ export default class Relabel extends React.Component {
 								id="relabel"
 								labelKey="name"
 								options={this.state.options}
-								onInputChange={this.relabelItem}
 							/>
+							<Button variant="info" onClick={this.relabelItem}>Relabel</Button>
 						</span>
 				}
 			</span >
