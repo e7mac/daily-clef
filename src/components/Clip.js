@@ -1,4 +1,5 @@
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { PlayFill } from 'react-bootstrap-icons';
 import React, { useState, useEffect } from 'react';
 
 import * as TimeFormatUtils from '../utils/TimeFormatUtils'
@@ -31,7 +32,7 @@ export default function Clip(props) {
 			<Container>
 				<Row>
 					<Col sm="auto">
-						<span className="btn"><img alt="play" onClick={playURL} src="https://static.vecteezy.com/system/resources/thumbnails/000/630/395/small/illust58-7477-01.jpg" width="30px" height="30px" /></span>
+						<Button variant="info" onClick={playURL}><PlayFill size="1.4rem" /></Button>
 					</Col>
 					<Col sm="auto">
 						{TimeFormatUtils.formatDuration(props.clip.duration)}

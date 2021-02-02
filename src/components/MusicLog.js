@@ -12,7 +12,7 @@ export default function MusicLog(props) {
 			pageStart={0}
 			loadMore={props.loadClips}
 			hasMore={props.api.clipGetter.hasMore}
-			loader={<Card className="justify-content-center"><Spinner animation="border" variant="secondary" /></Card>}>
+			loader={<Card><Spinner animation="border" variant="secondary" /></Card>}>
 			{props.items.map((item, index) =>
 				<Card><ClipGroupSet api={props.api} key={item.title} set={item} onPlay={props.onPlay} onRelabel={props.onRelabel} /></Card>
 			)}
