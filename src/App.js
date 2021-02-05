@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom'
+
 import LoginContainer from './components/LoginContainer';
 import { Alert, Container, Collapse, Navbar, Nav } from 'react-bootstrap';
 import './App.css';
 import LabelBar from './components/LabelBar'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 import MusicLog from './components/MusicLog';
 import APIService from './services/APIService';
@@ -22,17 +30,13 @@ class App extends Component {
       logged_in: localStorage.getItem('token') ? true : false,
       username: '',
       api: new APIService(),
-      clipgroupsets: [],
       playingItem: null,
-      record: false,
       status: "",
     };
     this.refreshStatus = this.refreshStatus.bind(this);
     this.timer = null
 
-    this.loadClips = this.loadClips.bind(this);
     this.onPlay = this.onPlay.bind(this);
-    this.onRecord = this.onRecord.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.endTimer = this.endTimer.bind(this);
 
@@ -132,40 +136,6 @@ class App extends Component {
     window.location.reload()
   };
 
-  loadClipsForLabel = (label) => {
-    this.state.api.loadClipsForLabel(label)
-    this.setState({
-      clipgroupsets: []
-    })
-    this.state.api.clipGetter.loadClips().then((clipgroupsets) => {
-      this.setState({
-        clipgroupsets: clipgroupsets
-      })
-    })
-  }
-
-  loadAllClips = (label) => {
-    this.state.api.resetLoadClips()
-    this.setState({
-      clipgroupsets: []
-    })
-    this.state.api.clipGetter.loadClips().then((clipgroupsets) => {
-      this.setState({
-        clipgroupsets: clipgroupsets,
-        record: false
-      })
-    })
-  }
-
-  loadClips = () => {
-    this.state.api.clipGetter.loadMoreClips().then((clipgroupsets) => {
-      this.setState({
-        clipgroupsets: clipgroupsets,
-        record: false
-      })
-    })
-  }
-
   onPlay = (item) => {
     this.setState({
       playingItem: item
@@ -176,12 +146,6 @@ class App extends Component {
     console.log(clip_id, label_name)
   }
 
-  onRecord = () => {
-    this.setState({
-      record: true
-    })
-  }
-
   setStatus = (status) => {
     this.setState({
       status: status
@@ -190,62 +154,72 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Navbar bg="dark" variant="dark" expand="lg" className="panel-body">
-          <Navbar.Brand href="/daily-clef" className="brand"><img src={logo} className="logo" alt="logo" />Daily Clef</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            {this.state.logged_in || this.state.api.demo
-              ? <React.Fragment>
-                <Nav className="mr-auto">
-                  {
-                    this.state.logged_in
-                      ? <React.Fragment>
-                        <Upload api={this.state.api} setStatus={this.setStatus} />
-                        <Nav.Link onClick={this.onRecord}>Record</Nav.Link>
-                      </React.Fragment>
-                      : ""
-                  }
-                  <LabelBar api={this.state.api} loadAllClips={this.loadAllClips} loadClipsForLabel={this.loadClipsForLabel} />
-                  {
-                    this.state.status.length > 0
-                      ? <Alert key={0} variant='secondary'>
-                        {this.state.status}
-                      </Alert>
-                      : <br />
-                  }
-                </Nav>
-                {
-                  this.state.logged_in
-                    ? <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
-                    : ""
-                }
-              </React.Fragment>
-              : ""
-            }
-          </Navbar.Collapse>
-        </Navbar>
-        <Container className="container-infinite-scroll">
-          {this.state.record
-            ? <Recorder api={this.state.api} />
-            : this.state.logged_in || this.state.api.demo
-              ? <React.Fragment><PlayCalendar api={this.state.api} /><MusicLog onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips} /></React.Fragment>
-              : <LoginContainer handle_login={this.handle_login} />
-          }
-        </Container>
-        <Collapse in={this.state.playingItem}>
-          <Navbar bg="dark" className="panel-body" fixed="bottom">
+      <Router>
+        <div className="App">
+          <Navbar bg="dark" variant="dark" expand="lg" className="panel-body">
+            <Link to="/daily-clef"><Navbar.Brand className="brand"><img src={logo} className="logo" alt="logo" />Daily Clef</Navbar.Brand></Link>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto">
-                <Player playingItem={this.state.playingItem} />
-              </Nav>
+              {this.state.logged_in || this.state.api.demo
+                ? <React.Fragment>
+                  <Nav className="mr-auto">
+                    {
+                      this.state.logged_in
+                        ? <React.Fragment>
+                          <Upload api={this.state.api} setStatus={this.setStatus} />
+                          <Nav.Link href="/daily-clef/record">Record</Nav.Link>
+                        </React.Fragment>
+                        : ""
+                    }
+                    <LabelBar api={this.state.api} loadAllClips={this.loadAllClips} loadClipsForLabel={this.loadClipsForLabel} />
+                    {
+                      this.state.status.length > 0
+                        ? <Alert key={0} variant='secondary'>
+                          {this.state.status}
+                        </Alert>
+                        : <br />
+                    }
+                  </Nav>
+                  {
+                    this.state.logged_in
+                      ? <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
+                      : ""
+                  }
+                </React.Fragment>
+                : ""
+              }
             </Navbar.Collapse>
           </Navbar>
-        </Collapse>
-      </div>
+          <Container className="container-infinite-scroll">
+            {this.state.logged_in || this.state.api.demo
+              ? <Switch>
+                <Route path="/daily-clef/record">
+                  <Recorder api={this.state.api} />
+                </Route>
+                <Route path="/daily-clef">
+                  <React.Fragment>
+                    <PlayCalendar api={this.state.api} />
+                    <MusicLog onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips} />
+                  </React.Fragment>
+                </Route>
+              </Switch>
+              : <LoginContainer handle_login={this.handle_login} />
+            }
+          </Container>
+          <Collapse in={this.state.playingItem}>
+            <Navbar bg="dark" className="panel-body" fixed="bottom">
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                  <Player playingItem={this.state.playingItem} />
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
+          </Collapse>
+        </div>
+      </Router >
     );
   }
 }
 
-export default App;
+export default withRouter(App);

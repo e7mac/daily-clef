@@ -1,8 +1,6 @@
 import { NavDropdown } from 'react-bootstrap';
 import React from 'react';
 
-import Label from './Label';
-
 import './LabelBar.css';
 
 export default class LabelBar extends React.Component {
@@ -25,14 +23,14 @@ export default class LabelBar extends React.Component {
 	render() {
 		return (
 			<NavDropdown title="Pieces" id="basic-nav-dropdown">
-				<NavDropdown.Item onClick={this.props.loadAllClips}>All</NavDropdown.Item>
+				<NavDropdown.Item href="/daily-clef">All</NavDropdown.Item>
 				<NavDropdown.Divider />
 				{
 					this.state.labels.length > 0
 						? this.state.labels.map((label, index) => {
 							return (
-								<NavDropdown.Item>
-									<Label label={label.name} key={label.name} loadClipsForLabel={this.props.loadClipsForLabel} />
+								<NavDropdown.Item href={`/daily-clef/${label.name}`}>
+									{label.name}
 								</NavDropdown.Item>
 							)
 						})
