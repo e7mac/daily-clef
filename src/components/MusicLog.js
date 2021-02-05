@@ -1,6 +1,5 @@
 import { Card, Spinner } from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroller'
-import { matchPath } from "react-router";
 import React from 'react';
 
 import ClipGroupSet from './ClipGroupSet';
@@ -9,29 +8,32 @@ export default class MusicLog extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			items: [],
-		}
-		const match = matchPath(window.location.hash, {
-			path: "#/label/:label",
-			exact: true,
-			strict: false
-		});
-		if (match != null) {
-			const label = match.params.label
-			console.log('here')
-			if (label !== undefined || label !== null) {
-				console.log('here1')
-				this.loadClipsForLabel(label)
-			}
+			items: []
 		}
 	}
 
 	loadClipsForLabel = (label) => {
 		this.props.api.loadClipsForLabel(label)
+		this.setState({
+			items: []
+		})
+		this.props.api.clipGetter.loadClips().then((clipgroupsets) => {
+			this.setState({
+				items: clipgroupsets
+			})
+		})
 	}
 
 	loadAllClips = (label) => {
 		this.props.api.resetLoadClips()
+		this.setState({
+			items: []
+		})
+		this.props.api.clipGetter.loadClips().then((clipgroupsets) => {
+			this.setState({
+				items: clipgroupsets,
+			})
+		})
 	}
 
 	loadClips = () => {

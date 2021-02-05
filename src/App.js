@@ -44,6 +44,8 @@ class App extends Component {
     this.endTimer = this.endTimer.bind(this);
 
     this.setStatus = this.setStatus.bind(this);
+
+    this.musicLogRef = React.createRef()
   }
 
   componentDidMount() {
@@ -155,6 +157,16 @@ class App extends Component {
     })
   }
 
+  loadAllClips = () => {
+    console.log('all')
+    this.musicLogRef.current.loadAllClips()
+  }
+
+  loadClipsForLabel = (label) => {
+    console.log(label)
+    this.musicLogRef.current.loadClipsForLabel(label)
+  }
+
   render() {
     return (
       <Router>
@@ -206,7 +218,7 @@ class App extends Component {
                 <Route path="/">
                   <React.Fragment>
                     <PlayCalendar api={this.state.api} />
-                    <MusicLog onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips} />
+                    <MusicLog ref={this.musicLogRef} onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips} />
                   </React.Fragment>
                 </Route>
               </Switch>

@@ -9,10 +9,6 @@ export default class LabelBar extends React.Component {
 		this.state = {
 			labels: []
 		}
-
-	}
-
-	componentDidMount() {
 		this.props.api.loadLabels().then((labels) => {
 			this.setState({
 				labels: labels
@@ -20,24 +16,29 @@ export default class LabelBar extends React.Component {
 		})
 	}
 
+	loadClipsForLabel = (e) => {
+		const label = e.target.id.split('label-bar-')[1]
+		this.props.loadClipsForLabel(label)
+	}
+
 	render() {
 		return (
 			<NavDropdown title="Pieces" id="basic-nav-dropdown">
-				<NavDropdown.Item href="/">All</NavDropdown.Item>
+				<NavDropdown.Item onClick={this.props.loadAllClips}>All</NavDropdown.Item>
 				<NavDropdown.Divider />
 				{
 					this.state.labels.length > 0
 						? this.state.labels.map((label, index) => {
 							return (
-								<NavDropdown.Item href={`/#label/${label.name}`}>
-									{label.name}
+								<NavDropdown.Item onClick={this.loadClipsForLabel} id={`label-bar-${label.name}`}>
+									{ label.name}
 								</NavDropdown.Item>
 							)
 						})
 						: <NavDropdown.Item>As you label pieces, they will appear here</NavDropdown.Item>
 
 				}
-			</NavDropdown>
+			</NavDropdown >
 		);
 	}
 }
