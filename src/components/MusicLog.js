@@ -35,7 +35,6 @@ export default class MusicLog extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		console.log('update')
 		const label = this.getLabelFromPath()
 		if (label !== this.state.label) {
 			console.log('label change')
