@@ -12,13 +12,15 @@ export default class MusicLog extends React.Component {
 			items: [],
 		}
 		const match = matchPath(window.location.hash, {
-			path: "/label/:label",
+			path: "#/label/:label",
 			exact: true,
 			strict: false
 		});
 		if (match != null) {
 			const label = match.params.label
+			console.log('here')
 			if (label !== undefined || label !== null) {
+				console.log('here1')
 				this.loadClipsForLabel(label)
 			}
 		}
