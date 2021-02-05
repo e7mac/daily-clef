@@ -43,7 +43,11 @@ export default class MusicLog extends React.Component {
 				hasMore: true,
 				label: label
 			})
-			this.loadClipsForLabel(label)
+			if (label === null) {
+				this.loadAllClips()
+			} else {
+				this.loadClipsForLabel(label)
+			}
 		}
 	}
 

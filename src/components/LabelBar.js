@@ -18,22 +18,26 @@ export default class LabelBar extends React.Component {
 		})
 	}
 
-	setHash(e) {
+	openLabel(e) {
 		console.log(e)
 		const label = e.target.id.split('label-id-')[1]
 		window.location.hash = `#/label/${label}`
 	}
 
+	openAll() {
+		window.location.hash = '#'
+	}
+
 	render() {
 		return (
 			<NavDropdown title="Pieces" id="basic-nav-dropdown">
-				<NavDropdown.Item href="/daily-clef">All</NavDropdown.Item>
+				<NavDropdown.Item onClick={this.openAll}>All</NavDropdown.Item>
 				<NavDropdown.Divider />
 				{
 					this.state.labels.length > 0
 						? this.state.labels.map((label, index) => {
 							return (
-								<NavDropdown.Item onClick={this.setHash} id={`label-id-${label.name}`} >
+								<NavDropdown.Item onClick={this.openLabel} id={`label-id-${label.name}`} >
 									{label.name}
 								</NavDropdown.Item>
 							)
