@@ -1,4 +1,4 @@
-import { Card, CardDeck, Container, Row, Col } from 'react-bootstrap';
+import { Card, CardDeck, Container, Row } from 'react-bootstrap';
 import React from 'react';
 
 import LoginForm from './LoginForm';

@@ -1,4 +1,4 @@
-import { Container, Button, Row, Col, Form } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import React from 'react';
 
 import './ClipDelete.css';
