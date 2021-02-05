@@ -32,7 +32,7 @@ export default function Clip(props) {
 			<Container>
 				<Row>
 					<Col sm="auto">
-						<Button variant="info" onClick={playURL}><PlayFill size="2rem" /></Button>
+						<Button variant="info" onClick={playURL}><PlayFill /></Button>
 					</Col>
 					<Col sm="auto">
 						{TimeFormatUtils.formatDuration(props.clip.duration)}
