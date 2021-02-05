@@ -116,13 +116,13 @@ export default class APIService {
 	}
 
 	loadClipsForLabel(label) {
-		if (!(label in this.clipsForLabel)) {
-			if (this.demo) {
-				this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/midiclips/?user=${this.demoUser}&label=${label}/`)
-			} else {
-				this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/midiclips/?label=${label}/`)
-			}
+		// if (!(label in this.clipsForLabel)) {
+		if (this.demo) {
+			this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/midiclips/?user=${this.demoUser}&label=${label}/`)
+		} else {
+			this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/midiclips/?label=${label}/`)
 		}
+		// }
 		this.clipGetter = this.clipsForLabel[label]
 	}
 

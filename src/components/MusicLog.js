@@ -1,28 +1,55 @@
 import { Card, Spinner } from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroller'
 import React from 'react';
+import { matchPath } from 'react-router-dom'
 
 import ClipGroupSet from './ClipGroupSet';
 
 export default class MusicLog extends React.Component {
 	constructor(props) {
 		super(props)
+		const match = matchPath(window.location.hash, {
+			path: "#/label/:label",
+			exact: false,
+			strict: false
+		})
+		let label = null
+		if (match !== null && match !== undefined) {
+			if (match.params.label !== null) {
+				label = match.params.label
+				this.loadClipsForLabel(label)
+			}
+		}
 		this.state = {
-			items: []
+			items: [],
+			label: label
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		console.log('update')
+		const match = matchPath(window.location.hash, {
+			path: "#/label/:label",
+			exact: false,
+			strict: false
+		})
+		let label = null
+		if (match !== null && match !== undefined) {
+			if (match.params.label !== null) {
+				label = match.params.label
+			}
+		}
+		if (label != this.state.label) {
+			this.setState({ items: [], label: label })
+			this.loadClipsForLabel(label)
 		}
 	}
 
 	loadClipsForLabel = (label) => {
-		this.setState({
-			items: []
-		})
 		this.props.api.loadClipsForLabel(label)
 	}
 
 	loadAllClips = (label) => {
-		this.setState({
-			items: []
-		})
 		this.props.api.resetLoadClips()
 	}
 

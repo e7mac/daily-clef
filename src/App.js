@@ -157,21 +157,11 @@ class App extends Component {
     })
   }
 
-  loadAllClips = () => {
-    console.log('all')
-    this.musicLogRef.current.loadAllClips()
-  }
-
-  loadClipsForLabel = (label) => {
-    console.log(label)
-    this.musicLogRef.current.loadClipsForLabel(label)
-  }
-
   render() {
     return (
       <Router>
         <div className="App">
-          <Navbar bg="dark" variant="dark" expand="lg" className="panel-body">
+          <Navbar bg="dark" variant="dark" expand="sm" className="panel-body">
             <Link to="/"><Navbar.Brand className="brand"><img src={logo} className="logo" alt="logo" />Daily Clef</Navbar.Brand></Link>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
