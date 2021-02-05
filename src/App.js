@@ -201,7 +201,7 @@ class App extends Component {
                   <Recorder api={this.state.api} />
                 </Route>
                 <Route path="/stats">
-                  <Stats />
+                  <Stats api={this.state.api} />
                 </Route>
                 <Route path="/">
                   <React.Fragment>

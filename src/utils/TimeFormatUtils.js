@@ -11,10 +11,12 @@ export const formatDateTime = (dateString) => {
 }
 
 export function formatDuration(time) {
+	var hrs = Math.floor(time / 60 / 60)
+	time = time % (60 * 60);
 	var min = Math.floor(time / 60);
 	var sec = time % 60;
 	var sec_min = (min < 10 ? "0" : "");
-	sec_min = sec_min + min + ":" + (sec < 10 ? "0" : "");
+	sec_min = (hrs > 0 ? hrs + ":" : "") + sec_min + min + ":" + (sec < 10 ? "0" : "");
 	sec_min = sec_min + sec;
 	return sec_min;
 }

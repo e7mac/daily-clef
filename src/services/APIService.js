@@ -146,6 +146,14 @@ export default class APIService {
 		return null;
 	}
 
+	stats() {
+		return this.apiCall(`${this.baseUrl}/api/stats/`)
+			.then(response => {
+				return response
+			})
+			.catch(error => console.log("error: " + error));
+	}
+
 	editClip(id, body) {
 		return this.apiCall(`${this.baseUrl}/api/midiclips/${id}/`, {
 			method: 'PATCH',

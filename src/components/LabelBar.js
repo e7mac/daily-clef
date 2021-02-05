@@ -6,11 +6,12 @@ import './LabelBar.css';
 export default class LabelBar extends React.Component {
 	constructor(props) {
 		super(props)
-
 		this.state = {
 			labels: []
 		}
+	}
 
+	componentDidMount() {
 		this.props.api.loadLabels().then((labels) => {
 			this.setState({
 				labels: labels
