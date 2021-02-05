@@ -13,27 +13,17 @@ export default class MusicLog extends React.Component {
 	}
 
 	loadClipsForLabel = (label) => {
-		this.props.api.loadClipsForLabel(label)
 		this.setState({
 			items: []
 		})
-		this.props.api.clipGetter.loadClips().then((clipgroupsets) => {
-			this.setState({
-				items: clipgroupsets
-			})
-		})
+		this.props.api.loadClipsForLabel(label)
 	}
 
 	loadAllClips = (label) => {
-		this.props.api.resetLoadClips()
 		this.setState({
 			items: []
 		})
-		this.props.api.clipGetter.loadClips().then((clipgroupsets) => {
-			this.setState({
-				items: clipgroupsets,
-			})
-		})
+		this.props.api.resetLoadClips()
 	}
 
 	loadClips = () => {
