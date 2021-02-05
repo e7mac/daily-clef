@@ -44,8 +44,6 @@ class App extends Component {
     this.endTimer = this.endTimer.bind(this);
 
     this.setStatus = this.setStatus.bind(this);
-
-    this.musicLogRef = React.createRef()
   }
 
   componentDidMount() {
@@ -208,7 +206,7 @@ class App extends Component {
                 <Route path="/">
                   <React.Fragment>
                     <PlayCalendar api={this.state.api} />
-                    <MusicLog ref={this.musicLogRef} onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips} />
+                    <MusicLog onPlay={this.onPlay} api={this.state.api} />
                   </React.Fragment>
                 </Route>
               </Switch>
