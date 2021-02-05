@@ -8,6 +8,18 @@ import ClipGroupSet from './ClipGroupSet';
 export default class MusicLog extends React.Component {
 	constructor(props) {
 		super(props)
+		const label = this.getLabelFromPath()
+		this.state = {
+			items: [],
+			hasMore: true,
+			label: label
+		}
+		if (label != null) {
+			this.loadClipsForLabel(label)
+		}
+	}
+
+	getLabelFromPath = () => {
 		const match = matchPath(window.location.hash, {
 			path: "#/label/:label",
 			exact: false,
@@ -17,30 +29,21 @@ export default class MusicLog extends React.Component {
 		if (match !== null && match !== undefined) {
 			if (match.params.label !== null) {
 				label = match.params.label
-				this.loadClipsForLabel(label)
 			}
 		}
-		this.state = {
-			items: [],
-			label: label
-		}
+		return label
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		console.log('update')
-		const match = matchPath(window.location.hash, {
-			path: "#/label/:label",
-			exact: false,
-			strict: false
-		})
-		let label = null
-		if (match !== null && match !== undefined) {
-			if (match.params.label !== null) {
-				label = match.params.label
-			}
-		}
+		const label = this.getLabelFromPath()
 		if (label != this.state.label) {
-			this.setState({ items: [], label: label })
+			console.log('label change')
+			this.setState({
+				items: [],
+				hasMore: true,
+				label: label
+			})
 			this.loadClipsForLabel(label)
 		}
 	}
@@ -57,6 +60,7 @@ export default class MusicLog extends React.Component {
 		this.props.api.clipGetter.loadMoreClips().then((clipgroupsets) => {
 			this.setState({
 				items: clipgroupsets,
+				hasMore: this.props.api.clipGetter.hasMore
 			})
 		})
 	}
@@ -67,7 +71,7 @@ export default class MusicLog extends React.Component {
 				threshold={0}
 				pageStart={0}
 				loadMore={this.loadClips}
-				hasMore={this.props.api.clipGetter.hasMore}
+				hasMore={this.state.hasMore}
 				loader={< Card > <Spinner animation="border" variant="secondary" /></Card>}>
 				{
 					this.state.items.map((item, index) =>
