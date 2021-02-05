@@ -18,6 +18,12 @@ export default class LabelBar extends React.Component {
 		})
 	}
 
+	setHash(e) {
+		console.log(e)
+		const label = e.target.id.split('label-id-')[1]
+		window.location.hash = `#/label/${label}`
+	}
+
 	render() {
 		return (
 			<NavDropdown title="Pieces" id="basic-nav-dropdown">
@@ -27,8 +33,8 @@ export default class LabelBar extends React.Component {
 					this.state.labels.length > 0
 						? this.state.labels.map((label, index) => {
 							return (
-								<NavDropdown.Item href={`/daily-clef#/label/${label.name}`} >
-									{ label.name}
+								<NavDropdown.Item onClick={this.setHash} id={`label-id-${label.name}`} >
+									{label.name}
 								</NavDropdown.Item>
 							)
 						})
