@@ -11,8 +11,8 @@ export default class MusicLog extends React.Component {
 		this.state = {
 			items: [],
 		}
-		const match = matchPath(window.location.pathname, {
-			path: "/daily-clef/:label",
+		const match = matchPath(window.location.hash, {
+			path: "/label/:label",
 			exact: true,
 			strict: false
 		});

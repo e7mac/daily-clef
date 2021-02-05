@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom'
-
-import LoginContainer from './components/LoginContainer';
 import { Alert, Container, Collapse, Navbar, Nav } from 'react-bootstrap';
-import './App.css';
+import { withRouter } from 'react-router-dom'
+import React, { Component } from 'react';
+
 import LabelBar from './components/LabelBar'
+import LoginContainer from './components/LoginContainer';
+
+import './App.css';
+
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
   Link
@@ -18,6 +20,7 @@ import Upload from './components/Upload'
 import Recorder from './components/Recorder'
 import Player from './components/Player'
 import PlayCalendar from './components/PlayCalendar'
+import Stats from './components/Stats'
 import unmute from './lib/unmute'
 
 import logo from './logo.svg'
@@ -157,7 +160,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <Navbar bg="dark" variant="dark" expand="lg" className="panel-body">
-            <Link to="/daily-clef"><Navbar.Brand className="brand"><img src={logo} className="logo" alt="logo" />Daily Clef</Navbar.Brand></Link>
+            <Link to="/"><Navbar.Brand className="brand"><img src={logo} className="logo" alt="logo" />Daily Clef</Navbar.Brand></Link>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               {this.state.logged_in || this.state.api.demo
@@ -167,11 +170,12 @@ class App extends Component {
                       this.state.logged_in
                         ? <React.Fragment>
                           <Upload api={this.state.api} setStatus={this.setStatus} />
-                          <Nav.Link href="/daily-clef/record">Record</Nav.Link>
+                          <Nav.Link href="#record">Record</Nav.Link>
                         </React.Fragment>
                         : ""
                     }
                     <LabelBar api={this.state.api} loadAllClips={this.loadAllClips} loadClipsForLabel={this.loadClipsForLabel} />
+                    <Nav.Link href="#stats">Stats</Nav.Link>
                     {
                       this.state.status.length > 0
                         ? <Alert key={0} variant='secondary'>
@@ -193,10 +197,13 @@ class App extends Component {
           <Container className="container-infinite-scroll">
             {this.state.logged_in || this.state.api.demo
               ? <Switch>
-                <Route path="/daily-clef/record">
+                <Route path="/record">
                   <Recorder api={this.state.api} />
                 </Route>
-                <Route path="/daily-clef">
+                <Route path="/stats">
+                  <Stats />
+                </Route>
+                <Route path="/">
                   <React.Fragment>
                     <PlayCalendar api={this.state.api} />
                     <MusicLog onPlay={this.onPlay} items={this.state.clipgroupsets} api={this.state.api} loadClips={this.loadClips} />

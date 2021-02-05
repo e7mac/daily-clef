@@ -23,13 +23,13 @@ export default class LabelBar extends React.Component {
 	render() {
 		return (
 			<NavDropdown title="Pieces" id="basic-nav-dropdown">
-				<NavDropdown.Item href="/daily-clef">All</NavDropdown.Item>
+				<NavDropdown.Item href="/">All</NavDropdown.Item>
 				<NavDropdown.Divider />
 				{
 					this.state.labels.length > 0
 						? this.state.labels.map((label, index) => {
 							return (
-								<NavDropdown.Item href={`/daily-clef/${label.name}`}>
+								<NavDropdown.Item href={`/#label/${label.name}`}>
 									{label.name}
 								</NavDropdown.Item>
 							)
