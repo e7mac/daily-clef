@@ -1,6 +1,7 @@
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import React from 'react';
 
+import ClipDelete from './ClipDelete';
 import Relabel from './Relabel';
 
 import './ClipEdit.css';
@@ -19,7 +20,7 @@ export default class ClipEdit extends React.Component {
 
 	editClip = (body) => {
 		console.log(body)
-		this.props.api.editClip(this.props.clip.id, body, this.readCsrfToken())
+		this.props.api.editClip(this.props.clip.id, body)
 	}
 
 	changeSightReading = () => {
@@ -52,18 +53,6 @@ export default class ClipEdit extends React.Component {
 		}, 2000);
 	}
 
-	readCsrfToken = () => {
-		var name = "csrftoken"
-		var nameEQ = name + "=";
-		var ca = document.cookie.split(';');
-		for (var i = 0; i < ca.length; i++) {
-			var c = ca[i];
-			while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-			if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-		}
-		return null;
-	}
-
 	render() {
 		return (
 			<Container>
@@ -79,6 +68,9 @@ export default class ClipEdit extends React.Component {
 					</Col>
 					<Col sm="auto">
 						<Form.Control type="text" placeholder="Add Notes" value={this.state.notes} onChange={this.changeNotes} />
+					</Col>
+					<Col sm="auto">
+						<ClipDelete clip={this.props.clip} api={this.props.api} />
 					</Col>
 				</Row>
 			</Container >

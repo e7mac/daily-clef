@@ -1,17 +1,5 @@
 .value-prop {
-	height: '100vh';
-	display: 'flex';
-	flexDirection: 'column';
-	alignItems: 'center';
-	justifyContent: 'center';
 }
 
 .value-prop-card {
-	height: '100%';
-	width: '100%';
-	display: 'flex';
-	align-items: center;
-	flexDirection: 'column';
-	alignItems: 'center';
-	justifyContent: 'center';
 }
