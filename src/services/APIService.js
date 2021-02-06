@@ -194,4 +194,17 @@ export default class APIService {
 		return this.apiCall(url).catch(error => console.log("error: " + error));
 	}
 
+	getSettings() {
+		const url = `${this.baseUrl}/api/settings/`
+		return this.apiCall(url).catch(error => console.log("error: " + error));
+	}
+
+	setSettings(body) {
+		const url = `${this.baseUrl}/api/settings/`
+		return this.apiCall(url, {
+			method: 'PUT',
+			body: JSON.stringify(body)
+		}).catch(error => console.log("error: " + error));
+	}
+
 }
