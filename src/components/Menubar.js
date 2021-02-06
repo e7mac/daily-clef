@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 import Upload from './Upload'
+import Settings from './Settings'
 
 import logo from '../logo.svg'
 
@@ -19,13 +20,7 @@ export default class Menubar extends Component {
 			username: '',
 			status: "",
 		};
-		this.refreshStatus = this.refreshStatus.bind(this);
 		this.timer = null
-
-		this.startTimer = this.startTimer.bind(this);
-		this.endTimer = this.endTimer.bind(this);
-
-		this.setStatus = this.setStatus.bind(this);
 	}
 
 	componentDidMount() {
@@ -34,11 +29,11 @@ export default class Menubar extends Component {
 		}
 	}
 
-	startTimer() {
+	startTimer = () => {
 		this.timer = setInterval(this.refreshStatus, 3000);
 	}
 
-	endTimer() {
+	endTimer = () => {
 		clearInterval(this.timer);
 		this.timer = null;
 	}
@@ -47,7 +42,7 @@ export default class Menubar extends Component {
 		this.endTimer()
 	}
 
-	refreshStatus() {
+	refreshStatus = () => {
 		this.props.api.getStatus().then((response) => {
 			console.log(response)
 			const task_count = response.response
@@ -94,6 +89,7 @@ export default class Menubar extends Component {
 								}
 								<LabelBar api={this.props.api} loadAllClips={this.loadAllClips} loadClipsForLabel={this.loadClipsForLabel} />
 								<Nav.Link href="#stats">Stats</Nav.Link>
+								<Settings api={this.props.api} />
 								{
 									this.state.status.length > 0
 										? <Alert key={0} variant='secondary'>
@@ -111,7 +107,7 @@ export default class Menubar extends Component {
 						: ""
 					}
 				</Navbar.Collapse>
-			</Navbar>
+			</Navbar >
 		);
 	}
 }
