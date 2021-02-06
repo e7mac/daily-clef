@@ -20,6 +20,7 @@
     "react-resizable": "^1.11.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "recharts": "^2.0.4",
     "soundfont-player": "^0.12.0",
     "webmidi": "^2.5.1"
   },
