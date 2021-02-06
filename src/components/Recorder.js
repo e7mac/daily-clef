@@ -31,20 +31,6 @@ export default class Recorder extends React.Component {
 		this.track = null
 		this.recordTimer = null
 		this.recordingDurationTimer = null
-
-		this.startRecord = this.startRecord.bind(this);
-		this.stopRecord = this.stopRecord.bind(this);
-		this.recordNoteOn = this.recordNoteOn.bind(this);
-		this.recordNoteOff = this.recordNoteOff.bind(this);
-		this.recordCC = this.recordCC.bind(this);
-		this.recordEvent = this.recordEvent.bind(this);
-
-		this.startRecordTimeoutTimer = this.startRecordTimeoutTimer.bind(this);
-		this.startRecordDurationTimer = this.startRecordDurationTimer.bind(this);
-		this.endRecordTimeoutTimer = this.endRecordTimeoutTimer.bind(this);
-		this.endRecordDurationTimer = this.endRecordDurationTimer.bind(this);
-		this.refreshTimer = this.refreshTimer.bind(this);
-
 	}
 
 	componentDidMount() {
@@ -74,7 +60,7 @@ export default class Recorder extends React.Component {
 		})
 	}
 
-	startRecordTimeoutTimer() {
+	startRecordTimeoutTimer = () => {
 		this.recordTimer = setTimeout(() => {
 			console.log("timer hit!")
 			this.stopRecord()
@@ -82,7 +68,7 @@ export default class Recorder extends React.Component {
 		}, 15 * 60 * 1000); // 15 minutes
 	}
 
-	startRecordDurationTimer() {
+	startRecordDurationTimer = () => {
 		this.recordingDurationTimer = setInterval(() => {
 			const recordDuration = formatDuration(Math.floor(this.epochTime() - this.state.startTime))
 			this.setState({
@@ -92,19 +78,19 @@ export default class Recorder extends React.Component {
 		}, 1000);
 	}
 
-	endRecordDurationTimer() {
+	endRecordDurationTimer = () => {
 		if (this.recordingDurationTimer !== null) {
 			clearTimeout(this.recordingDurationTimer);
 			this.recordingDurationTimer = null;
 		}
 	}
 
-	refreshTimer() {
+	refreshTimer = () => {
 		this.endRecordTimeoutTimer()
 		this.startRecordTimeoutTimer()
 	}
 
-	endRecordTimeoutTimer() {
+	endRecordTimeoutTimer = () => {
 		if (this.recordTimer !== null) {
 			clearTimeout(this.recordTimer);
 			this.recordTimer = null;
@@ -112,7 +98,7 @@ export default class Recorder extends React.Component {
 	}
 
 
-	recordNoteOn(pitch, velocity) {
+	recordNoteOn = (pitch, velocity) => {
 		const event = {
 			"noteOn": {
 				"noteNumber": pitch,
@@ -129,7 +115,7 @@ export default class Recorder extends React.Component {
 		this.recordEvent(event)
 	}
 
-	recordNoteOff(pitch) {
+	recordNoteOff = (pitch) => {
 		const event = {
 			"noteOff": {
 				"noteNumber": pitch
@@ -144,7 +130,7 @@ export default class Recorder extends React.Component {
 		this.recordEvent(event)
 	}
 
-	recordCC(number, value) {
+	recordCC = (number, value) => {
 		const event = {
 			"controlChange": {
 				"type": number,
@@ -154,7 +140,7 @@ export default class Recorder extends React.Component {
 		this.recordEvent(event)
 	}
 
-	recordEvent(event) {
+	recordEvent = (event) => {
 		this.refreshTimer()
 		const time = this.epochTime()
 		const delta = time - this.lastTime
@@ -169,7 +155,7 @@ export default class Recorder extends React.Component {
 		}
 	}
 
-	startRecord() {
+	startRecord = () => {
 		this.state.noSleep.enable()
 		this.lastTime = this.epochTime()
 		this.track = [
@@ -188,7 +174,7 @@ export default class Recorder extends React.Component {
 	}
 
 
-	stopRecord() {
+	stopRecord = () => {
 		this.endRecordDurationTimer()
 		this.endRecordTimeoutTimer()
 		const message = `Uploading recording of duration ${this.state.recordDuration}...`
@@ -236,11 +222,11 @@ export default class Recorder extends React.Component {
 		this.track = null;
 	}
 
-	epochTime() {
+	epochTime = () => {
 		return new Date().valueOf() / 1000
 	}
 
-	sec2ticks(secs) {
+	sec2ticks = (secs) => {
 		return secs * 8 * 240 * 2 / 4 // 120 bpm
 	}
 

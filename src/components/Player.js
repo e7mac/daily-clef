@@ -11,10 +11,9 @@ export default class Player extends React.Component {
 			noSleep: new NoSleep()
 		}
 		this.midiPlayerRef = React.createRef()
-		this.midiPlayerAutoplayOnSourceChange = this.midiPlayerAutoplayOnSourceChange.bind(this);
 	}
 
-	midiPlayerAutoplayOnSourceChange() {
+	midiPlayerAutoplayOnSourceChange = () => {
 		const m = this.midiPlayerRef.current
 		m.addEventListener('load', () => {
 			if (m.playing === false) {

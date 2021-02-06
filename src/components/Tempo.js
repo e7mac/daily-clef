@@ -6,7 +6,6 @@ import React from 'react';
 export default class Tempo extends React.Component {
 	constructor(props) {
 		super(props);
-		this.fn = this.fn.bind(this);
 		this.state = {
 			success: false,
 			clip_id: props.clip_id,
@@ -17,7 +16,7 @@ export default class Tempo extends React.Component {
 		}
 	}
 
-	fn() {
+	fn = () => {
 		const url = `${this.props.api.baseUrl}/api/tempo/${this.state.clip_id}`
 		fetch(url)
 			.then(res => res.json())
