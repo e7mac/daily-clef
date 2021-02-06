@@ -5,8 +5,6 @@ import * as TimeFormatUtils from '../utils/TimeFormatUtils'
 import ClipEdit from './ClipEdit';
 import Tempo from './Tempo';
 
-import './Clip.css';
-
 export default function Clip(props) {
 	const [edit, setEdit] = useState(false)
 
@@ -19,7 +17,6 @@ export default function Clip(props) {
 			})
 		}
 	})
-
 
 	const playURL = () => {
 		props.onPlay(props.clip)

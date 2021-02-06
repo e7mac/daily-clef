@@ -4,8 +4,6 @@ import React from 'react';
 
 import 'react-day-picker/lib/style.css';
 
-import './PlayCalendar.css';
-
 export default class PlayCalendar extends React.Component {
 
 	constructor(props) {

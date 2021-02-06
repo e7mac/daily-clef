@@ -2,8 +2,6 @@ import { Button } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import React from 'react';
 
-import './Relabel.css';
-
 export default class Relabel extends React.Component {
 	constructor(props) {
 		super(props)

@@ -3,8 +3,6 @@ import { Chart } from 'react-charts'
 import { ResizableBox } from 'react-resizable';
 import React from 'react';
 
-import './Tempo.css';
-
 export default class Tempo extends React.Component {
 	constructor(props) {
 		super(props);

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import * as TimeFormatUtils from '../utils/TimeFormatUtils'
-import './Stats.css';
 
 import { XAxis, YAxis, Legend, CartesianGrid, BarChart, Bar, PieChart, Pie, Tooltip, ResponsiveContainer } from 'recharts';
 

@@ -1,8 +1,6 @@
 import { Form, Button } from 'react-bootstrap';
 import React, { useRef } from 'react';
 
-import './Upload.css';
-
 export default function Upload(props) {
 
 	const fileRef = useRef(null)

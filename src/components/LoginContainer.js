@@ -3,8 +3,6 @@ import React from 'react';
 
 import LoginForm from './LoginForm';
 
-import './LoginContainer.css';
-
 export default function LoginContainer(props) {
 	return (
 		<div>
