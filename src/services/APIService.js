@@ -147,7 +147,13 @@ export default class APIService {
 	}
 
 	stats() {
-		return this.apiCall(`${this.baseUrl}/api/stats/`)
+		let url = ""
+		if (this.demo) {
+			url = `${this.baseUrl}/api/stats/?user=${this.demoUser}`
+		} else {
+			url = `${this.baseUrl}/api/stats/`
+		}
+		return this.apiCall(url)
 			.then(response => {
 				return response
 			})
