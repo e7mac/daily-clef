@@ -2,6 +2,7 @@ import React from 'react';
 
 import * as TimeFormatUtils from '../utils/TimeFormatUtils'
 
+import { Card, Dropdown } from 'react-bootstrap';
 import { XAxis, YAxis, Legend, CartesianGrid, BarChart, Bar, PieChart, Pie, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default class Stats extends React.Component {
@@ -14,13 +15,24 @@ export default class Stats extends React.Component {
 		this.props.api.stats().then((res) => {
 			console.log(res)
 			this.setState({
-				stats: res.response
+				data: res.response,
+				key: 'all',
+				stats: res.response.all
 			})
 		})
 	}
 
 	format(value, name, props) {
 		return TimeFormatUtils.formatDuration(value)
+	}
+
+	changeTimeframe = (e) => {
+		const key = e.target.id
+		const data = this.state.data
+		this.setState({
+			key: key,
+			stats: data[key]
+		})
 	}
 
 	render() {
@@ -38,23 +50,35 @@ export default class Stats extends React.Component {
 			<React.Fragment>
 				{this.state.stats
 					? <React.Fragment>
-						<p>{`Total time practiced: ${TimeFormatUtils.formatDuration(this.state.stats.duration)}`}</p>
-						<ResponsiveContainer height={400}>
-							<BarChart data={data} barCategoryGap={1} barSize={30} >
-								<CartesianGrid strokeDasharray="3 3" />
-								<XAxis dataKey="name" />
-								<YAxis tickFormatter={this.format} />
-								<Legend />
-								<Tooltip formatter={this.format} />
-								<Bar dataKey="value" fill="#8884d8" />
-							</BarChart>
-						</ResponsiveContainer>
-						<ResponsiveContainer height={400}>
-							<PieChart>
-								<Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={200} />
-								<Tooltip formatter={this.format} />
-							</PieChart>
-						</ResponsiveContainer>
+						<Card>
+							<p>{`Total time practiced: ${TimeFormatUtils.formatDuration(this.state.data.all.duration)}`}</p>
+							<p>{`Last 24h: ${TimeFormatUtils.formatDuration(this.state.data.day.duration)}`}</p>
+							<p>{`Last week: ${TimeFormatUtils.formatDuration(this.state.data.week.duration)}`}</p>
+							<p>{`Last month: ${TimeFormatUtils.formatDuration(this.state.data.month.duration)}`}</p>
+						</Card>
+						<Card>
+							<Dropdown>
+								<Dropdown.Toggle variant="info" id="dropdown-basic">
+									{this.state.key}
+								</Dropdown.Toggle>
+								<Dropdown.Menu>
+									<Dropdown.Item onClick={this.changeTimeframe} id="all">All</Dropdown.Item>
+									<Dropdown.Item onClick={this.changeTimeframe} id="day">Last 24h</Dropdown.Item>
+									<Dropdown.Item onClick={this.changeTimeframe} id="week">Last week</Dropdown.Item>
+									<Dropdown.Item onClick={this.changeTimeframe} id="month">Last month</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown>
+							<ResponsiveContainer height={400}>
+								<BarChart data={data} barCategoryGap={1} barSize={30} >
+									<CartesianGrid strokeDasharray="3 3" />
+									<XAxis dataKey="name" />
+									<YAxis tickFormatter={this.format} />
+									<Legend />
+									<Tooltip formatter={this.format} />
+									<Bar dataKey="value" fill="#8884d8" />
+								</BarChart>
+							</ResponsiveContainer>
+						</Card>
 					</React.Fragment>
 					: "Loading..."
 				}
