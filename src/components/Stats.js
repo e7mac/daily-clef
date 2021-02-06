@@ -3,7 +3,7 @@ import React from 'react';
 import * as TimeFormatUtils from '../utils/TimeFormatUtils'
 import './Stats.css';
 
-import { XAxis, YAxis, Legend, CartesianGrid, BarChart, Bar, PieChart, Pie, Tooltip } from 'recharts';
+import { XAxis, YAxis, Legend, CartesianGrid, BarChart, Bar, PieChart, Pie, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default class Stats extends React.Component {
 	constructor(props) {
@@ -40,18 +40,22 @@ export default class Stats extends React.Component {
 				{this.state.stats
 					? <React.Fragment>
 						<p>{`Total time practiced: ${TimeFormatUtils.formatDuration(this.state.stats.duration)}`}</p>
-						<BarChart width={1200} height={400} data={data} barCategoryGap={1} barSize={30} >
-							<CartesianGrid strokeDasharray="3 3" />
-							<XAxis dataKey="name" />
-							<YAxis tickFormatter={this.format} />
-							<Legend />
-							<Tooltip formatter={this.format} />
-							<Bar dataKey="value" fill="#8884d8" />
-						</BarChart>
-						<PieChart width={400} height={400}>
-							<Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={200} />
-							<Tooltip formatter={this.format} />
-						</PieChart>
+						<ResponsiveContainer height={400}>
+							<BarChart data={data} barCategoryGap={1} barSize={30} >
+								<CartesianGrid strokeDasharray="3 3" />
+								<XAxis dataKey="name" />
+								<YAxis tickFormatter={this.format} />
+								<Legend />
+								<Tooltip formatter={this.format} />
+								<Bar dataKey="value" fill="#8884d8" />
+							</BarChart>
+						</ResponsiveContainer>
+						<ResponsiveContainer height={400}>
+							<PieChart>
+								<Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={200} />
+								<Tooltip formatter={this.format} />
+							</PieChart>
+						</ResponsiveContainer>
 					</React.Fragment>
 					: "Loading..."
 				}
