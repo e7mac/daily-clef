@@ -1,12 +1,10 @@
 import { Alert, Navbar, Nav } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 import React, { Component } from 'react';
 
 import LabelBar from './LabelBar'
-
-import { Link } from "react-router-dom";
-
-import Upload from './Upload'
 import Settings from './Settings'
+import Upload from './Upload'
 
 import logo from '../logo.svg'
 
