@@ -1,7 +1,7 @@
 import { Card, Spinner } from 'react-bootstrap';
+import { matchPath } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
 import React from 'react';
-import { matchPath } from 'react-router-dom'
 
 import ClipGroupSet from './ClipGroupSet';
 

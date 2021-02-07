@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 
 import LabelBar from './LabelBar'
 
-import {
-	Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Upload from './Upload'
 import Settings from './Settings'
