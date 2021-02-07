@@ -1,4 +1,4 @@
-import { Container, Row, Col, Form } from 'react-bootstrap';
+import { Container, Dropdown, Row, Col, Form } from 'react-bootstrap';
 import React from 'react';
 
 import ClipDelete from './ClipDelete';
@@ -15,6 +15,16 @@ export default class ClipEdit extends React.Component {
 			notes: props.notes
 		}
 		this.notesTimer = null
+		this.stages = [
+			'Notes',
+			'Rhythm',
+			'Articulation',
+			'Pedaling',
+			'Voicing',
+			'Dynamics',
+			'Rubato',
+			'Tempo'
+		]
 	}
 
 
@@ -53,6 +63,13 @@ export default class ClipEdit extends React.Component {
 		}, 2000);
 	}
 
+	changeStage = (e) => {
+		const stage = e.target.id.split('learning-stage-')[1]
+		this.editClip({
+			learning_stage: stage
+		})
+	}
+
 	render() {
 		return (
 			<Container>
@@ -71,6 +88,24 @@ export default class ClipEdit extends React.Component {
 					</Col>
 					<Col sm="auto">
 						<ClipDelete clip={this.props.clip} api={this.props.api} />
+					</Col>
+					<Col sm="auto">
+						<Dropdown>
+							<Dropdown.Toggle variant="info" id="dropdown-basic">
+								{
+									this.props.clip.learning_stage !== null
+										? this.stages[this.props.clip.learning_stage]
+										: "pick stage"
+								}
+							</Dropdown.Toggle>
+							<Dropdown.Menu>
+								{
+									this.stages.map((item, index) =>
+										<Dropdown.Item onClick={this.changeStage} id={`learning-stage-${index}`}>{item}</Dropdown.Item>
+									)
+								}
+							</Dropdown.Menu>
+						</Dropdown>
 					</Col>
 				</Row>
 			</Container >
