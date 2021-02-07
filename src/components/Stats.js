@@ -25,12 +25,11 @@ export default class Stats extends React.Component {
 		return TimeFormatUtils.formatDuration(value)
 	}
 
-	changeTimeframe = (e) => {
-		const key = e.target.id
+	changeTimeframe = (eventKey, eventObject) => {
 		const data = this.state.data
 		this.setState({
-			key: key,
-			stats: data[key]
+			key: eventKey,
+			stats: data[eventKey]
 		})
 	}
 
@@ -56,15 +55,15 @@ export default class Stats extends React.Component {
 							<p>{`Last month: ${TimeFormatUtils.formatDuration(this.state.data.month.duration)}`}</p>
 						</Card>
 						<Card>
-							<Dropdown>
+							<Dropdown onSelect={this.changeTimeframe}>
 								<Dropdown.Toggle variant="info" id="dropdown-basic">
 									{this.state.key}
 								</Dropdown.Toggle>
 								<Dropdown.Menu>
-									<Dropdown.Item onClick={this.changeTimeframe} id="all">All</Dropdown.Item>
-									<Dropdown.Item onClick={this.changeTimeframe} id="day">Last 24h</Dropdown.Item>
-									<Dropdown.Item onClick={this.changeTimeframe} id="week">Last week</Dropdown.Item>
-									<Dropdown.Item onClick={this.changeTimeframe} id="month">Last month</Dropdown.Item>
+									<Dropdown.Item eventKey="all">All</Dropdown.Item>
+									<Dropdown.Item eventKey="day">Last 24h</Dropdown.Item>
+									<Dropdown.Item eventKey="week">Last week</Dropdown.Item>
+									<Dropdown.Item eventKey="month">Last month</Dropdown.Item>
 								</Dropdown.Menu>
 							</Dropdown>
 							<ResponsiveContainer height={400}>

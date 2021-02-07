@@ -63,16 +63,15 @@ export default class ClipEdit extends React.Component {
 		}, 2000);
 	}
 
-	changeStage = (e) => {
-		const stage = e.target.id.split('learning-stage-')[1]
+	changeStage = (eventKey, eventObject) => {
 		this.editClip({
-			learning_stage: stage
+			learning_stage: eventKey
 		})
 	}
 
 	render() {
 		return (
-			<Container>
+			<Container className="panel-body">
 				<Row>
 					<Col sm="auto">
 						<Form.Check inline label="Sightread" type="checkbox" checked={this.state.sight_reading} onChange={this.changeSightReading} />
@@ -90,7 +89,7 @@ export default class ClipEdit extends React.Component {
 						<ClipDelete clip={this.props.clip} api={this.props.api} />
 					</Col>
 					<Col sm="auto">
-						<Dropdown>
+						<Dropdown drop='left' onSelect={this.changeStage}>
 							<Dropdown.Toggle variant="info" id="dropdown-basic">
 								{
 									this.props.clip.learning_stage !== null
@@ -101,7 +100,7 @@ export default class ClipEdit extends React.Component {
 							<Dropdown.Menu>
 								{
 									this.stages.map((item, index) =>
-										<Dropdown.Item onClick={this.changeStage} id={`learning-stage-${index}`}>{item}</Dropdown.Item>
+										<Dropdown.Item eventKey={index}>{item}</Dropdown.Item>
 									)
 								}
 							</Dropdown.Menu>

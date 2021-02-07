@@ -6,3 +6,7 @@
 	cursor:pointer;
 	border-width: 2px;	
 }
+
+.dropdown-container { /* parent container of the menu */
+	overflow: inherit !important;
+}
