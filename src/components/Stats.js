@@ -3,7 +3,7 @@ import React from 'react';
 import * as TimeFormatUtils from '../utils/TimeFormatUtils'
 
 import { Card, Dropdown } from 'react-bootstrap';
-import { XAxis, YAxis, Legend, CartesianGrid, BarChart, Bar, PieChart, Pie, Tooltip, ResponsiveContainer } from 'recharts';
+import { XAxis, YAxis, Legend, CartesianGrid, BarChart, Bar, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default class Stats extends React.Component {
 	constructor(props) {
