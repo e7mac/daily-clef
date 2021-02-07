@@ -1,6 +1,7 @@
 import { Card, Dropdown } from 'react-bootstrap';
 import { XAxis, YAxis, Legend, CartesianGrid, BarChart, Bar, Tooltip, ResponsiveContainer } from 'recharts';
 import React from 'react';
+import prettyDate from 'pretty-date-js';
 
 import * as TimeFormatUtils from '../utils/TimeFormatUtils'
 
@@ -33,8 +34,15 @@ export default class Stats extends React.Component {
 		})
 	}
 
+	datePrettify = (date) => {
+		const obj = prettyDate(date)
+		return `${obj.value} ${obj.lang} ${obj.misc}`
+	}
+
 	render() {
 		let data = []
+		let last_played = []
+
 		if (this.state.stats) {
 			for (const item of this.state.stats.labels) {
 				data.push({
@@ -42,8 +50,11 @@ export default class Stats extends React.Component {
 					value: item.duration
 				})
 			}
+			last_played = this.state.data.last_played
 		}
 		data.sort((a, b) => b.value - a.value)
+		last_played.sort((a, b) => b.date > a.date)
+		console.log(last_played)
 		return (
 			<React.Fragment>
 				{this.state.stats
@@ -76,6 +87,15 @@ export default class Stats extends React.Component {
 									<Bar dataKey="value" fill="#8884d8" />
 								</BarChart>
 							</ResponsiveContainer>
+						</Card>
+						<Card>
+							{
+								last_played.map((item, index) => {
+									return (
+										<p>{item.name} - {this.datePrettify(item.date)}</p>
+									)
+								})
+							}
 						</Card>
 					</React.Fragment>
 					: "Loading..."
