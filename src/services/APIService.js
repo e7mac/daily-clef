@@ -71,6 +71,7 @@ export default class APIService {
 					if (res["detail"] !== undefined) {
 						console.log(`LOGOUT from: ${url}`)
 						localStorage.removeItem('token');
+						window.location.reload()
 					}
 					return res
 				})
