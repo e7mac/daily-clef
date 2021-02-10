@@ -9,7 +9,8 @@ export default class PlayCalendar extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			selectedDays: []
+			selectedDays: [],
+			initialMonth: new Date()
 		}
 	}
 
@@ -19,6 +20,21 @@ export default class PlayCalendar extends React.Component {
 
 	monthChange = (month) => {
 		console.log(month)
+		const selectedMonth = month.getTime() / 1000;
+		const nextMonth = new Date(month.getTime())
+		nextMonth.setMonth(nextMonth.getMonth() + 1)
+		this.props.api.loadRawSessionFiles(month.getTime() / 1000, nextMonth.getTime() / 1000)
+			.then((rawsessionfiles) => {
+				const selectedDays = []
+				for (const item of rawsessionfiles) {
+					selectedDays.push(new Date(item['date_played']))
+				}
+				this.setState({
+					selectedDays: selectedDays,
+					initialMonth: month
+				})
+			})
+
 	}
 
 	componentDidMount() {
@@ -40,6 +56,7 @@ export default class PlayCalendar extends React.Component {
 					onDayClick={this.onDayClick}
 					selectedDays={this.state.selectedDays}
 					onMonthChange={this.monthChange}
+					initialMonth={this.state.initialMonth}
 				/>
 			</Card>
 		);

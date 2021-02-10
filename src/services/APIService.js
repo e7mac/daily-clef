@@ -127,7 +127,11 @@ export default class APIService {
 		this.clipGetter = this.clipsForLabel[label]
 	}
 
-	loadRawSessionFiles() {
+	loadRawSessionFiles(startTime, endTime) {
+		this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/`)
+		if (startTime && endTime) {
+			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/?start_time=${startTime}&end_time=${endTime}/`)
+		}
 		return this.rawSessionFilesGetter.loadItems()
 	}
 
