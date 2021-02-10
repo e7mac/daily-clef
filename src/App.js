@@ -17,7 +17,6 @@ import Menubar from './components/Menubar';
 import APIService from './services/APIService';
 import Recorder from './components/Recorder'
 import Player from './components/Player'
-import PlayCalendar from './components/PlayCalendar'
 import Stats from './components/Stats'
 import unmute from './lib/unmute'
 
@@ -123,7 +122,6 @@ class App extends Component {
                 </Route>
                 <Route path="/">
                   <React.Fragment>
-                    <PlayCalendar api={this.state.api} />
                     <MusicLog onPlay={this.onPlay} api={this.state.api} />
                   </React.Fragment>
                 </Route>

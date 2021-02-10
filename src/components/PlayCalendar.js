@@ -19,11 +19,12 @@ export default class PlayCalendar extends React.Component {
 	}
 
 	monthChange = (month) => {
-		console.log(month)
-		const selectedMonth = month.getTime() / 1000;
 		const nextMonth = new Date(month.getTime())
 		nextMonth.setMonth(nextMonth.getMonth() + 1)
-		this.props.api.loadRawSessionFiles(month.getTime() / 1000, nextMonth.getTime() / 1000)
+		const startTime = month.getTime() / 1000
+		const endTime = nextMonth.getTime() / 1000
+		this.props.onMonthChanged(startTime, endTime)
+		this.props.api.loadRawSessionFiles(startTime, endTime)
 			.then((rawsessionfiles) => {
 				const selectedDays = []
 				for (const item of rawsessionfiles) {

@@ -3,6 +3,7 @@ import { matchPath } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
 import React from 'react';
 
+import PlayCalendar from './PlayCalendar'
 import ClipGroupSet from './ClipGroupSet';
 
 export default class MusicLog extends React.Component {
@@ -68,20 +69,27 @@ export default class MusicLog extends React.Component {
 		})
 	}
 
+	onMonthChanged = (startTime, endTime) => {
+		console.log(startTime, endTime)
+	}
+
 	render() {
 		return (
-			<InfiniteScroll
-				threshold={0}
-				pageStart={0}
-				loadMore={this.loadClips}
-				hasMore={this.state.hasMore}
-				loader={< Card > <Spinner animation="border" variant="secondary" /></Card>}>
-				{
-					this.state.items.map((item, index) =>
-						<Card><ClipGroupSet api={this.props.api} key={item.title} set={item} onPlay={this.props.onPlay} onRelabel={this.props.onRelabel} /></Card>
-					)
-				}
-			</InfiniteScroll >
+			<>
+				<PlayCalendar api={this.props.api} onMonthChanged={this.onMonthChanged} />
+				<InfiniteScroll
+					threshold={0}
+					pageStart={0}
+					loadMore={this.loadClips}
+					hasMore={this.state.hasMore}
+					loader={< Card > <Spinner animation="border" variant="secondary" /></Card>}>
+					{
+						this.state.items.map((item, index) =>
+							<Card><ClipGroupSet api={this.props.api} key={item.title} set={item} onPlay={this.props.onPlay} onRelabel={this.props.onRelabel} /></Card>
+						)
+					}
+				</InfiniteScroll >
+			</>
 		);
 	}
 
