@@ -1,10 +1,11 @@
 export default class ModelGetter {
-	constructor(api, url) {
+	constructor(api, url, searchParams = {}) {
 		this.url = url
 		this.itemsPromise = null
 		this.hasMore = true
 		this.items = []
 		this.api = api
+		this.searchParams = searchParams
 	}
 
 	loadItems() {
@@ -12,7 +13,7 @@ export default class ModelGetter {
 			if (this.itemsPromise === null) {
 				this.itemsPromise = this.api.apiCall(this.url, {
 					method: 'GET'
-				})
+				}, this.searchParams)
 					.then((response) => {
 						this.items = this.items.concat(response.results);
 
@@ -30,7 +31,7 @@ export default class ModelGetter {
 		if (this.url !== null && this.hasMore) {
 			this.itemsPromise = this.api.apiCall(this.url, {
 				method: 'GET'
-			})
+			}, this.searchParams)
 				.then((response) => {
 					this.items = this.items.concat(response.results);
 

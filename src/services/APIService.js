@@ -26,16 +26,11 @@ export default class APIService {
 		const urlParams = new URLSearchParams(window.location.search);
 		this.demoUser = urlParams.get('user');
 		const u = this.demoUser
+		this.allClips = new ClipGetter(this, `${this.baseUrl}/api/midiclips/`)
+		this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels/`)
+		this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/`)
 		if (u !== null) {
 			this.demo = true
-			console.log(u)
-			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/midiclips/?user=${u}/`)
-			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels/?user=${u}/`)
-			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/?user=${u}/`)
-		} else {
-			this.allClips = new ClipGetter(this, `${this.baseUrl}/api/midiclips/`)
-			this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels/`)
-			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/`)
 		}
 		this.clipGetter = this.allClips
 
@@ -50,7 +45,15 @@ export default class APIService {
 		return this.userPromise
 	}
 
-	apiCall(url, params = {}, json = true) {
+	apiCall(urlString, params = {}, searchParams = {}, json = true) {
+		const url = new URL(urlString)
+		if (this.demoUser) {
+			url.searchParams.append('user', this.demoUser)
+		}
+		for (const key in searchParams) {
+			const value = searchParams[key]
+			url.searchParams.append(key, value)
+		}
 		let auth = {
 			headers: {
 				Authorization: `JWT ${localStorage.getItem('token')}`,
@@ -130,7 +133,10 @@ export default class APIService {
 	loadRawSessionFiles(startTime, endTime) {
 		this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/`)
 		if (startTime && endTime) {
-			this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/?start_time=${startTime}&end_time=${endTime}/`)
+			this.rawSessionFilesGetter.searchParams = {
+				start_time: startTime,
+				end_time: endTime
+			}
 		}
 		return this.rawSessionFilesGetter.loadItems()
 	}
@@ -187,7 +193,7 @@ export default class APIService {
 				'Content-Type': 'application/json',
 				'X-CSRFToken': this.readCsrfToken()
 			}
-		}, false)
+		}, {}, false)
 			.then(response => {
 				console.log(response)
 			})
