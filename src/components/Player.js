@@ -47,15 +47,6 @@ export default class Player extends React.Component {
 		}
 	}
 
-	playItem(item) {
-		console.log(item)
-		this.midiPlayerRef.current.src = item.url
-		this.setState({
-			title: this.getLabel(item),
-			status: "Loading..."
-		})
-	}
-
 	getLabel(item) {
 		if (item.label !== null) {
 			return item.label.name
