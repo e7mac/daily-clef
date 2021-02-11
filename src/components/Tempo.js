@@ -7,6 +7,7 @@ export default class Tempo extends React.Component {
 		super(props);
 		this.state = {
 			success: false,
+			loading: false,
 			clip_id: props.clip_id,
 			data: {
 				duration: 0,
@@ -16,6 +17,7 @@ export default class Tempo extends React.Component {
 	}
 
 	fn = () => {
+		this.setState({ loading: true })
 		this.props.api.getTempo(this.state.clip_id)
 			.then(
 				(result) => {
@@ -27,6 +29,7 @@ export default class Tempo extends React.Component {
 					}
 					this.setState({
 						success: true,
+						loading: false,
 						data: result.data,
 						tempo_curve: result.data.tempo_curve,
 						time: time
@@ -67,7 +70,9 @@ export default class Tempo extends React.Component {
 							<Legend />
 							<Line type="monotone" dataKey="tempo" stroke="#82ca9d" dot={false} />
 						</LineChart>
-						: <Button variant="info" onClick={this.fn}>Tempo</Button>
+						: <Button variant="info" disabled={this.state.loading} onClick={this.fn}>
+							{this.state.loading ? 'Loading…' : 'Tempo'}
+						</Button>
 				}
 			</>);
 	}
