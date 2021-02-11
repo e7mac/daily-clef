@@ -2,6 +2,8 @@ import { Button } from 'react-bootstrap';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import React from 'react';
 
+import * as TimeFormatUtils from '../utils/TimeFormatUtils'
+
 export default class Tempo extends React.Component {
 	constructor(props) {
 		super(props);
@@ -44,7 +46,7 @@ export default class Tempo extends React.Component {
 		for (let i = 0; i < this.state.data.tempo_curve.length; i++) {
 			const datum = this.state.data.tempo_curve[i]
 			packagedData.push({
-				time: Math.floor(i * step),
+				time: TimeFormatUtils.formatDuration(Math.floor(i * step)),
 				tempo: Math.floor(datum)
 			})
 		}
@@ -67,8 +69,7 @@ export default class Tempo extends React.Component {
 							<XAxis dataKey="time" />
 							<YAxis />
 							<Tooltip />
-							<Legend />
-							<Line type="monotone" dataKey="tempo" stroke="#82ca9d" dot={false} />
+							<Line type="monotone" dataKey="tempo" stroke="#82ca9d" dot={false} unit="bpm" />
 						</LineChart>
 						: <Button variant="info" disabled={this.state.loading} onClick={this.fn}>
 							{this.state.loading ? 'Loading…' : 'Tempo'}
