@@ -210,4 +210,7 @@ export default class APIService {
 		}).catch(error => console.log("error: " + error));
 	}
 
+	getTempo(clip_id) {
+		return this.apiCall(`/api/tempo/${clip_id}`).catch(error => console.log("error: " + error));
+	}
 }

@@ -1,6 +1,5 @@
 import { Button } from 'react-bootstrap';
-import { Chart } from 'react-charts'
-import { ResizableBox } from 'react-resizable';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import React from 'react';
 
 export default class Tempo extends React.Component {
@@ -17,9 +16,7 @@ export default class Tempo extends React.Component {
 	}
 
 	fn = () => {
-		const url = `${this.props.api.baseUrl}/api/tempo/${this.state.clip_id}`
-		fetch(url)
-			.then(res => res.json())
+		this.props.api.getTempo(this.state.clip_id)
 			.then(
 				(result) => {
 					const time = []
@@ -44,32 +41,34 @@ export default class Tempo extends React.Component {
 		for (let i = 0; i < this.state.data.tempo_curve.length; i++) {
 			const datum = this.state.data.tempo_curve[i]
 			packagedData.push({
-				primary: i * step,
-				secondary: datum
+				time: Math.floor(i * step),
+				tempo: Math.floor(datum)
 			})
 		}
-
-		const data = [{
-			'label': 'tempo',
-			data: packagedData
-		}]
-		const axes = [
-			{ primary: true, type: 'linear', position: 'bottom' },
-			{ type: 'linear', position: 'left' },
-		]
-		const series = {
-			showPoints: false,
-		}
 		return (
-			<span>
+			<>
 				{
 					this.state.success
-						? <ResizableBox width={200} height={200} minConstraints={[100, 100]} maxConstraints={[500, 500]}>
-							<Chart data={data} axes={axes} series={series} tooltip />
-						</ResizableBox>
+						? <LineChart
+							width={300}
+							height={300}
+							data={packagedData}
+							margin={{
+								top: 5,
+								right: 30,
+								left: 20,
+								bottom: 5,
+							}}
+						>
+							<CartesianGrid strokeDasharray="3 3" />
+							<XAxis dataKey="time" />
+							<YAxis />
+							<Tooltip />
+							<Legend />
+							<Line type="monotone" dataKey="tempo" stroke="#82ca9d" dot={false} />
+						</LineChart>
 						: <Button variant="info" onClick={this.fn}>Tempo</Button>
 				}
-
-			</span>);
+			</>);
 	}
 }
