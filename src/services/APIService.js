@@ -26,7 +26,7 @@ export default class APIService {
 		const urlParams = new URLSearchParams(window.location.search);
 		this.demoUser = urlParams.get('user');
 		const u = this.demoUser
-		this.allClips = new ClipGetter(this, `/api/midiclips/`)
+		this.allClips = new ClipGetter(this)
 		this.labelGetter = new ModelGetter(this, `/api/labels/`)
 		this.rawSessionFilesGetter = new ModelGetter(this, `/api/rawsessionfiles/`)
 		if (u !== null) {
@@ -122,7 +122,7 @@ export default class APIService {
 
 	loadClipsForLabel(label) {
 		if (!(label in this.clipsForLabel)) {
-			this.clipsForLabel[label] = new ClipGetter(this, `/api/midiclips/`)
+			this.clipsForLabel[label] = new ClipGetter(this)
 			this.clipsForLabel[label].modelGetter.searchParams = { label: label }
 		}
 		this.clipGetter = this.clipsForLabel[label]

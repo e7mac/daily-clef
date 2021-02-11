@@ -2,9 +2,9 @@ import * as TimeFormatUtils from '../utils/TimeFormatUtils'
 import ModelGetter from './ModelGetter'
 
 export default class ClipGetter {
-	constructor(api, url) {
+	constructor(api) {
 		this.hasMore = true
-		this.modelGetter = new ModelGetter(api, url)
+		this.modelGetter = new ModelGetter(api, `/api/midiclips/`)
 	}
 
 	loadClips() {
