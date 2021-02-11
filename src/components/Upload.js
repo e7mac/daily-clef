@@ -29,7 +29,7 @@ export default function Upload(props) {
 		<span>
 			<Form hidden={true}>
 				<Form.Group>
-					<Form.File onChange={submitClicked} ref={fileRef} />
+					<Form.File onChange={submitClicked} ref={fileRef} accept="audio/*, video/*" />
 				</Form.Group>
 			</Form>
 			<Button variant="outline-success" onClick={upload}><FontAwesomeIcon icon={faCloudUploadAlt} /></Button>
