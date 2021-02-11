@@ -51,7 +51,8 @@ export default class APIService {
 			url.searchParams.append('user', this.demoUser)
 		}
 		for (const key in searchParams) {
-			const value = searchParams[key]
+			const value = decodeURIComponent(searchParams[key])
+			console.log(key, value)
 			url.searchParams.append(key, value)
 		}
 		let auth = {
@@ -121,11 +122,8 @@ export default class APIService {
 
 	loadClipsForLabel(label) {
 		if (!(label in this.clipsForLabel)) {
-			if (this.demo) {
-				this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/midiclips/?user=${this.demoUser}&label=${label}/`)
-			} else {
-				this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/midiclips/?label=${label}/`)
-			}
+			this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/midiclips/`)
+			this.clipsForLabel[label].modelGetter.searchParams = { label: label }
 		}
 		this.clipGetter = this.clipsForLabel[label]
 	}
@@ -158,13 +156,7 @@ export default class APIService {
 	}
 
 	stats() {
-		let url = ""
-		if (this.demo) {
-			url = `${this.baseUrl}/api/stats/?user=${this.demoUser}`
-		} else {
-			url = `${this.baseUrl}/api/stats/`
-		}
-		return this.apiCall(url)
+		return this.apiCall(`${this.baseUrl}/api/stats/`)
 			.then(response => {
 				return response
 			})
