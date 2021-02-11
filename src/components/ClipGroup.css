@@ -1,4 +1,4 @@
-.Collapsible__trigger {
+.clip-group-name-label {
 	cursor:pointer;
 	background-color: #134F5C;
 	color: white;
@@ -7,14 +7,7 @@
 	border-color: black;
 	width: auto;
 	display: block;
-	border-radius: 3px;
+	border-radius: 1px 1px 1px 0px;
 	size: 14px;
-}
-
-.Collapsible {
-	margin: 8px;
-}
-
-.Collapsible__contentInner {
-	padding: 16px;
+	margin: 0px 0px 8px 0px;
 }

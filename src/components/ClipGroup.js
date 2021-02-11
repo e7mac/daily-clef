@@ -1,6 +1,5 @@
-import { ListGroup } from 'react-bootstrap';
-import Collapsible from 'react-collapsible';
-import React from 'react';
+import { Collapse, Button, ListGroup } from 'react-bootstrap';
+import { React, useState } from 'react';
 
 import { formatDuration } from '../utils/TimeFormatUtils'
 import Clip from './Clip';
@@ -8,6 +7,7 @@ import Clip from './Clip';
 import './ClipGroup.css';
 
 export default function ClipGroup(props) {
+	const [open, setOpen] = useState(false);
 
 	let duration = 0
 	props.group.clips.forEach((clip) => {
@@ -16,7 +16,10 @@ export default function ClipGroup(props) {
 
 	return (
 		<div>
-			<Collapsible trigger={`${props.group.name} (${formatDuration(duration)})`} >
+			<div onClick={() => setOpen(!open)} className="clip-group-name-label">
+				{`${props.group.name} (${formatDuration(duration)})`}
+			</div>
+			<Collapse in={open}>
 				<ListGroup>
 					{
 						props.group.clips.map((clip, index) => {
@@ -26,6 +29,7 @@ export default function ClipGroup(props) {
 						})
 					}
 				</ListGroup>
-			</Collapsible>
+			</Collapse>
+
 		</div>);
 }
