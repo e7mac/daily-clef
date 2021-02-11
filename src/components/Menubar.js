@@ -97,7 +97,7 @@ export default class Menubar extends Component {
 							{
 								this.state.logged_in
 									? <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
-									: ""
+									: <Nav.Link href="/">Login</Nav.Link>
 							}
 						</React.Fragment>
 						: ""
