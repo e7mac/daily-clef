@@ -21,7 +21,7 @@ export default class APIFileService {
 	}
 
 	getSignedRequest(file) {
-		return this.api.apiCall(this.api.baseUrl + "/api/sign_s3/?file_name=" + file.name + "&file_type=" + file.type)
+		return this.api.apiCall(`/api/sign_s3/?file_name=${file.name}&file_type=${file.type}`)
 	}
 
 	uploadFileToS3(file, s3Data, url) {
@@ -43,7 +43,7 @@ export default class APIFileService {
 	}
 
 	uploadFile(body) {
-		return this.api.apiCall(this.api.baseUrl + '/api/upload/', {
+		return this.api.apiCall('/api/upload/', {
 			method: 'POST',
 			body: JSON.stringify(body),
 			headers: {
