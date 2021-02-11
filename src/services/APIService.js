@@ -10,7 +10,7 @@ export default class APIService {
 		// this.baseUrl = "http://localhost:8000"
 		this.token = localStorage.getItem('token')
 		if (this.token !== null) {
-			this.userPromise = this.apiCall(`${this.baseUrl}/api/current_user/`)
+			this.userPromise = this.apiCall(`/api/current_user/`)
 				.then(
 					(response) => {
 						console.log("get user")
@@ -45,8 +45,8 @@ export default class APIService {
 		return this.userPromise
 	}
 
-	apiCall(urlString, params = {}, searchParams = {}, json = true) {
-		const url = new URL(urlString)
+	apiCall(path, params = {}, searchParams = {}, json = true) {
+		const url = new URL(`${this.baseUrl}${path}`)
 		if (this.demoUser) {
 			url.searchParams.append('user', this.demoUser)
 		}
@@ -108,7 +108,7 @@ export default class APIService {
 	};
 
 	getStatus() {
-		return this.apiCall(`${this.baseUrl}/api/status/`)
+		return this.apiCall(`/api/status/`)
 			.catch(error => console.log("error: " + error));
 	}
 
@@ -156,7 +156,7 @@ export default class APIService {
 	}
 
 	stats() {
-		return this.apiCall(`${this.baseUrl}/api/stats/`)
+		return this.apiCall(`/api/stats/`)
 			.then(response => {
 				return response
 			})
@@ -164,7 +164,7 @@ export default class APIService {
 	}
 
 	editClip(id, body) {
-		return this.apiCall(`${this.baseUrl}/api/midiclips/${id}/`, {
+		return this.apiCall(`/api/midiclips/${id}/`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ export default class APIService {
 	}
 
 	deleteClip(id,) {
-		return this.apiCall(`${this.baseUrl}/api/midiclips/${id}/`, {
+		return this.apiCall(`/api/midiclips/${id}/`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
@@ -193,17 +193,17 @@ export default class APIService {
 	}
 
 	relabelItem(id, label) {
-		const url = `${this.baseUrl}/api/label_item/${id}/${label}/`
+		const url = `/api/label_item/${id}/${label}/`
 		return this.apiCall(url).catch(error => console.log("error: " + error));
 	}
 
 	getSettings() {
-		const url = `${this.baseUrl}/api/settings/`
+		const url = `/api/settings/`
 		return this.apiCall(url).catch(error => console.log("error: " + error));
 	}
 
 	setSettings(body) {
-		const url = `${this.baseUrl}/api/settings/`
+		const url = `/api/settings/`
 		return this.apiCall(url, {
 			method: 'PUT',
 			body: JSON.stringify(body)

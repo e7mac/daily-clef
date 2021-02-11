@@ -1,6 +1,6 @@
 export default class ModelGetter {
 	constructor(api, path, searchParams = {}) {
-		this.url = `${api.baseUrl}${path}`
+		this.path = path
 		this.itemsPromise = null
 		this.hasMore = true
 		this.items = []
@@ -9,7 +9,7 @@ export default class ModelGetter {
 	}
 
 	loadItems() {
-		if (this.url !== null) {
+		if (this.path !== null) {
 			if (this.itemsPromise === null) {
 				this.makeApiCall()
 			}
@@ -18,23 +18,25 @@ export default class ModelGetter {
 	}
 
 	loadMoreItems() {
-		if (this.url !== null && this.hasMore) {
+		if (this.path !== null && this.hasMore) {
 			this.makeApiCall()
 		}
 		return this.itemsPromise
 	}
 
 	makeApiCall() {
-		this.itemsPromise = this.api.apiCall(this.url, {
+		this.itemsPromise = this.api.apiCall(this.path, {
 			method: 'GET'
 		}, this.searchParams)
 			.then((response) => {
 				this.items = this.items.concat(response.results);
 
 				this.hasMore = (response.next !== null)
-				// const url = new URL(response.next)
-				// this.url = `${this.api.baseUrl}${url.pathname}${url.search}`
-				this.url = response.next
+				this.path = null
+				if (response.next) {
+					const url = new URL(response.next)
+					this.path = `${url.pathname}${url.search}`
+				}
 				return this.items
 			})
 			.catch(error => console.log("error: " + error));
