@@ -1,6 +1,8 @@
 import { Alert, Navbar, Nav } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChartBar, faMicrophone, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import LabelBar from './LabelBar'
 import Settings from './Settings'
@@ -79,12 +81,12 @@ export default class Menubar extends Component {
 									this.state.logged_in
 										? <React.Fragment>
 											<Upload api={this.props.api} setStatus={this.setStatus} />
-											<Nav.Link href="#record">Record</Nav.Link>
+											<Nav.Link href="#record"><FontAwesomeIcon icon={faMicrophone} /></Nav.Link>
 										</React.Fragment>
 										: ""
 								}
 								<LabelBar api={this.props.api} loadAllClips={this.loadAllClips} loadClipsForLabel={this.loadClipsForLabel} />
-								<Nav.Link href="#stats">Stats</Nav.Link>
+								<Nav.Link href="#stats"><FontAwesomeIcon icon={faChartBar} /></Nav.Link>
 								<Settings api={this.props.api} />
 								{
 									this.state.status.length > 0
@@ -96,8 +98,8 @@ export default class Menubar extends Component {
 							</Nav>
 							{
 								this.state.logged_in
-									? <Nav.Link onClick={this.handle_logout}>Logout</Nav.Link>
-									: <Nav.Link href="/">Login</Nav.Link>
+									? <Nav.Link onClick={this.handle_logout}><FontAwesomeIcon icon={faSignOutAlt} /></Nav.Link>
+									: <Nav.Link href="/"><FontAwesomeIcon icon={faSignInAlt} /></Nav.Link>
 							}
 						</React.Fragment>
 						: ""

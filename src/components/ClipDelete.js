@@ -1,5 +1,7 @@
 import { Button } from 'react-bootstrap';
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 import './ClipDelete.css';
 
@@ -26,7 +28,7 @@ export default class ClipDelete extends React.Component {
 						? "Deleted. Refresh as needed"
 						: this.state.confirmation
 							? <Button variant="danger" onClick={this.deleteClip}>Sure?</Button>
-							: <Button variant="info" onClick={() => { this.setState({ confirmation: true }) }}>Delete</Button>
+							: <Button variant="info" onClick={() => { this.setState({ confirmation: true }) }}><FontAwesomeIcon icon={faTrash} /></Button>
 				}
 			</React.Fragment>
 		);

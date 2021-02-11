@@ -1,5 +1,7 @@
 import { Form, Button } from 'react-bootstrap';
 import React, { useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons'
 
 export default function Upload(props) {
 
@@ -30,7 +32,7 @@ export default function Upload(props) {
 					<Form.File onChange={submitClicked} ref={fileRef} />
 				</Form.Group>
 			</Form>
-			<Button variant="outline-success" onClick={upload}>Upload</Button>
+			<Button variant="outline-success" onClick={upload}><FontAwesomeIcon icon={faCloudUploadAlt} /></Button>
 		</span>
 	);
 }

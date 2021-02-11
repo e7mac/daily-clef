@@ -1,6 +1,7 @@
 import { Collapse, Container, Row, Col, Button } from 'react-bootstrap';
-import { PlayFill } from 'react-bootstrap-icons';
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit, faPlay } from '@fortawesome/free-solid-svg-icons'
 
 import * as TimeFormatUtils from '../utils/TimeFormatUtils'
 import ClipEdit from './ClipEdit';
@@ -38,7 +39,7 @@ export default function Clip(props) {
 			<Container>
 				<Row>
 					<Col sm="auto">
-						<Button variant="info" onClick={playURL}><PlayFill /></Button>
+						<Button variant="info" onClick={playURL}><FontAwesomeIcon icon={faPlay} /></Button>
 					</Col>
 					<Col sm="auto">
 						{TimeFormatUtils.formatDuration(props.clip.duration)}
@@ -60,14 +61,13 @@ export default function Clip(props) {
 					</Col>
 					{editable &&
 						<Col sm="auto">
-							<Button variant="info" onClick={toggleEditing}>Edit</Button>
+							<Button variant="info" onClick={toggleEditing}><FontAwesomeIcon icon={faEdit} /></Button>
 						</Col>
 					}
 				</Row>
 				<Collapse in={editing}>
 					<Row>
 						<Col>
-
 							<span className="item"><ClipEdit clip={props.clip} api={props.api} sight_reading={props.clip.sight_reading} technical={props.clip.technical} onRelabel={props.onRelabel} notes={props.clip.notes} /></span>
 						</Col>
 					</Row>

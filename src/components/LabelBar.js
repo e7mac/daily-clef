@@ -1,5 +1,7 @@
 import { NavDropdown } from 'react-bootstrap';
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faList } from '@fortawesome/free-solid-svg-icons'
 
 import './LabelBar.css';
 

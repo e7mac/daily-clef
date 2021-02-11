@@ -1,5 +1,7 @@
 import { Button, Modal, Form } from 'react-bootstrap';
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCog } from '@fortawesome/free-solid-svg-icons'
 
 export default class Settings extends React.Component {
 	constructor(props) {
@@ -40,8 +42,8 @@ export default class Settings extends React.Component {
 		return (
 			<>
 				<Button variant="secondary" onClick={this.handleShow}>
-					⚙️
-		  		</Button>
+					<FontAwesomeIcon icon={faCog} />
+				</Button>
 				<Modal show={this.state.show} onHide={this.handleClose}>
 					<Modal.Header closeButton>
 						<Modal.Title>Settings</Modal.Title>
