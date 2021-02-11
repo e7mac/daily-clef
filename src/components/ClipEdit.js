@@ -1,7 +1,6 @@
 import { Container, Dropdown, Row, Col, Form } from 'react-bootstrap';
 import React from 'react';
 
-import ClipDelete from './ClipDelete';
 import Relabel from './Relabel';
 
 import './ClipEdit.css';
@@ -84,9 +83,6 @@ export default class ClipEdit extends React.Component {
 					</Col>
 					<Col sm="auto">
 						<Form.Control type="text" placeholder="Add Notes" value={this.state.notes} onChange={this.changeNotes} />
-					</Col>
-					<Col sm="auto">
-						<ClipDelete clip={this.props.clip} api={this.props.api} />
 					</Col>
 					<Col sm="auto">
 						<Dropdown drop='left' onSelect={this.changeStage}>

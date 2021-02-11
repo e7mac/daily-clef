@@ -1,9 +1,10 @@
 import { Collapse, Container, Row, Col, Button } from 'react-bootstrap';
-import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faPlay } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useState, useEffect } from 'react';
 
 import * as TimeFormatUtils from '../utils/TimeFormatUtils'
+import ClipDelete from './ClipDelete';
 import ClipEdit from './ClipEdit';
 import Tempo from './Tempo';
 
@@ -53,17 +54,23 @@ export default function Clip(props) {
 					<Col sm="auto">
 						{TimeFormatUtils.formatTime(props.clip.date_played)}
 					</Col>
+					{editable &&
+						<>
+							<Col sm="auto">
+								<ClipDelete clip={props.clip} api={props.api} />
+							</Col>
+							<Col sm="auto">
+
+								<Button variant="info" onClick={toggleEditing}><FontAwesomeIcon icon={faEdit} /></Button>
+							</Col>
+						</>
+					}
 					<Col sm="auto">
 						<Tempo clip_id={props.clip.id} api={props.api} />
 					</Col>
 					<Col sm="auto">
 						<a href={`https://e7mac.github.io/MIDIano/?url=${props.clip.url}`} target="_blank" rel="noopener noreferrer"><Button variant="info">Synthesia</Button></a>
 					</Col>
-					{editable &&
-						<Col sm="auto">
-							<Button variant="info" onClick={toggleEditing}><FontAwesomeIcon icon={faEdit} /></Button>
-						</Col>
-					}
 				</Row>
 				<Collapse in={editing}>
 					<Row>
