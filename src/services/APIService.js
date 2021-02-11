@@ -26,9 +26,9 @@ export default class APIService {
 		const urlParams = new URLSearchParams(window.location.search);
 		this.demoUser = urlParams.get('user');
 		const u = this.demoUser
-		this.allClips = new ClipGetter(this, `${this.baseUrl}/api/midiclips/`)
-		this.labelGetter = new ModelGetter(this, `${this.baseUrl}/api/labels/`)
-		this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/`)
+		this.allClips = new ClipGetter(this, `/api/midiclips/`)
+		this.labelGetter = new ModelGetter(this, `/api/labels/`)
+		this.rawSessionFilesGetter = new ModelGetter(this, `/api/rawsessionfiles/`)
 		if (u !== null) {
 			this.demo = true
 		}
@@ -122,14 +122,14 @@ export default class APIService {
 
 	loadClipsForLabel(label) {
 		if (!(label in this.clipsForLabel)) {
-			this.clipsForLabel[label] = new ClipGetter(this, `${this.baseUrl}/api/midiclips/`)
+			this.clipsForLabel[label] = new ClipGetter(this, `/api/midiclips/`)
 			this.clipsForLabel[label].modelGetter.searchParams = { label: label }
 		}
 		this.clipGetter = this.clipsForLabel[label]
 	}
 
 	loadRawSessionFiles(startTime, endTime) {
-		this.rawSessionFilesGetter = new ModelGetter(this, `${this.baseUrl}/api/rawsessionfiles/`)
+		this.rawSessionFilesGetter = new ModelGetter(this, `/api/rawsessionfiles/`)
 		if (startTime && endTime) {
 			this.rawSessionFilesGetter.searchParams = {
 				start_time: startTime,

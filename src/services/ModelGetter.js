@@ -1,6 +1,6 @@
 export default class ModelGetter {
-	constructor(api, url, searchParams = {}) {
-		this.url = url
+	constructor(api, path, searchParams = {}) {
+		this.url = `${api.baseUrl}${path}`
 		this.itemsPromise = null
 		this.hasMore = true
 		this.items = []
