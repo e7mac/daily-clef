@@ -105,7 +105,9 @@ export default class MusicLog extends React.Component {
 					loader={< Card > <Spinner animation="border" variant="secondary" /></Card>}>
 					{
 						this.state.items.map((item, index) =>
-							<Card><ClipGroupSet api={this.props.api} key={item.title} set={item} onPlay={this.props.onPlay} onRelabel={this.props.onRelabel} /></Card>
+							<Card>
+								<ClipGroupSet api={this.props.api} key={item.title} set={item} onPlay={this.props.onPlay} onRelabel={this.props.onRelabel} playingItem={this.props.playingItem} />
+							</Card>
 						)
 					}
 				</InfiniteScroll >

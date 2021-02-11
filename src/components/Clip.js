@@ -35,9 +35,13 @@ export default function Clip(props) {
 		setEditing(!editing)
 	}
 
+	const styleObj = {
+		background: "#4a54f1",
+	}
+
 	return (
 		<div>
-			<Container>
+			<Container style={props.playingItem === props.clip ? { background: `#dcedc8` } : {}}>
 				<Row>
 					<Col sm="auto">
 						<Button variant="info" onClick={playURL}><FontAwesomeIcon icon={faPlay} /></Button>

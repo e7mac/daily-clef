@@ -20,7 +20,7 @@ export default function ClipGroupSet(props) {
 			{
 				props.set.groups.map((group, index) => {
 					return (
-						<ClipGroup api={props.api} key={group.name} group={group} onRelabel={props.onRelabel} onPlay={props.onPlay} />
+						<ClipGroup api={props.api} key={group.name} group={group} onRelabel={props.onRelabel} onPlay={props.onPlay} playingItem={props.playingItem} />
 					)
 				})
 			}

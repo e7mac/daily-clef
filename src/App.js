@@ -122,7 +122,7 @@ class App extends Component {
                 </Route>
                 <Route path="/">
                   <React.Fragment>
-                    <MusicLog onPlay={this.onPlay} api={this.state.api} />
+                    <MusicLog onPlay={this.onPlay} api={this.state.api} playingItem={this.state.playingItem} />
                   </React.Fragment>
                 </Route>
               </Switch>

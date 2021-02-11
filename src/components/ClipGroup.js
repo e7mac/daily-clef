@@ -24,7 +24,9 @@ export default function ClipGroup(props) {
 					{
 						props.group.clips.map((clip, index) => {
 							return (
-								<ListGroup.Item><Clip api={props.api} key={clip.id} clip={clip} onRelabel={props.onRelabel} onPlay={props.onPlay} /></ListGroup.Item>
+								<ListGroup.Item>
+									<Clip api={props.api} key={clip.id} clip={clip} onRelabel={props.onRelabel} onPlay={props.onPlay} playingItem={props.playingItem} />
+								</ListGroup.Item>
 							)
 						})
 					}
