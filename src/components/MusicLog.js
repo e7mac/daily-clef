@@ -6,6 +6,8 @@ import React from 'react';
 import PlayCalendar from './PlayCalendar'
 import ClipGroupSet from './ClipGroupSet';
 
+import ClipGetter from '../services/ClipGetter';
+
 export default class MusicLog extends React.Component {
 	constructor(props) {
 		super(props)
@@ -71,6 +73,25 @@ export default class MusicLog extends React.Component {
 
 	onMonthChanged = (startTime, endTime) => {
 		console.log(startTime, endTime)
+		this.setState({
+			items: [],
+			hasMore: true,
+		})
+		this.props.api.clipGetter = new ClipGetter(this.props.api)
+		const searchParams = {
+			start_time: startTime,
+			end_time: endTime,
+		}
+		if (this.state.label) {
+			searchParams.label = this.state.label
+		}
+		this.props.api.clipGetter.modelGetter.searchParams = searchParams
+		this.props.api.clipGetter.loadMoreClips().then((clipgroupsets) => {
+			this.setState({
+				items: clipgroupsets,
+				hasMore: this.props.api.clipGetter.hasMore
+			})
+		})
 	}
 
 	render() {
