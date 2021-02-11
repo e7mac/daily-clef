@@ -35,10 +35,6 @@ export default function Clip(props) {
 		setEditing(!editing)
 	}
 
-	const styleObj = {
-		background: "#4a54f1",
-	}
-
 	return (
 		<div>
 			<Container style={props.playingItem === props.clip ? { background: `#dcedc8` } : {}}>

@@ -1,5 +1,7 @@
 import { Alert, Card, Button } from 'react-bootstrap';
 import { encode } from 'json-midi-encoder';
+import { faRedo } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Piano } from 'react-piano';
 import React from 'react';
 import WebMidi from 'webmidi';
@@ -10,8 +12,6 @@ import { formatDuration } from '../utils/TimeFormatUtils'
 import NoSleep from '../lib/nosleep'
 
 import './Recorder.css';
-
-// import SoundFontPlayer from "soundfont-player";
 
 export default class Recorder extends React.Component {
 	constructor(props) {
@@ -34,32 +34,39 @@ export default class Recorder extends React.Component {
 	}
 
 	componentDidMount() {
+		this.initMidi()
+	}
+
+	initMidi = () => {
 		const recorder = this;
 		WebMidi.enable(function (err) {
 			if (err) {
 				console.log("WebMidi could not be enabled.", err);
 			} else {
 				console.log("WebMidi enabled!");
-				for (const i in WebMidi.inputs) {
-					recorder.setState({
-						available: true
-					})
-					const input = WebMidi.inputs[i]
-					// piano.listenToMidi(input)
-					input.addListener('noteon', "all", function (e) {
-						recorder.recordNoteOn(e.note.number, e.rawVelocity)
-					});
-					input.addListener('noteoff', "all", function (e) {
-						recorder.recordNoteOff(e.note.number)
-					});
-					input.addListener('controlchange', "all", function (e) {
-						recorder.recordCC(e.controller.number, e.value)
-					});
-				}
+				recorder.registerMidiDevices()
 			}
 		})
 	}
 
+	registerMidiDevices = () => {
+		for (const i in WebMidi.inputs) {
+			this.setState({
+				available: true
+			})
+			const input = WebMidi.inputs[i]
+			// piano.listenToMidi(input)
+			input.addListener('noteon', "all", function (e) {
+				this.recordNoteOn(e.note.number, e.rawVelocity)
+			});
+			input.addListener('noteoff', "all", function (e) {
+				this.recordNoteOff(e.note.number)
+			});
+			input.addListener('controlchange', "all", function (e) {
+				this.recordCC(e.controller.number, e.value)
+			});
+		}
+	}
 	startRecordTimeoutTimer = () => {
 		this.recordTimer = setTimeout(() => {
 			console.log("timer hit!")
@@ -264,11 +271,16 @@ export default class Recorder extends React.Component {
 							: <Button variant="danger" onClick={this.startRecord}>Record</Button>
 						}</p>
 
-						: <Alert key='0' variant='primary'>
-							<p>No compatible MIDI devices found</p>
-							<p>Connect your MIDI controller, use Chrome and refresh!</p>
-						This also doesn't work on an iPad so please use a computer
-					</Alert>
+						: <>
+							<Alert key='0' variant='primary'>
+								<p>No compatible MIDI devices found</p>
+								<p>Connect your MIDI controller, use Chrome and refresh!</p>
+						This doesn't work on an iPad so please use a computer or Android device
+						</Alert>
+							<Button variant="primary" onClick={this.registerMidiDevices}>
+								<FontAwesomeIcon icon={faRedo} />
+							</Button>
+						</>
 					}
 				</Card>
 			</span >
