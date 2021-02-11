@@ -71,12 +71,7 @@ export default class MusicLog extends React.Component {
 		})
 	}
 
-	onMonthChanged = (startTime, endTime) => {
-		console.log(startTime, endTime)
-		this.setState({
-			items: [],
-			hasMore: true,
-		})
+	onTimeChanged = (startTime, endTime) => {
 		this.props.api.clipGetter = new ClipGetter(this.props.api)
 		const searchParams = {
 			start_time: startTime,
@@ -86,18 +81,22 @@ export default class MusicLog extends React.Component {
 			searchParams.label = this.state.label
 		}
 		this.props.api.clipGetter.modelGetter.searchParams = searchParams
-		this.props.api.clipGetter.loadMoreClips().then((clipgroupsets) => {
-			this.setState({
-				items: clipgroupsets,
-				hasMore: this.props.api.clipGetter.hasMore
-			})
+		this.setState({
+			items: [],
+			hasMore: true,
 		})
+		// this.props.api.clipGetter.loadMoreClips().then((clipgroupsets) => {
+		// 	this.setState({
+		// 		items: clipgroupsets,
+		// 		hasMore: this.props.api.clipGetter.hasMore
+		// 	})
+		// })
 	}
 
 	render() {
 		return (
 			<>
-				<PlayCalendar api={this.props.api} onMonthChanged={this.onMonthChanged} />
+				<PlayCalendar api={this.props.api} onTimeChanged={this.onTimeChanged} />
 				<InfiniteScroll
 					threshold={0}
 					pageStart={0}
