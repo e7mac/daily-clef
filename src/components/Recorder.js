@@ -55,15 +55,15 @@ export default class Recorder extends React.Component {
 				available: true
 			})
 			const input = WebMidi.inputs[i]
-			// piano.listenToMidi(input)
+			const recorder = this;
 			input.addListener('noteon', "all", function (e) {
-				this.recordNoteOn(e.note.number, e.rawVelocity)
+				recorder.recordNoteOn(e.note.number, e.rawVelocity)
 			});
 			input.addListener('noteoff', "all", function (e) {
-				this.recordNoteOff(e.note.number)
+				recorder.recordNoteOff(e.note.number)
 			});
 			input.addListener('controlchange', "all", function (e) {
-				this.recordCC(e.controller.number, e.value)
+				recorder.recordCC(e.controller.number, e.value)
 			});
 		}
 	}
