@@ -1,6 +1,8 @@
 import * as TimeFormatUtils from '../utils/TimeFormatUtils'
 import ModelGetter from './ModelGetter'
 
+const DURATION_BETWEEN_SESSIONS_COMBINE = 6 * 60 * 60;
+
 export default class ClipGetter {
 	constructor(api) {
 		this.hasMore = true
@@ -110,41 +112,54 @@ export default class ClipGetter {
 		return sessions
 	}
 
+	combineGroups(a, b) {
+		let c = {}
+		for (const arr of [a, b]) {
+			for (const item of arr) {
+				const label = item.name
+				if (!c[label]) {
+					c[label] = []
+				}
+				c[label] = c[label].concat(item.clips)
+			}
+		}
+		let c_array = []
+		for (const label in c) {
+			c_array.push({
+				name: label,
+				clips: c[label]
+			})
+		}
+		return c_array
+	}
+
 	transform(sessions) {
 		let items = []
-		// let clipgroupset = {
-		// }
-		// if (this.state.url.includes("/item/")) {
-		// 	let groups = []
-		// 	for (const i in sessions) {
-		// 		let clips = []
-		// 		const session = sessions[i]
-		// 		let group = {}
-		// 		group.name = formatDateTime(session.time)
-		// 		for (const j in session.labels) {
-		// 			const label = session.labels[j]
-		// 			clipgroupset.title = label.name
-		// 			for (const k in label.clips) {
-		// 				const clip = label.clips[k]
-		// 				clips.push(clip)
-		// 			}
-		// 			group.clips = clips
-		// 		}
-		// 		groups.push(group)
-		// 	}
-		// 	clipgroupset.groups = groups
-		// 	items.push(clipgroupset)
-		// } else {
+		let lastDate = new Date(2100, 1, 1, 0, 0, 0, 0)
 		for (const i in sessions) {
 			const session = sessions[i]
-			const clipgroupset = {
-				title: TimeFormatUtils.formatDateTime(session.time),
-				date: session.time,
-				groups: session.labels
+			const date = new Date(session.time)
+			const dateDiff = (lastDate.getTime() - date.getTime()) / 1000;
+			if (dateDiff < DURATION_BETWEEN_SESSIONS_COMBINE) {
+				const prevClipgroupset = items[items.length - 1];
+				const groups = this.combineGroups(session.labels, prevClipgroupset.groups)
+				const newClipgroupset = {
+					title: TimeFormatUtils.formatDateTime(session.time),
+					date: session.time,
+					groups: groups
+				}
+				items[items.length - 1] = newClipgroupset;
+			} else {
+				const clipgroupset = {
+					title: TimeFormatUtils.formatDateTime(session.time),
+					date: session.time,
+					groups: session.labels
+				}
+				items.push(clipgroupset)
 			}
-			items.push(clipgroupset)
+			lastDate = date;
 		}
-		// }
 		return items
 	}
+
 }
