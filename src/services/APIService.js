@@ -139,8 +139,8 @@ export default class APIService {
 		return this.rawSessionFilesGetter.loadItems()
 	}
 
-	uploadFileFlow(file, lastModified) {
-		return this.fileService.uploadFileFlow(file, lastModified)
+	uploadFileFlow(file, lastModified, metadata) {
+		return this.fileService.uploadFileFlow(file, lastModified, metadata)
 	}
 
 	readCsrfToken = () => {

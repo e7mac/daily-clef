@@ -3,7 +3,7 @@ export default class APIFileService {
 		this.api = api
 	}
 
-	uploadFileFlow(file, lastModified) {
+	uploadFileFlow(file, lastModified, metadata) {
 		let url = null
 		return this.getSignedRequest(file)
 			.then((response) => {
@@ -14,6 +14,7 @@ export default class APIFileService {
 				const body = {
 					"file-url": url,
 					"lastModified": lastModified,
+					"metadata": metadata
 				}
 				return this.uploadFile(body)
 			})

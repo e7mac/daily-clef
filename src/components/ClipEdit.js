@@ -68,6 +68,11 @@ export default class ClipEdit extends React.Component {
 		})
 	}
 
+	onRelabel = () => {
+		this.props.onRelabel()
+
+	}
+
 	render() {
 		return (
 			<Container className="panel-body">
@@ -79,7 +84,7 @@ export default class ClipEdit extends React.Component {
 						<Form.Check inline label="Technical" type="checkbox" checked={this.state.technical} onChange={this.changeTechnical} />
 					</Col>
 					<Col sm="auto">
-						<Relabel api={this.props.api} clip={this.props.clip} onRelabel={this.props.onRelabel} />
+						<Relabel api={this.props.api} clip={this.props.clip} onRelabel={this.onRelabel} />
 					</Col>
 					<Col sm="auto">
 						<Form.Control type="text" placeholder="Add Notes" value={this.state.notes} onChange={this.changeNotes} />
