@@ -1,9 +1,11 @@
 import { Alert, Card, Button } from 'react-bootstrap';
+import { Container, Dropdown, Row, Col, Form } from 'react-bootstrap';
 import { encode } from 'json-midi-encoder';
 import { faRedo } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Piano } from 'react-piano';
 import React from 'react';
+import Soundfont from 'soundfont-player';
 import WebMidi from 'webmidi';
 
 import 'react-piano/dist/styles.css';
@@ -23,6 +25,7 @@ export default class Recorder extends React.Component {
 			activeNotes: new Set(),
 			startTime: null,
 			noteRecorded: false,
+			shouldPlay: false,
 			message: null,
 			recordDuration: null,
 			noSleep: new NoSleep()
@@ -50,22 +53,32 @@ export default class Recorder extends React.Component {
 	}
 
 	registerMidiDevices = () => {
-		for (const i in WebMidi.inputs) {
-			this.setState({
-				available: true
-			})
-			const input = WebMidi.inputs[i]
-			const recorder = this;
-			input.addListener('noteon', "all", function (e) {
-				recorder.recordNoteOn(e.note.number, e.rawVelocity)
-			});
-			input.addListener('noteoff', "all", function (e) {
-				recorder.recordNoteOff(e.note.number)
-			});
-			input.addListener('controlchange', "all", function (e) {
-				recorder.recordCC(e.controller.number, e.value)
-			});
-		}
+		const recorder = this;
+		const ac = new AudioContext();
+		Soundfont.instrument(ac, 'acoustic_grand_piano').then(function (piano) {
+			for (const i in WebMidi.inputs) {
+				recorder.setState({
+					available: true
+				})
+				const input = WebMidi.inputs[i]
+
+				input.addListener('noteon', "all", function (e) {
+					recorder.recordNoteOn(e.note.number, e.rawVelocity)
+					if (recorder.state.shouldPlay) {
+						piano.play(e.note.number)
+					}
+				});
+				input.addListener('noteoff', "all", function (e) {
+					recorder.recordNoteOff(e.note.number)
+					if (recorder.state.shouldPlay) {
+						piano.play(e.note.number).stop(ac.currentTime)
+					}
+				});
+				input.addListener('controlchange', "all", function (e) {
+					recorder.recordCC(e.controller.number, e.value)
+				});
+			}
+		})
 	}
 	startRecordTimeoutTimer = () => {
 		this.recordTimer = setTimeout(() => {
@@ -256,6 +269,9 @@ export default class Recorder extends React.Component {
 									<Button variant="primary" onClick={this.stopRecord}>
 										Stop (vol: {this.state.velocity})
 									</Button>
+								</p>
+								<p>
+									<Form.Check inline label="Play Sound" type="checkbox" checked={this.state.shouldPlay} onChange={() => { this.setState({ shouldPlay: !this.state.shouldPlay }) }} />
 								</p>
 								<p className="recorder-card">
 									<Piano
