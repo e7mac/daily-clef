@@ -1,8 +1,8 @@
 import { Alert, Card, Button } from 'react-bootstrap';
-import { Form } from 'react-bootstrap';
 import { encode } from 'json-midi-encoder';
 import { faRedo } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Form } from 'react-bootstrap';
 import { Piano } from 'react-piano';
 import React from 'react';
 import Soundfont from 'soundfont-player';
@@ -28,7 +28,10 @@ export default class Recorder extends React.Component {
 			shouldPlay: false,
 			message: null,
 			recordDuration: null,
-			noSleep: new NoSleep()
+			noSleep: new NoSleep(),
+			playingNotes: {},
+			sustain: false,
+			sustainedNotes: []
 		}
 
 		this.track = null
@@ -68,17 +71,49 @@ export default class Recorder extends React.Component {
 				input.addListener('noteon', "all", function (e) {
 					recorder.recordNoteOn(recorder.epochTime(), e.note.number, e.rawVelocity)
 					if (recorder.state.shouldPlay) {
-						piano.play(e.note.number)
+						let playingNotes = recorder.state.playingNotes;
+						playingNotes[e.note.number] = piano.play(e.note.number)
+						recorder.setState({
+							playingNotes: playingNotes
+						})
 					}
 				});
 				input.addListener('noteoff', "all", function (e) {
 					recorder.recordNoteOff(recorder.epochTime(), e.note.number)
 					if (recorder.state.shouldPlay) {
-						piano.play(e.note.number).stop(ac.currentTime)
+						let playingNotes = recorder.state.playingNotes;
+						const playingNote = playingNotes[e.note.number]
+						if (recorder.state.sustain) {
+							let sustainedNotes = recorder.state.sustainedNotes
+							sustainedNotes.push(playingNote)
+							recorder.setState({
+								sustainedNotes: sustainedNotes
+							})
+						} else {
+							playingNote.stop(ac.currentTime)
+						}
+						delete playingNotes[e.note.number]
+						recorder.setState({
+							playingNotes: playingNotes
+						})
 					}
 				});
 				input.addListener('controlchange', "all", function (e) {
 					recorder.recordCC(recorder.epochTime(), e.controller.number, e.value)
+					if (e.controller.number === 64) {
+						const sustain = e.value > 64
+						recorder.setState({
+							sustain: sustain
+						})
+						if (!sustain) {
+							for (const note of recorder.state.sustainedNotes) {
+								note.stop(ac.currentTime)
+							}
+							recorder.setState({
+								sustainedNotes: []
+							})
+						}
+					}
 				});
 			}
 		})
