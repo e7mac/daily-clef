@@ -33,8 +33,6 @@ export default class Recorder extends React.Component {
 			sustain: false,
 			sustainedNotes: [],
 			metadata: [],
-			sight_reading: false,
-			technical: false
 		}
 
 		this.track = null
@@ -256,7 +254,6 @@ export default class Recorder extends React.Component {
 
 			encode(midiFile)
 				.then((arrayBuffer) => {
-					console.log(arrayBuffer)
 					var blob = new Blob([arrayBuffer], {
 						type: 'audio/midi'
 					});
@@ -270,7 +267,7 @@ export default class Recorder extends React.Component {
 					const lastModified = Math.floor(new Date().valueOf() / 1000)
 					const filename = `${lastModified.toString()}.mid`
 					const file = new File([blob], filename)
-					this.props.api.uploadFileFlow(file, lastModified, metadata).then(() => {
+					this.props.api.uploadFileFlow(file, lastModified, this.state.metadata).then(() => {
 						console.log("recorded file uploaded!")
 						this.setState({
 							message: "✅ Recording Uploaded!"
@@ -290,12 +287,12 @@ export default class Recorder extends React.Component {
 		return secs * 8 * 240 * 2 / 4 // 120 bpm
 	}
 
-	updateMetadata() {
-		const metadata = this.state.metadata;
+	updateMetadata = (e) => {
+		const value = e.target.value
+		const metadata = this.state.metadata
 		metadata.push({
-			time: this.epochTime() - this.state.startTime,
-			sight_reading: this.state.sight_reading,
-			technical: this.state.technical
+			time: Math.floor(this.epochTime() - this.state.startTime),
+			value: value
 		})
 		this.setState({ metadata: metadata })
 	}
@@ -324,8 +321,11 @@ export default class Recorder extends React.Component {
 									<Form.Check inline label="Play Sound" type="checkbox" checked={this.state.shouldPlay} onChange={() => { this.setState({ shouldPlay: !this.state.shouldPlay }) }} />
 								</p>
 								<p>
-									<Form.Check inline label="Sight Reading" type="checkbox" checked={this.state.sight_reading} onChange={() => { this.setState({ sight_reading: !this.state.sight_reading }); this.updateMetadata() }} />
-									<Form.Check inline label="Technical" type="checkbox" checked={this.state.technical} onChange={() => { this.setState({ technical: !this.state.technical }); this.updateMetadata() }} />
+									<Form.Control as="select" size="lg" onChange={this.updateMetadata}>
+										<option>None</option>
+										<option>Sight Reading</option>
+										<option>Technical</option>
+									</Form.Control>
 								</p>
 								<p className="recorder-card">
 									<Piano
