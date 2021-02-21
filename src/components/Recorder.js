@@ -66,19 +66,19 @@ export default class Recorder extends React.Component {
 				const input = WebMidi.inputs[i]
 
 				input.addListener('noteon', "all", function (e) {
-					recorder.recordNoteOn(e.note.number, e.rawVelocity)
+					recorder.recordNoteOn(recorder.epochTime(), e.note.number, e.rawVelocity)
 					if (recorder.state.shouldPlay) {
 						piano.play(e.note.number)
 					}
 				});
 				input.addListener('noteoff', "all", function (e) {
-					recorder.recordNoteOff(e.note.number)
+					recorder.recordNoteOff(recorder.epochTime(), e.note.number)
 					if (recorder.state.shouldPlay) {
 						piano.play(e.note.number).stop(ac.currentTime)
 					}
 				});
 				input.addListener('controlchange', "all", function (e) {
-					recorder.recordCC(e.controller.number, e.value)
+					recorder.recordCC(recorder.epochTime(), e.controller.number, e.value)
 				});
 			}
 		})
@@ -121,7 +121,7 @@ export default class Recorder extends React.Component {
 	}
 
 
-	recordNoteOn = (pitch, velocity) => {
+	recordNoteOn = (time, pitch, velocity) => {
 		const event = {
 			"noteOn": {
 				"noteNumber": pitch,
@@ -135,10 +135,10 @@ export default class Recorder extends React.Component {
 			activeNotes: activeNotes,
 			noteRecorded: true
 		})
-		this.recordEvent(event)
+		this.recordEvent(time, event)
 	}
 
-	recordNoteOff = (pitch) => {
+	recordNoteOff = (time, pitch) => {
 		const event = {
 			"noteOff": {
 				"noteNumber": pitch
@@ -150,22 +150,21 @@ export default class Recorder extends React.Component {
 			velocity: 0,
 			activeNotes: activeNotes
 		})
-		this.recordEvent(event)
+		this.recordEvent(time, event)
 	}
 
-	recordCC = (number, value) => {
+	recordCC = (time, number, value) => {
 		const event = {
 			"controlChange": {
 				"type": number,
 				"value": value
 			}
 		}
-		this.recordEvent(event)
+		this.recordEvent(time, event)
 	}
 
-	recordEvent = (event) => {
+	recordEvent = (time, event) => {
 		this.refreshTimer()
-		const time = this.epochTime()
 		const delta = time - this.lastTime
 		this.lastTime = time
 		const fullEvent = {
