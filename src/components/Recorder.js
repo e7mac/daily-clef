@@ -54,6 +54,9 @@ export default class Recorder extends React.Component {
 
 	registerMidiDevices = () => {
 		const recorder = this;
+		var AudioContext = window.AudioContext // Default
+			|| window.webkitAudioContext;// Safari and old versions of Chrome
+
 		const ac = new AudioContext();
 		Soundfont.instrument(ac, 'acoustic_grand_piano').then(function (piano) {
 			for (const i in WebMidi.inputs) {
