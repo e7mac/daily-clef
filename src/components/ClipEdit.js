@@ -1,4 +1,4 @@
-import { Container, Dropdown, Row, Col, Form } from 'react-bootstrap';
+import { Container, Dropdown, Row, Col, Form, ButtonGroup, ToggleButton } from 'react-bootstrap';
 import React from 'react';
 
 import Relabel from './Relabel';
@@ -78,10 +78,24 @@ export default class ClipEdit extends React.Component {
 			<Container className="panel-body">
 				<Row>
 					<Col sm="auto">
-						<Form.Check inline label="Sightread" type="checkbox" checked={this.state.sight_reading} onChange={this.changeSightReading} />
-					</Col>
-					<Col sm="auto">
-						<Form.Check inline label="Technical" type="checkbox" checked={this.state.technical} onChange={this.changeTechnical} />
+						<ButtonGroup toggle className="mb-2">
+							<ToggleButton
+								type="checkbox"
+								variant="info"
+								checked={this.state.sight_reading}
+								onChange={this.changeSightReading}
+							>
+								Sight Reading
+        				</ToggleButton>
+							<ToggleButton
+								type="checkbox"
+								variant="info"
+								checked={this.state.technical}
+								onChange={this.changeTechnical}
+							>
+								Technical
+        				</ToggleButton>
+						</ButtonGroup>
 					</Col>
 					<Col sm="auto">
 						<Relabel api={this.props.api} clip={this.props.clip} onRelabel={this.onRelabel} />
