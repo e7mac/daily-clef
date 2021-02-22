@@ -12,12 +12,29 @@ export default class ClipDelete extends React.Component {
 			confirmation: false,
 			deleted: false
 		}
+		this.deleteButton = React.createRef();
 	}
 
 	deleteClip = () => {
-		this.props.api.deleteClip(this.props.clip.id).then(() => {
-			this.setState({ deleted: true })
-		})
+		if (this.state.confirmation) {
+			this.props.api.deleteClip(this.props.clip.id).then(() => {
+				this.setState({ deleted: true })
+			})
+		} else {
+			this.setState({ confirmation: true })
+			setTimeout(() => {
+				document.addEventListener('click', this.handleOutsideClick);
+			}, 100)
+		}
+	}
+
+	handleOutsideClick = (event) => {
+		if (this.deleteButton.current !== null) {
+			if (!this.deleteButton.current.contains(event.target)) {
+				this.setState({ confirmation: false })
+				document.removeEventListener('click', this.handleOutsideClick);
+			}
+		}
 	}
 
 	render() {
@@ -27,8 +44,8 @@ export default class ClipDelete extends React.Component {
 					this.state.deleted
 						? "Deleted. Refresh as needed"
 						: this.state.confirmation
-							? <Button variant="danger" onClick={this.deleteClip}>Sure?</Button>
-							: <Button variant="light" onClick={() => { this.setState({ confirmation: true }) }}><FontAwesomeIcon icon={faTrash} /></Button>
+							? <Button variant="danger" onClick={this.deleteClip} ref={this.deleteButton}>Sure?</Button>
+							: <Button variant="light" onClick={this.deleteClip} ref={this.deleteButton}><FontAwesomeIcon icon={faTrash} /></Button>
 				}
 			</React.Fragment>
 		);
