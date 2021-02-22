@@ -142,7 +142,7 @@ export default class ClipGetter {
 			const dateDiff = (lastDate.getTime() - date.getTime()) / 1000;
 			if (dateDiff < DURATION_BETWEEN_SESSIONS_COMBINE) {
 				const prevClipgroupset = items[items.length - 1];
-				const groups = this.combineGroups(session.labels, prevClipgroupset.groups)
+				const groups = this.combineGroups(prevClipgroupset.groups, session.labels)
 				const newClipgroupset = {
 					title: TimeFormatUtils.formatDateTime(session.time),
 					date: session.time,
