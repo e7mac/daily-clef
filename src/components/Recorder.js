@@ -1,4 +1,4 @@
-import { Alert, Card, Button, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { Alert, Card, Button, ButtonGroup, DropdownButton, Dropdown } from 'react-bootstrap';
 import { encode } from 'json-midi-encoder';
 import { faRedo } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -33,6 +33,7 @@ export default class Recorder extends React.Component {
 			sustain: false,
 			sustainedNotes: [],
 			metadata: [],
+			labels: []
 		}
 
 		this.track = null
@@ -43,6 +44,11 @@ export default class Recorder extends React.Component {
 
 	componentDidMount() {
 		this.initMidi()
+		this.props.api.loadLabels().then((labels) => {
+			this.setState({
+				labels: labels
+			})
+		})
 	}
 
 	initMidi = () => {
@@ -226,7 +232,10 @@ export default class Recorder extends React.Component {
 			recording: true,
 			noteRecorded: false,
 			startTime: this.epochTime(),
-			metadata: []
+			metadata: [{
+				time: 0,
+				value: "None"
+			}]
 		})
 		this.startRecordTimeoutTimer()
 		this.startRecordDurationTimer()
@@ -288,13 +297,16 @@ export default class Recorder extends React.Component {
 		return secs * 8 * 240 * 2 / 4 // 120 bpm
 	}
 
-	updateMetadata = (index) => {
-		const value = this.labelOptions[index]
+	metadataButtonClicked = (e) => {
+		this.updateMetadata(e.target.value)
+	}
+	updateMetadata = (value) => {
 		const metadata = this.state.metadata
 		metadata.push({
-			time: Math.floor(this.epochTime() - this.state.startTime),
+			time: (this.epochTime() - this.state.startTime).toFixed(2),
 			value: value
 		})
+		console.log(metadata)
 		this.setState({ metadata: metadata })
 	}
 
@@ -322,13 +334,24 @@ export default class Recorder extends React.Component {
 									<Form.Check inline label="Play Sound" type="checkbox" checked={this.state.shouldPlay} onChange={() => { this.setState({ shouldPlay: !this.state.shouldPlay }) }} />
 								</p>
 								<p>
-									<ToggleButtonGroup type="radio" name="options" defaultValue={0} onChange={this.updateMetadata}>
+									<ButtonGroup toggle={true}>
 										{
 											this.labelOptions.map((item, index) =>
-												<ToggleButton value={index}>{item}</ToggleButton>
+												<Button value={item} onClick={this.metadataButtonClicked}>{item}</Button>
 											)
 										}
-									</ToggleButtonGroup>
+										{this.state.labels.length > 0
+											? <DropdownButton title="Pieces" onSelect={this.updateMetadata}>
+												{this.state.labels.map((label, index) =>
+													<Dropdown.Item eventKey={label.name}>{label.name}</Dropdown.Item>
+												)}
+											</DropdownButton>
+											: ""
+										}
+									</ButtonGroup>
+								</p>
+								<p>
+									Currently Playing: {this.state.metadata[this.state.metadata.length - 1].value}
 								</p>
 								<p className="recorder-card">
 									<Piano
