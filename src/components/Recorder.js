@@ -1,4 +1,4 @@
-import { Alert, Card, Button } from 'react-bootstrap';
+import { Alert, Card, Button, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { encode } from 'json-midi-encoder';
 import { faRedo } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -38,6 +38,7 @@ export default class Recorder extends React.Component {
 		this.track = null
 		this.recordTimer = null
 		this.recordingDurationTimer = null
+		this.labelOptions = ['None', 'Sight Reading', 'Technical']
 	}
 
 	componentDidMount() {
@@ -287,8 +288,8 @@ export default class Recorder extends React.Component {
 		return secs * 8 * 240 * 2 / 4 // 120 bpm
 	}
 
-	updateMetadata = (e) => {
-		const value = e.target.value
+	updateMetadata = (index) => {
+		const value = this.labelOptions[index]
 		const metadata = this.state.metadata
 		metadata.push({
 			time: Math.floor(this.epochTime() - this.state.startTime),
@@ -321,11 +322,13 @@ export default class Recorder extends React.Component {
 									<Form.Check inline label="Play Sound" type="checkbox" checked={this.state.shouldPlay} onChange={() => { this.setState({ shouldPlay: !this.state.shouldPlay }) }} />
 								</p>
 								<p>
-									<Form.Control as="select" size="lg" onChange={this.updateMetadata}>
-										<option>None</option>
-										<option>Sight Reading</option>
-										<option>Technical</option>
-									</Form.Control>
+									<ToggleButtonGroup type="radio" name="options" defaultValue={0} onChange={this.updateMetadata}>
+										{
+											this.labelOptions.map((item, index) =>
+												<ToggleButton value={index}>{item}</ToggleButton>
+											)
+										}
+									</ToggleButtonGroup>
 								</p>
 								<p className="recorder-card">
 									<Piano

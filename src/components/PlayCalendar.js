@@ -44,16 +44,9 @@ export default class PlayCalendar extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.api.loadRawSessionFiles()
-			.then((rawsessionfiles) => {
-				const selectedDays = []
-				for (const item of rawsessionfiles) {
-					selectedDays.push(new Date(item['date_played']))
-				}
-				this.setState({
-					selectedDays: selectedDays
-				})
-			})
+		const date = new Date();
+		const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+		this.onMonthChange(firstDay)
 	}
 	render() {
 		return (
