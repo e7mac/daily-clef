@@ -1,8 +1,7 @@
-import { Alert, Card, Button, ButtonGroup, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Alert, Card, Button, ButtonGroup, DropdownButton, Dropdown, ToggleButton } from 'react-bootstrap';
 import { encode } from 'json-midi-encoder';
 import { faRedo } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Form } from 'react-bootstrap';
 import { Piano } from 'react-piano';
 import React from 'react';
 import Soundfont from 'soundfont-player';
@@ -342,7 +341,16 @@ export default class Recorder extends React.Component {
 									/>
 								</p>
 								<p>
-									<Form.Check inline label="Play Sound" type="checkbox" checked={this.state.shouldPlay} onChange={() => { this.setState({ shouldPlay: !this.state.shouldPlay }) }} />
+									<ButtonGroup toggle className="mb-2">
+										<ToggleButton
+											type="checkbox"
+											variant="secondary"
+											checked={this.state.shouldPlay}
+											onChange={() => { this.setState({ shouldPlay: !this.state.shouldPlay }) }}
+										>
+											Play Sound
+        								</ToggleButton>
+									</ButtonGroup>
 								</p>
 								<p>
 									Add Label:
