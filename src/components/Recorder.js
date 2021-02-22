@@ -326,14 +326,27 @@ export default class Recorder extends React.Component {
 						? <p>{this.state.recording
 							? <span>
 								<p>
-									<Button variant="primary" onClick={this.stopRecord}>
-										Stop (vol: {this.state.velocity})
+									<Button variant="danger" onClick={this.stopRecord}>
+										Stop
+										{/* Stop (vol: {this.state.velocity}) */}
 									</Button>
+								</p>
+								<p className="recorder-card">
+									<Piano
+										activeNotes={activeNotes}
+										noteRange={{ first: 45, last: 88 }}
+										playNote={(midiNumber) => {
+										}}
+										stopNote={(midiNumber) => {
+										}}
+									/>
 								</p>
 								<p>
 									<Form.Check inline label="Play Sound" type="checkbox" checked={this.state.shouldPlay} onChange={() => { this.setState({ shouldPlay: !this.state.shouldPlay }) }} />
 								</p>
 								<p>
+									Add Label:
+									<br />
 									<ButtonGroup toggle={true}>
 										{
 											this.labelOptions.map((item, index) =>
@@ -351,20 +364,10 @@ export default class Recorder extends React.Component {
 									</ButtonGroup>
 								</p>
 								<p>
-									Currently Playing: {this.state.metadata[this.state.metadata.length - 1].value}
-								</p>
-								<p className="recorder-card">
-									<Piano
-										activeNotes={activeNotes}
-										noteRange={{ first: 45, last: 88 }}
-										playNote={(midiNumber) => {
-										}}
-										stopNote={(midiNumber) => {
-										}}
-									/>
+									Current Label: {this.state.metadata[this.state.metadata.length - 1].value}
 								</p>
 							</span>
-							: <Button variant="danger" onClick={this.startRecord}>Record</Button>
+							: <Button variant="success" onClick={this.startRecord}>Record</Button>
 						}</p>
 
 						: <>
