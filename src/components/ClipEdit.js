@@ -81,7 +81,7 @@ export default class ClipEdit extends React.Component {
 						<ButtonGroup toggle className="mb-2">
 							<ToggleButton
 								type="checkbox"
-								variant="info"
+								variant="light"
 								checked={this.state.sight_reading}
 								onChange={this.changeSightReading}
 							>
@@ -89,7 +89,7 @@ export default class ClipEdit extends React.Component {
         				</ToggleButton>
 							<ToggleButton
 								type="checkbox"
-								variant="info"
+								variant="light"
 								checked={this.state.technical}
 								onChange={this.changeTechnical}
 							>
@@ -105,7 +105,7 @@ export default class ClipEdit extends React.Component {
 					</Col>
 					<Col sm="auto">
 						<Dropdown drop='left' onSelect={this.changeStage}>
-							<Dropdown.Toggle variant="info" id="dropdown-basic">
+							<Dropdown.Toggle variant="light" id="dropdown-basic">
 								{
 									this.props.clip.learning_stage !== null
 										? this.stages[this.props.clip.learning_stage]

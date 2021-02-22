@@ -40,7 +40,7 @@ export default function Clip(props) {
 			<Container style={props.playingItem === props.clip ? { background: `#dcedc8` } : {}}>
 				<Row>
 					<Col sm="auto">
-						<Button variant="info" onClick={playURL}><FontAwesomeIcon icon={faPlay} /></Button>
+						<Button variant="dark" onClick={playURL}><FontAwesomeIcon icon={faPlay} /></Button>
 					</Col>
 					<Col sm="auto">
 						{TimeFormatUtils.formatDuration(props.clip.duration)}
@@ -60,8 +60,7 @@ export default function Clip(props) {
 								<ClipDelete clip={props.clip} api={props.api} />
 							</Col>
 							<Col sm="auto">
-
-								<Button variant="info" onClick={toggleEditing}><FontAwesomeIcon icon={faEdit} /></Button>
+								<Button variant="light" onClick={toggleEditing}><FontAwesomeIcon icon={faEdit} /></Button>
 							</Col>
 						</>
 					}
@@ -69,7 +68,7 @@ export default function Clip(props) {
 						<Tempo clip_id={props.clip.id} api={props.api} />
 					</Col>
 					<Col sm="auto">
-						<a href={`https://e7mac.github.io/MIDIano/?url=${props.clip.url}`} target="_blank" rel="noopener noreferrer"><Button variant="info">Synthesia</Button></a>
+						<a href={`https://e7mac.github.io/MIDIano/?url=${props.clip.url}`} target="_blank" rel="noopener noreferrer"><Button variant="link">Synthesia</Button></a>
 					</Col>
 				</Row>
 				<Collapse in={editing}>

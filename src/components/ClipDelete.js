@@ -28,7 +28,7 @@ export default class ClipDelete extends React.Component {
 						? "Deleted. Refresh as needed"
 						: this.state.confirmation
 							? <Button variant="danger" onClick={this.deleteClip}>Sure?</Button>
-							: <Button variant="info" onClick={() => { this.setState({ confirmation: true }) }}><FontAwesomeIcon icon={faTrash} /></Button>
+							: <Button variant="light" onClick={() => { this.setState({ confirmation: true }) }}><FontAwesomeIcon icon={faTrash} /></Button>
 				}
 			</React.Fragment>
 		);

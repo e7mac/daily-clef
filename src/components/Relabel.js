@@ -49,7 +49,7 @@ export default class Relabel extends React.Component {
 								labelKey="name"
 								options={this.state.options}
 							/>
-							<Button variant="info" onClick={this.relabelItem}>Relabel</Button>
+							<Button variant="light" onClick={this.relabelItem}>Relabel</Button>
 						</span>
 				}
 			</span >

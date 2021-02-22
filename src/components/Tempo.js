@@ -71,7 +71,7 @@ export default class Tempo extends React.Component {
 							<Tooltip />
 							<Line type="monotone" dataKey="tempo" stroke="#82ca9d" dot={false} unit="bpm" />
 						</LineChart>
-						: <Button variant="info" disabled={this.state.loading} onClick={this.fn}>
+						: <Button variant="light" disabled={this.state.loading} onClick={this.fn}>
 							{this.state.loading ? 'Loading…' : 'Tempo'}
 						</Button>
 				}
