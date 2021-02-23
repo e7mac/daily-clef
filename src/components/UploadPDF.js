@@ -12,7 +12,9 @@ export default function UploadPDF(props) {
 			const modified = Math.floor(file.lastModified / 1000);
 			// props.setStatus("Uploading...")
 			props.api.uploadFileFlow(file, modified, {}, props.piece)
-				.then(() => {
+				.then((res) => {
+					console.log(res)
+					props.onUploaded(res.url)
 					fileInput.value = ''
 				})
 		}

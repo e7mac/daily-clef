@@ -1,8 +1,8 @@
 import { Alert, Navbar, Nav } from 'react-bootstrap';
+import { faChartBar, faMicrophone, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from "react-router-dom";
 import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartBar, faMicrophone, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import LabelBar from './LabelBar'
 import Settings from './Settings'
@@ -49,9 +49,11 @@ export default class Menubar extends Component {
 				+ (task_count.transcription_tasks > 0 ? " Transcribing " : "")
 				+ (task_count.segmentation_tasks > 0 ? " Segmenting " : "")
 				+ (task_count.classification_tasks > 0 ? " Classifying " : "")
-			this.setState({
-				status: status
-			})
+			if (status.length > 0) {
+				this.setState({
+					status: status
+				})
+			}
 		})
 	}
 

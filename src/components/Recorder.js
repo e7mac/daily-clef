@@ -317,6 +317,7 @@ export default class Recorder extends React.Component {
 				pdf_url = label.sheet_music_url
 			}
 		}
+		console.log(pdf_url)
 		this.setState({
 			pdf_url: pdf_url,
 			can_upload_pdf: !this.labelOptions.includes(value)
@@ -389,18 +390,9 @@ export default class Recorder extends React.Component {
 									Current Label: {this.state.metadata[this.state.metadata.length - 1].value}
 								</p>
 								{
-									this.state.pdf_url
-										? <div>
-											<p>
-												<PDFDisplay file={this.state.pdf_url} />
-											</p>
-											<p>
-												<UploadPDF title="Replace PDF" api={this.props.api} piece={this.state.metadata[this.state.metadata.length - 1].value} />
-											</p>
-										</div>
-										: this.state.can_upload_pdf
-											? <UploadPDF api={this.props.api} piece={this.state.metadata[this.state.metadata.length - 1].value} />
-											: ""
+									this.state.can_upload_pdf
+										? <PDFDisplay file={this.state.pdf_url} piece={this.state.metadata[this.state.metadata.length - 1].value} api={this.props.api} />
+										: ""
 								}
 							</span>
 							: <Button variant="success" onClick={this.startRecord}>Record</Button>
