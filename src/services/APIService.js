@@ -6,8 +6,8 @@ import ModelGetter from './ModelGetter'
 
 export default class APIService {
 	constructor() {
-		// this.baseUrl = "https://midi-practice.herokuapp.com"
-		this.baseUrl = "http://localhost:8000"
+		this.baseUrl = "https://midi-practice.herokuapp.com"
+		// this.baseUrl = "http://localhost:8000"
 		this.token = localStorage.getItem('token')
 		if (this.token !== null) {
 			this.userPromise = this.apiCall(`/api/current_user/`)
