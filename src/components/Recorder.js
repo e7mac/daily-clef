@@ -19,7 +19,7 @@ export default class Recorder extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			available: true,
+			available: false,
 			recording: false,
 			velocity: 0,
 			activeNotes: new Set(),
@@ -309,13 +309,15 @@ export default class Recorder extends React.Component {
 		})
 		console.log(metadata)
 		this.setState({ metadata: metadata })
+		let pdf_url = null
 		for (const label of this.state.labels) {
 			if (label.name === value) {
-				this.setState({
-					pdf_url: label.sheet_music_url
-				})
+				pdf_url = label.sheet_music_url
 			}
 		}
+		this.setState({
+			pdf_url: pdf_url
+		})
 	}
 
 	render() {
