@@ -24,6 +24,7 @@ class LoginForm extends React.Component {
         <input
           type="text"
           name="username"
+          autoCapitalize="none"
           value={this.state.username}
           onChange={this.handle_change}
         />
