@@ -1,7 +1,5 @@
 import { Form, Button } from 'react-bootstrap';
 import React, { useRef } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons'
 
 export default function UploadPDF(props) {
 
