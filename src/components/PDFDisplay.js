@@ -1,3 +1,4 @@
+import { Button } from 'react-bootstrap';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import React, { useState, useEffect } from 'react';
@@ -33,30 +34,32 @@ export default function PDFDisplay(props) {
 		return (
 			<>
 				<div>
-					<p>
-						Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
-					</p>
-					<button
-						type="button"
-						disabled={pageNumber <= 1}
-						onClick={previousPage}
-					>
-						Previous
-        		</button>
-					<button
-						type="button"
-						disabled={pageNumber >= numPages}
-						onClick={nextPage}
-					>
-						Next
-        		</button>
+					<div>
+						<p>
+							Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
+						</p>
+						<Button
+							variant="light"
+							disabled={pageNumber <= 1}
+							onClick={previousPage}>
+							Previous
+						</Button>
+						<Button
+							variant="light"
+							disabled={pageNumber >= numPages}
+							onClick={nextPage}>
+							Next
+						</Button>
+					</div>
+					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+						<Document
+							file={props.file}
+							onLoadSuccess={onDocumentLoadSuccess}
+						>
+							<Page pageNumber={pageNumber} />
+						</Document>
+					</div>
 				</div>
-				<Document
-					file={props.file}
-					onLoadSuccess={onDocumentLoadSuccess}
-				>
-					<Page pageNumber={pageNumber} />
-				</Document>
 			</>
 		)
 	}
@@ -64,10 +67,11 @@ export default function PDFDisplay(props) {
 	return (
 		<>
 			<div>
-				<button onClick={handle.enter}>
+				<Button
+					variant="light"
+					onClick={handle.enter}>
 					Enter fullscreen
-      			</button>
-
+				</Button>
 				<FullScreen handle={handle}>
 					{pdfPage()}
 				</FullScreen>
