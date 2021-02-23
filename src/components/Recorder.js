@@ -11,6 +11,7 @@ import 'react-piano/dist/styles.css';
 
 import { formatDuration } from '../utils/TimeFormatUtils'
 import NoSleep from '../lib/nosleep'
+import PDFDisplay from './PDFDisplay';
 
 import './Recorder.css';
 
@@ -18,7 +19,7 @@ export default class Recorder extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			available: false,
+			available: true,
 			recording: false,
 			velocity: 0,
 			activeNotes: new Set(),
@@ -32,7 +33,8 @@ export default class Recorder extends React.Component {
 			sustain: false,
 			sustainedNotes: [],
 			metadata: [],
-			labels: []
+			labels: [],
+			pdf_url: null
 		}
 
 		this.track = null
@@ -307,6 +309,13 @@ export default class Recorder extends React.Component {
 		})
 		console.log(metadata)
 		this.setState({ metadata: metadata })
+		for (const label of this.state.labels) {
+			if (label.name === value) {
+				this.setState({
+					pdf_url: label.sheet_music_url
+				})
+			}
+		}
 	}
 
 	render() {
@@ -374,10 +383,19 @@ export default class Recorder extends React.Component {
 								<p>
 									Current Label: {this.state.metadata[this.state.metadata.length - 1].value}
 								</p>
+								{
+									this.state.pdf_url
+										? <div>
+											<p>
+												<PDFDisplay file={this.state.pdf_url} />
+											</p>
+										</div>
+										: ""
+								}
+
 							</span>
 							: <Button variant="success" onClick={this.startRecord}>Record</Button>
-						}</p>
-
+						} </p>
 						: <>
 							<Alert key='0' variant='primary'>
 								<p>No compatible MIDI devices found</p>
