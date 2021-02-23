@@ -1,77 +1,78 @@
 import { Document, Page, pdfjs } from 'react-pdf';
-import React from 'react';
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import React, { useState, useEffect } from 'react';
 
-export default class PDFDisplay extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			numPages: 0,
-			pageNumber: 0
-		}
-	}
+export default function PDFDisplay(props) {
+	const [numPages, setNumPages] = useState(null);
+	const [pageNumber, setPageNumber] = useState(1);
+	const handle = useFullScreenHandle();
 
-	componentDidMount() {
+	useEffect(() => {
+		// Runs ONCE after initial rendering
 		pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+	}, []);
+
+	function onDocumentLoadSuccess({ numPages }) {
+		setNumPages(numPages);
+		setPageNumber(1);
 	}
 
-	onDocumentLoadSuccess = ({ numPages }) => {
-		this.setState({
-			numPages: numPages,
-			pageNumber: 1
-		})
+	function changePage(offset) {
+		setPageNumber(prevPageNumber => prevPageNumber + offset);
 	}
 
-	changePage = (offset) => {
-		const pageNumber = this.state.pageNumber;
-		this.setState({
-			pageNumber: pageNumber + offset
-		})
+	function previousPage() {
+		changePage(-1);
 	}
 
-	previousPage = () => {
-		this.changePage(-1);
+	function nextPage() {
+		changePage(1);
 	}
 
-	nextPage = () => {
-		this.changePage(1);
-	}
-
-	render() {
+	function pdfPage() {
 		return (
-			<span>
-				{this.props.file
-					? <div>
-						<p>
-							<div>
-								<p>
-									Page {this.state.pageNumber || (this.state.numPages ? 1 : '--')} of {this.state.numPages || '--'}
-								</p>
-								<button
-									type="button"
-									disabled={this.state.pageNumber <= 1}
-									onClick={this.previousPage}
-								>
-									Previous
-        							</button>
-								<button
-									type="button"
-									disabled={this.state.pageNumber >= this.state.numPages}
-									onClick={this.nextPage}
-								>
-									Next
-        						</button>
-							</div>
-							<Document
-								file={this.props.file}
-								onLoadSuccess={this.onDocumentLoadSuccess}
-							>
-								<Page pageNumber={this.state.pageNumber} />
-							</Document>
-						</p>
-					</div>
-					: ""
-				}
-			</span >
-		);
+			<>
+				<div>
+					<p>
+						Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
+					</p>
+					<button
+						type="button"
+						disabled={pageNumber <= 1}
+						onClick={previousPage}
+					>
+						Previous
+        		</button>
+					<button
+						type="button"
+						disabled={pageNumber >= numPages}
+						onClick={nextPage}
+					>
+						Next
+        		</button>
+				</div>
+				<Document
+					file={props.file}
+					onLoadSuccess={onDocumentLoadSuccess}
+				>
+					<Page pageNumber={pageNumber} />
+				</Document>
+			</>
+		)
 	}
+
+	return (
+		<>
+			<div>
+				<button onClick={handle.enter}>
+					Enter fullscreen
+      			</button>
+
+				<FullScreen handle={handle}>
+					{pdfPage()}
+				</FullScreen>
+			</div>
+			{pdfPage()}
+		</>
+	);
 }
