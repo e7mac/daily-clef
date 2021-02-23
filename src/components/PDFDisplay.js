@@ -2,6 +2,9 @@ import { Button } from 'react-bootstrap';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import React, { useState, useEffect } from 'react';
+import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
+
+import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
 
 export default function PDFDisplay(props) {
 	const [numPages, setNumPages] = useState(null);
@@ -10,7 +13,7 @@ export default function PDFDisplay(props) {
 
 	useEffect(() => {
 		// Runs ONCE after initial rendering
-		pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+		// pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 	}, []);
 
 	function onDocumentLoadSuccess({ numPages }) {
@@ -67,6 +70,11 @@ export default function PDFDisplay(props) {
 	return (
 		<>
 			<div>
+				<Worker workerUrl="https://unpkg.com/pdfjs-dist@2.5.207/build/pdf.worker.min.js">
+					<div style={{ height: '750px' }}>
+						<Viewer fileUrl={props.file} />
+					</div>
+				</Worker>
 				<Button
 					variant="light"
 					onClick={handle.enter}>

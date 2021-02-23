@@ -20,7 +20,7 @@ export default class Recorder extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			available: false,
+			available: true,
 			recording: false,
 			velocity: 0,
 			activeNotes: new Set(),
