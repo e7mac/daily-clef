@@ -12,6 +12,7 @@ import 'react-piano/dist/styles.css';
 import { formatDuration } from '../utils/TimeFormatUtils'
 import NoSleep from '../lib/nosleep'
 import PDFDisplay from './PDFDisplay';
+import UploadPDF from './UploadPDF';
 
 import './Recorder.css';
 
@@ -19,7 +20,7 @@ export default class Recorder extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			available: false,
+			available: true,
 			recording: false,
 			velocity: 0,
 			activeNotes: new Set(),
@@ -34,7 +35,8 @@ export default class Recorder extends React.Component {
 			sustainedNotes: [],
 			metadata: [],
 			labels: [],
-			pdf_url: null
+			pdf_url: null,
+			can_upload_pdf: null
 		}
 
 		this.track = null
@@ -278,7 +280,7 @@ export default class Recorder extends React.Component {
 					const lastModified = Math.floor(new Date().valueOf() / 1000)
 					const filename = `${lastModified.toString()}.mid`
 					const file = new File([blob], filename)
-					this.props.api.uploadFileFlow(file, lastModified, this.state.metadata).then(() => {
+					this.props.api.uploadFileFlow(file, lastModified, this.state.metadata, "").then(() => {
 						console.log("recorded file uploaded!")
 						this.setState({
 							message: "✅ Recording Uploaded!"
@@ -316,7 +318,8 @@ export default class Recorder extends React.Component {
 			}
 		}
 		this.setState({
-			pdf_url: pdf_url
+			pdf_url: pdf_url,
+			can_upload_pdf: !this.labelOptions.includes(value)
 		})
 	}
 
@@ -392,9 +395,10 @@ export default class Recorder extends React.Component {
 												<PDFDisplay file={this.state.pdf_url} />
 											</p>
 										</div>
-										: ""
+										: this.state.can_upload_pdf
+											? <UploadPDF api={this.props.api} piece={this.state.metadata[this.state.metadata.length - 1].value} />
+											: ""
 								}
-
 							</span>
 							: <Button variant="success" onClick={this.startRecord}>Record</Button>
 						} </p>
