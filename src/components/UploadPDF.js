@@ -29,7 +29,7 @@ export default function UploadPDF(props) {
 					<Form.File onChange={submitClicked} ref={fileRef} accept="application/pdf" />
 				</Form.Group>
 			</Form>
-			<Button variant="light" onClick={upload}>Upload PDF</Button>
+			<Button variant="light" onClick={upload}>{props.title || "Upload PDF"}</Button>
 		</span>
 	);
 }

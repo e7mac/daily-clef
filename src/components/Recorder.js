@@ -394,6 +394,9 @@ export default class Recorder extends React.Component {
 											<p>
 												<PDFDisplay file={this.state.pdf_url} />
 											</p>
+											<p>
+												<UploadPDF title="Replace PDF" api={this.props.api} piece={this.state.metadata[this.state.metadata.length - 1].value} />
+											</p>
 										</div>
 										: this.state.can_upload_pdf
 											? <UploadPDF api={this.props.api} piece={this.state.metadata[this.state.metadata.length - 1].value} />
