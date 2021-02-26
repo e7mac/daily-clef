@@ -54,6 +54,12 @@ export default function Clip(props) {
 					<Col sm="auto">
 						{TimeFormatUtils.formatTime(props.clip.date_played)}
 					</Col>
+					<Col sm="auto">
+						LH:{props.clip.left_avg_velocity}
+					</Col>
+					<Col sm="auto">
+						RH:{props.clip.right_avg_velocity}
+					</Col>
 					{editable &&
 						<>
 							<Col sm="auto">
