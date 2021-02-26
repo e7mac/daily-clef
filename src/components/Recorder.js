@@ -46,12 +46,26 @@ export default class Recorder extends React.Component {
 	}
 
 	componentDidMount() {
+		document.addEventListener("keydown", this.handleKeyPress, false);
 		this.initMidi()
 		this.props.api.loadLabels().then((labels) => {
 			this.setState({
 				labels: labels
 			})
 		})
+	}
+
+	handleKeyPress = (event) => {
+		console.log(event);
+		if (event.key == 'f') {
+			this.setState({
+				available: true
+			})
+		}
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener("keydown", this.handleKeyPress, false);
 	}
 
 	initMidi = () => {
