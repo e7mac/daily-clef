@@ -12,7 +12,6 @@ import 'react-piano/dist/styles.css';
 import { formatDuration } from '../utils/TimeFormatUtils'
 import NoSleep from '../lib/nosleep'
 import PDFDisplay from './PDFDisplay';
-import UploadPDF from './UploadPDF';
 
 import './Recorder.css';
 
@@ -57,7 +56,7 @@ export default class Recorder extends React.Component {
 
 	handleKeyPress = (event) => {
 		console.log(event);
-		if (event.key == 'f') {
+		if (event.key === 'f') {
 			this.setState({
 				available: true
 			})
