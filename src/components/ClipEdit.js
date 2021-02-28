@@ -101,9 +101,6 @@ export default class ClipEdit extends React.Component {
 						<Relabel api={this.props.api} clip={this.props.clip} onRelabel={this.onRelabel} />
 					</Col>
 					<Col sm="auto">
-						<Form.Control type="text" placeholder="Add Notes" value={this.state.notes} onChange={this.changeNotes} />
-					</Col>
-					<Col sm="auto">
 						<Dropdown drop='left' onSelect={this.changeStage}>
 							<Dropdown.Toggle variant="light" id="dropdown-basic">
 								{
@@ -121,6 +118,9 @@ export default class ClipEdit extends React.Component {
 							</Dropdown.Menu>
 						</Dropdown>
 					</Col>
+				</Row>
+				<Row>
+					<Form.Control type="text" as="textarea" placeholder="Add Notes" value={this.state.notes} onChange={this.changeNotes} />
 				</Row>
 			</Container >
 		);
