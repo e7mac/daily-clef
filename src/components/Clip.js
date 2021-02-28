@@ -63,10 +63,10 @@ export default function Clip(props) {
 					{editable &&
 						<>
 							<Col sm="auto">
-								<ClipDelete clip={props.clip} api={props.api} />
+								<Button variant="light" onClick={toggleEditing}><FontAwesomeIcon icon={faEdit} /></Button>
 							</Col>
 							<Col sm="auto">
-								<Button variant="light" onClick={toggleEditing}><FontAwesomeIcon icon={faEdit} /></Button>
+								<ClipDelete clip={props.clip} api={props.api} />
 							</Col>
 						</>
 					}
