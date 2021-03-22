@@ -1,5 +1,5 @@
 import { Collapse, Container, Row, Col, Button } from 'react-bootstrap';
-import { faEdit, faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faPlay, faStar } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState, useEffect } from 'react';
 
@@ -39,6 +39,13 @@ export default function Clip(props) {
 		<div>
 			<Container style={props.playingItem === props.clip ? { background: `#dcedc8` } : {}}>
 				<Row>
+					<Col sm="auto">
+						{
+							props.clip.favorite
+								? <FontAwesomeIcon icon={faStar} />
+								: " "
+						}
+					</Col>
 					<Col sm="auto">
 						<Button variant="dark" onClick={playURL}><FontAwesomeIcon icon={faPlay} /></Button>
 					</Col>
