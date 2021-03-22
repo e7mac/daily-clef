@@ -11,7 +11,6 @@ export default class ClipEdit extends React.Component {
 		this.state = {
 			sight_reading: props.sight_reading,
 			technical: props.technical,
-			favorite: props.favorite,
 			notes: props.notes
 		}
 		this.notesTimer = null
@@ -38,13 +37,6 @@ export default class ClipEdit extends React.Component {
 			'sight_reading': !this.state.sight_reading,
 		})
 		this.setState({ sight_reading: !this.state.sight_reading })
-	}
-
-	changeFavorite = () => {
-		this.editClip({
-			'favorite': !this.state.favorite,
-		})
-		this.setState({ favorite: !this.state.favorite })
 	}
 
 	changeTechnical = () => {
@@ -94,7 +86,7 @@ export default class ClipEdit extends React.Component {
 								onChange={this.changeSightReading}
 							>
 								Sight Reading
-	        				</ToggleButton>
+        				</ToggleButton>
 							<ToggleButton
 								type="checkbox"
 								variant="light"
@@ -102,15 +94,7 @@ export default class ClipEdit extends React.Component {
 								onChange={this.changeTechnical}
 							>
 								Technical
-    	    				</ToggleButton>
-							<ToggleButton
-								type="checkbox"
-								variant="light"
-								checked={this.state.favorite}
-								onChange={this.changeFavorite}
-							>
-								Favorite
-	        				</ToggleButton>
+        				</ToggleButton>
 						</ButtonGroup>
 					</Col>
 					<Col sm="auto">
