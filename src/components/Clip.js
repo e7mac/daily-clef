@@ -80,7 +80,7 @@ export default function Clip(props) {
 				<Collapse in={editing}>
 					<Row>
 						<Col>
-							<span className="item"><ClipEdit clip={props.clip} api={props.api} sight_reading={props.clip.sight_reading} technical={props.clip.technical} onRelabel={props.onRelabel} notes={props.clip.notes} /></span>
+							<span className="item"><ClipEdit clip={props.clip} api={props.api} onRelabel={props.onRelabel} /></span>
 						</Col>
 					</Row>
 				</Collapse>
