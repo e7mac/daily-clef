@@ -1,4 +1,4 @@
-import { Alert, Card, Button, ButtonGroup, Form, DropdownButton, Dropdown, ToggleButton } from 'react-bootstrap';
+import { Alert, Card, Button, ButtonGroup, DropdownButton, Dropdown, ToggleButton } from 'react-bootstrap';
 import { encode } from 'json-midi-encoder';
 import { faRedo } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -42,7 +42,6 @@ export default class Recorder extends React.Component {
 		this.recordTimer = null
 		this.recordingDurationTimer = null
 		this.labelOptions = ['None', 'Sight Reading', 'Technical']
-		this.notesForm = React.createRef()
 	}
 
 	componentDidMount() {
@@ -56,8 +55,8 @@ export default class Recorder extends React.Component {
 	}
 
 	handleKeyPress = (event) => {
+		console.log(event);
 		if (event.key === 'f') {
-			document.removeEventListener("keydown", this.handleKeyPress, false);
 			this.setState({
 				available: true
 			})
@@ -249,16 +248,10 @@ export default class Recorder extends React.Component {
 			recording: true,
 			noteRecorded: false,
 			startTime: this.epochTime(),
-			metadata: {
-				labels: [{
-					time: 0,
-					value: "None"
-				}],
-				notes: [{
-					time: 0,
-					value: "None"
-				}],
-			}
+			metadata: [{
+				time: 0,
+				value: "None"
+			}]
 		})
 		this.startRecordTimeoutTimer()
 		this.startRecordDurationTimer()
@@ -320,12 +313,12 @@ export default class Recorder extends React.Component {
 		return secs * 8 * 240 * 2 / 4 // 120 bpm
 	}
 
-	labelButtonClicked = (e) => {
-		this.updateLabel(e.target.value)
+	metadataButtonClicked = (e) => {
+		this.updateMetadata(e.target.value)
 	}
-	updateLabel = (value) => {
+	updateMetadata = (value) => {
 		const metadata = this.state.metadata
-		metadata.labels.push({
+		metadata.push({
 			time: (this.epochTime() - this.state.startTime).toFixed(2),
 			value: value
 		})
@@ -342,17 +335,6 @@ export default class Recorder extends React.Component {
 			pdf_url: pdf_url,
 			can_upload_pdf: !this.labelOptions.includes(value)
 		})
-	}
-
-	addNotes = (note) => {
-		const metadata = this.state.metadata
-		metadata.notes.push({
-			time: (this.epochTime() - this.state.startTime).toFixed(2),
-			value: this.notesForm.current.value
-		})
-		console.log(metadata)
-		this.setState({ metadata: metadata })
-		this.notesForm.current.value = ""
 	}
 
 	render() {
@@ -399,20 +381,16 @@ export default class Recorder extends React.Component {
 									</ButtonGroup>
 								</p>
 								<p>
-									<Form.Control ref={this.notesForm} type="text" as="textarea" placeholder="Add Notes" onChange={this.changeNotes} />
-									<Button variant="secondary" onClick={this.addNotes}>Save to current clip</Button>
-								</p>
-								<p>
 									Add Label:
 									<br />
 									<ButtonGroup toggle={true}>
 										{
 											this.labelOptions.map((item, index) =>
-												<Button value={item} onClick={this.labelButtonClicked}>{item}</Button>
+												<Button value={item} onClick={this.metadataButtonClicked}>{item}</Button>
 											)
 										}
 										{this.state.labels.length > 0
-											? <DropdownButton title="Pieces" onSelect={this.updateLabel}>
+											? <DropdownButton title="Pieces" onSelect={this.updateMetadata}>
 												{this.state.labels.map((label, index) =>
 													<Dropdown.Item eventKey={label.name}>{label.name}</Dropdown.Item>
 												)}
@@ -422,11 +400,11 @@ export default class Recorder extends React.Component {
 									</ButtonGroup>
 								</p>
 								<p>
-									Current Label: {this.state.metadata.labels[this.state.metadata.labels.length - 1].value}
+									Current Label: {this.state.metadata[this.state.metadata.length - 1].value}
 								</p>
 								{
 									this.state.can_upload_pdf
-										? <PDFDisplay file={this.state.pdf_url} piece={this.state.metadata.labels[this.state.metadata.labels.length - 1].value} api={this.props.api} />
+										? <PDFDisplay file={this.state.pdf_url} piece={this.state.metadata[this.state.metadata.length - 1].value} api={this.props.api} />
 										: ""
 								}
 							</span>
