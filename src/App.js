@@ -19,6 +19,7 @@ import Recorder from './components/Recorder'
 import Player from './components/Player'
 import Stats from './components/Stats'
 import unmute from './lib/unmute'
+import SignupForm from './components/SignupForm';
 
 class App extends Component {
   constructor(props) {
@@ -92,7 +93,14 @@ class App extends Component {
                   </React.Fragment>
                 </Route>
               </Switch>
-              : <LoginContainer api={this.state.api} />
+              : <Switch>
+                <Route path="/signup">
+                  <SignupForm api={this.state.api} />
+                </Route>
+                <Route path="/">
+                  <LoginContainer api={this.state.api} />
+                </Route>
+              </Switch>
             }
           </Container>
           <Collapse in={this.state.playingItem}>
