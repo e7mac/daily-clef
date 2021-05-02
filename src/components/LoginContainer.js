@@ -1,9 +1,16 @@
-import { Card, CardDeck, Container, Row } from 'react-bootstrap';
-import React from 'react';
+import { Button, Card, CardDeck, Container, Row } from 'react-bootstrap';
+import { React, useState } from 'react';
 
 import LoginForm from './LoginForm';
+import SignupForm from './SignupForm';
 
 export default function LoginContainer(props) {
+	const [signup, setSignup] = useState(false);
+
+	const toggleSignup = () => {
+		setSignup(!signup)
+	}
+
 	return (
 		<div>
 			<Container flex className="value-prop">
@@ -16,11 +23,21 @@ export default function LoginContainer(props) {
 								<p> Just hit record </p>
 								<p> Intelligent Recognition </p>
 								<p> Visualized progress </p>
-
 							</h5>
 						</Card>
 						<Card>
-							<LoginForm handle_login={props.handle_login} />
+							<Button variant="secondary" onClick={toggleSignup}>
+								{
+									signup
+										? "Login to existing account"
+										: "Create new account"
+								}
+							</Button>
+							{
+								signup
+									? <SignupForm api={props.api} />
+									: <LoginForm api={props.api} />
+							}
 						</Card>
 					</CardDeck>
 				</Row>

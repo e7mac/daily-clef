@@ -7,6 +7,29 @@ class SignupForm extends React.Component {
     password: ''
   };
 
+  handle_signup = (e, data) => {
+    e.preventDefault();
+    fetch('https://midi-practice.herokuapp.com/api/users/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => {
+        this.props.api.handle_login(data)
+          .then(username => {
+            window.location.reload()
+            // this.setState({
+            // logged_in: true,
+            // displayed_form: '',
+            // username: username,
+            // api: new APIService()
+            // });
+          });
+      })
+  };
+
   handle_change = e => {
     const name = e.target.name;
     const value = e.target.value;
@@ -19,23 +42,23 @@ class SignupForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={e => this.props.handle_signup(e, this.state)}>
+      <form onSubmit={e => this.handle_signup(e, this.state)}>
         <h4>Sign Up</h4>
-        <label htmlFor="username">Username</label>
+        <br /><label htmlFor="username">Username</label>
         <input
           type="text"
           name="username"
           value={this.state.username}
           onChange={this.handle_change}
         />
-        <label htmlFor="password">Password</label>
+        <br /><label htmlFor="password">Password</label>
         <input
           type="password"
           name="password"
           value={this.state.password}
           onChange={this.handle_change}
         />
-        <input type="submit" />
+        <br /><input type="submit" value="Sign Up" />
       </form>
     );
   }

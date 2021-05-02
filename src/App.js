@@ -56,40 +56,6 @@ class App extends Component {
     if (context) unmute(context);
   }
 
-  handle_login = (e, data) => {
-    e.preventDefault();
-    this.state.api.handle_login(data)
-      .then(username => {
-        window.location.reload()
-        // this.setState({
-        // logged_in: true,
-        // displayed_form: '',
-        // username: username,
-        // api: new APIService()
-        // });
-      });
-  };
-
-  handle_signup = (e, data) => {
-    e.preventDefault();
-    fetch('https://midi-practice.herokuapp.com/api/users/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(res => res.json())
-      .then(json => {
-        localStorage.setItem('token', json.token);
-        this.setState({
-          logged_in: true,
-          displayed_form: '',
-          username: json.username
-        });
-      });
-  };
-
   onPlay = (item) => {
     this.setState({
       playingItem: item
@@ -126,7 +92,7 @@ class App extends Component {
                   </React.Fragment>
                 </Route>
               </Switch>
-              : <LoginContainer handle_login={this.handle_login} />
+              : <LoginContainer api={this.state.api} />
             }
           </Container>
           <Collapse in={this.state.playingItem}>

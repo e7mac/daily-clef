@@ -6,6 +6,21 @@ class LoginForm extends React.Component {
     password: ''
   };
 
+
+  handle_login = (e, data) => {
+    e.preventDefault();
+    this.props.api.handle_login(data)
+      .then(username => {
+        window.location.reload()
+        // this.setState({
+        // logged_in: true,
+        // displayed_form: '',
+        // username: username,
+        // api: new APIService()
+        // });
+      });
+  };
+
   handle_change = e => {
     const name = e.target.name;
     const value = e.target.value;
@@ -18,7 +33,7 @@ class LoginForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={e => this.props.handle_login(e, this.state)}>
+      <form onSubmit={e => this.handle_login(e, this.state)}>
         <h4>Log In</h4>
         <label htmlFor="username">Username </label>
         <input
