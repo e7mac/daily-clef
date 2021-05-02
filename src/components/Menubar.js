@@ -98,6 +98,7 @@ export default class Menubar extends Component {
 										: <br />
 								}
 							</Nav>
+							<Nav.Link href="https://docs.google.com/presentation/d/1O5Cn5bAdaDnauJvbXcvuSl-KqBAbwfuPzD1cqoklacA/edit?usp=sharing" target="_blank">Help</Nav.Link>
 							{
 								this.state.logged_in
 									? <Nav.Link onClick={this.handle_logout}><FontAwesomeIcon icon={faSignOutAlt} /></Nav.Link>
