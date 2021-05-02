@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/daily-clef/static/css/main.c488ada5.chunk.css",
+    "main.js": "/daily-clef/static/js/main.624c1991.chunk.js",
+    "main.js.map": "/daily-clef/static/js/main.624c1991.chunk.js.map",
+    "runtime-main.js": "/daily-clef/static/js/runtime-main.63eb3dcb.js",
+    "runtime-main.js.map": "/daily-clef/static/js/runtime-main.63eb3dcb.js.map",
+    "static/css/2.50e659ee.chunk.css": "/daily-clef/static/css/2.50e659ee.chunk.css",
+    "static/js/2.8a1452d9.chunk.js": "/daily-clef/static/js/2.8a1452d9.chunk.js",
+    "static/js/2.8a1452d9.chunk.js.map": "/daily-clef/static/js/2.8a1452d9.chunk.js.map",
+    "index.html": "/daily-clef/index.html",
+    "static/css/2.50e659ee.chunk.css.map": "/daily-clef/static/css/2.50e659ee.chunk.css.map",
+    "static/css/main.c488ada5.chunk.css.map": "/daily-clef/static/css/main.c488ada5.chunk.css.map",
+    "static/js/2.8a1452d9.chunk.js.LICENSE.txt": "/daily-clef/static/js/2.8a1452d9.chunk.js.LICENSE.txt",
+    "static/js/main.624c1991.chunk.js.LICENSE.txt": "/daily-clef/static/js/main.624c1991.chunk.js.LICENSE.txt",
+    "static/media/logo.6c50fd24.svg": "/daily-clef/static/media/logo.6c50fd24.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.63eb3dcb.js",
+    "static/css/2.50e659ee.chunk.css",
+    "static/js/2.8a1452d9.chunk.js",
+    "static/css/main.c488ada5.chunk.css",
+    "static/js/main.624c1991.chunk.js"
+  ]
+}
