@@ -1,17 +1,8 @@
 import { Container, Collapse, Navbar, Nav } from 'react-bootstrap';
-import { withRouter } from 'react-router-dom'
 import React, { Component } from 'react';
-
+import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LoginContainer from './components/LoginContainer';
-
 import './App.css';
-
-import {
-  HashRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
-
 import MusicLog from './components/MusicLog';
 import Menubar from './components/Menubar';
 import APIService from './services/APIService';
@@ -32,25 +23,20 @@ class App extends Component {
       playingItem: null,
       status: "",
     };
-
     this.onPlay = this.onPlay.bind(this);
   }
 
   componentDidMount() {
-
     const scripts_srcs = [
       "https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,gh/e7mac/js-dist@1.0.0/core.js,npm/focus-visible@5,gh/e7mac/js-dist@1.0.0/midi-player.min.js",
     ]
-
     for (const scripts_src of scripts_srcs) {
       const script = document.createElement("script");
       script.src = scripts_src;
       script.async = true;
       document.body.appendChild(script);
     }
-
     document.title = "Daily Clef"
-
     let context = (window.AudioContext || window.webkitAudioContext) ?
       new (window.AudioContext || window.webkitAudioContext)() : null;
     // Pass it to unmute if the context exists... ie WebAudio is supported
@@ -81,26 +67,19 @@ class App extends Component {
           <Container className="container-infinite-scroll">
             {this.state.logged_in || this.state.api.demo
               ? <Routes>
-                <Route path="/record">
-                  <Recorder api={this.state.api} />
-                </Route>
-                <Route path="/stats">
-                  <Stats api={this.state.api} />
-                </Route>
-                <Route path="/">
-                  <React.Fragment>
-                    <MusicLog onPlay={this.onPlay} api={this.state.api} playingItem={this.state.playingItem} />
-                  </React.Fragment>
-                </Route>
-              </Routes>
+                  <Route path="/record" element={<Recorder api={this.state.api} />} />
+                  <Route path="/stats" element={<Stats api={this.state.api} />} />
+                  <Route path="/" element={
+                    <React.Fragment>
+                      <MusicLog onPlay={this.onPlay} api={this.state.api} playingItem={this.state.playingItem} />
+                    </React.Fragment>
+                  } />
+                </Routes>
               : <Routes>
-                <Route path="/signup">
-                  <SignupForm api={this.state.api} />
-                </Route>
-                <Route path="/">
-                  <LoginContainer api={this.state.api} />
-                </Route>
-              </Routes>
+                  <Route path="/signup" element={<SignupForm api={this.state.api} />} />
+                  <Route path="/" element={<LoginContainer api={this.state.api} />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
             }
           </Container>
           <Collapse in={this.state.playingItem}>
@@ -119,4 +98,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default App;
