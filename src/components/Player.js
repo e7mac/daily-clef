@@ -62,7 +62,7 @@ export default class Player extends React.Component {
 		return (
 			<span>
 				<midi-player id="midi-player" sound-font="https://storage.googleapis.com/magentadata/js/soundfonts/sgm_plus" ref={this.midiPlayerRef} />
-				<span className="status" centered>{this.state.status}</span>
+				<span className="status" centered="true">{this.state.status}</span>
 			</span>
 		);
 	}

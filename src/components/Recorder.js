@@ -65,7 +65,7 @@ export default class Recorder extends React.Component {
 
 	componentWillUnmount() {
 		document.removeEventListener("keydown", this.handleKeyPress, false);
-		WebMidi.disable();
+		// WebMidi.disable();
 	}
 
 	initMidi = () => {

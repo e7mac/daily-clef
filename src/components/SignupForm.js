@@ -1,71 +1,77 @@
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import React from 'react';
 
-class SignupForm extends React.Component {
-  state = {
+const SignupForm = ({ api }) => {
+  const [formData, setFormData] = useState({
     username: '',
     password: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
-  handle_signup = (e, data) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    fetch('https://midi-practice.herokuapp.com/api/users/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(res => {
-        this.props.api.handle_login(data)
-          .then(username => {
-            window.location.reload()
-            // this.setState({
-            // logged_in: true,
-            // displayed_form: '',
-            // username: username,
-            // api: new APIService()
-            // });
-          });
-      })
+    try {
+      const response = await fetch('https://midi-practice.herokuapp.com/api/users/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        await api.handle_login(formData);
+        window.location.reload();
+      } else {
+        // Handle error (e.g., show error message to user)
+        console.error('Signup failed');
+      }
+    } catch (error) {
+      console.error('Error during signup:', error);
+    }
   };
 
-  handle_change = e => {
-    const name = e.target.name;
-    const value = e.target.value;
-    this.setState(prevstate => {
-      const newState = { ...prevstate };
-      newState[name] = value;
-      return newState;
-    });
-  };
-
-  render() {
-    return (
-      <form onSubmit={e => this.handle_signup(e, this.state)}>
-        <h4>Sign Up</h4>
-        <br /><label htmlFor="username">Username</label>
+  return (
+    <form onSubmit={handleSignup}>
+      <h4>Sign Up</h4>
+      <div>
+        <label htmlFor="username">Username</label>
         <input
           type="text"
+          id="username"
           name="username"
-          value={this.state.username}
-          onChange={this.handle_change}
+          value={formData.username}
+          onChange={handleChange}
+          required
         />
-        <br /><label htmlFor="password">Password</label>
+      </div>
+      <div>
+        <label htmlFor="password">Password</label>
         <input
           type="password"
+          id="password"
           name="password"
-          value={this.state.password}
-          onChange={this.handle_change}
+          value={formData.password}
+          onChange={handleChange}
+          required
         />
-        <br /><input type="submit" value="Sign Up" />
-      </form>
-    );
-  }
-}
-
-export default SignupForm;
+      </div>
+      <button type="submit">Sign Up</button>
+    </form>
+  );
+};
 
 SignupForm.propTypes = {
-  handle_signup: PropTypes.func.isRequired
+  api: PropTypes.shape({
+    handle_login: PropTypes.func.isRequired
+  }).isRequired
 };
+
+export default SignupForm;
