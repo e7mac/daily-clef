@@ -1,70 +1,53 @@
 import { Card } from 'react-bootstrap';
-import DayPicker from 'react-day-picker';
-import React from 'react';
-
+import { DayPicker } from 'react-day-picker';
+import React, { useState, useEffect } from 'react';
 import 'react-day-picker/dist/style.css';
 
-export default class PlayCalendar extends React.Component {
+export default function PlayCalendar(props) {
+  const [selectedDays, setSelectedDays] = useState([]);
+  const [month, setMonth] = useState(new Date());
 
-	constructor(props) {
-		super(props)
-		this.state = {
-			selectedDays: [],
-			initialMonth: new Date()
-		}
-	}
+  const onDayClick = (day) => {
+    console.log(day);
+    const nextDay = new Date(day.getTime());
+    nextDay.setDate(nextDay.getDate() + 1);
+    const startTime = day.getTime() / 1000;
+    const endTime = nextDay.getTime() / 1000;
+    props.onTimeChanged(startTime, endTime);
+  };
 
-	onDayClick = (day) => {
-		console.log(day)
-		const nextDay = new Date(day.getTime())
-		nextDay.setDate(nextDay.getDate() + 1)
-		const startTime = day.getTime() / 1000
-		const endTime = nextDay.getTime() / 1000
-		this.props.onTimeChanged(startTime, endTime)
-	}
+  const onMonthChange = (newMonth) => {
+    setMonth(newMonth);
+    const nextMonth = new Date(newMonth.getTime());
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    const startTime = newMonth.getTime() / 1000;
+    const endTime = nextMonth.getTime() / 1000;
+    props.onTimeChanged(startTime, endTime);
+    props.api.loadRawSessionFiles(startTime, endTime)
+      .then((rawsessionfiles) => {
+        const newSelectedDays = rawsessionfiles.map(item => new Date(item['date_played']));
+        setSelectedDays(newSelectedDays);
+      });
+  };
 
-	onMonthChange = (month) => {
-		const nextMonth = new Date(month.getTime())
-		nextMonth.setMonth(nextMonth.getMonth() + 1)
-		const startTime = month.getTime() / 1000
-		const endTime = nextMonth.getTime() / 1000
-		this.props.onTimeChanged(startTime, endTime)
-		this.props.api.loadRawSessionFiles(startTime, endTime)
-			.then((rawsessionfiles) => {
-				const selectedDays = []
-				for (const item of rawsessionfiles) {
-					selectedDays.push(new Date(item['date_played']))
-				}
-				this.setState({
-					selectedDays: selectedDays,
-					initialMonth: month
-				})
-			})
+  useEffect(() => {
+    props.api.loadRawSessionFiles()
+      .then((rawsessionfiles) => {
+        const newSelectedDays = rawsessionfiles.map(item => new Date(item['date_played']));
+        setSelectedDays(newSelectedDays);
+      });
+  }, [props.api]);
 
-	}
-
-	componentDidMount() {
-		this.props.api.loadRawSessionFiles()
-			.then((rawsessionfiles) => {
-				const selectedDays = []
-				for (const item of rawsessionfiles) {
-					selectedDays.push(new Date(item['date_played']))
-				}
-				this.setState({
-					selectedDays: selectedDays
-				})
-			})
-	}
-	render() {
-		return (
-			<Card>
-				<DayPicker
-					onDayClick={this.onDayClick}
-					selectedDays={this.state.selectedDays}
-					onMonthChange={this.onMonthChange}
-					initialMonth={this.state.initialMonth}
-				/>
-			</Card>
-		);
-	}
+  return (
+    <Card>
+      <DayPicker
+        mode="multiple"
+        selected={selectedDays}
+        onSelect={setSelectedDays}
+        onDayClick={onDayClick}
+        onMonthChange={onMonthChange}
+        month={month}
+      />
+    </Card>
+  );
 }
