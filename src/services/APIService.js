@@ -86,7 +86,7 @@ export default class APIService {
 	}
 
 	handle_login(data) {
-		return fetch(`${this.baseUrl}/token-auth/`, {
+		return fetch(`${this.baseUrl}/api/token/`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
