@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Piano } from 'react-piano';
 import React from 'react';
 import Soundfont from 'soundfont-player';
-import WebMidi from 'webmidi';
+import { WebMidi } from 'webmidi';
 
 import 'react-piano/dist/styles.css';
 
@@ -65,6 +65,7 @@ export default class Recorder extends React.Component {
 
 	componentWillUnmount() {
 		document.removeEventListener("keydown", this.handleKeyPress, false);
+		WebMidi.disable();
 	}
 
 	initMidi = () => {
