@@ -8,7 +8,7 @@ import './App.css';
 
 import {
   HashRouter as Router,
-  Switch,
+  Routes,
   Route
 } from "react-router-dom";
 
@@ -80,7 +80,7 @@ class App extends Component {
           <Menubar api={this.state.api} />
           <Container className="container-infinite-scroll">
             {this.state.logged_in || this.state.api.demo
-              ? <Switch>
+              ? <Routes>
                 <Route path="/record">
                   <Recorder api={this.state.api} />
                 </Route>
@@ -92,15 +92,15 @@ class App extends Component {
                     <MusicLog onPlay={this.onPlay} api={this.state.api} playingItem={this.state.playingItem} />
                   </React.Fragment>
                 </Route>
-              </Switch>
-              : <Switch>
+              </Routes>
+              : <Routes>
                 <Route path="/signup">
                   <SignupForm api={this.state.api} />
                 </Route>
                 <Route path="/">
                   <LoginContainer api={this.state.api} />
                 </Route>
-              </Switch>
+              </Routes>
             }
           </Container>
           <Collapse in={this.state.playingItem}>
