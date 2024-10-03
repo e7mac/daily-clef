@@ -28,7 +28,7 @@ class App extends Component {
 
   componentDidMount() {
     const scripts_srcs = [
-      "https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,gh/e7mac/js-dist@1.0.0/core.js,npm/focus-visible@5,gh/e7mac/js-dist@2.0.16/midi-player.min.js",
+      "https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.5.0",
     ]
     for (const scripts_src of scripts_srcs) {
       const script = document.createElement("script");
