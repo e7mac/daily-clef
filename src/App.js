@@ -17,7 +17,7 @@ class App extends Component {
     super(props);
     this.state = {
       displayed_form: '',
-      logged_in: localStorage.getItem('token') ? true : false,
+      logged_in: localStorage.getItem('access_token') ? true : false,
       username: '',
       api: new APIService(),
       playingItem: null,
