@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/daily-clef/static/css/main.2449bb5e.css",
-    "main.js": "/daily-clef/static/js/main.0dd638d3.js",
+    "main.js": "/daily-clef/static/js/main.a77cc08f.js",
     "index.html": "/daily-clef/index.html",
     "static/media/logo.svg": "/daily-clef/static/media/logo.6c50fd24a424ae1f18e9a5d49cb352b7.svg",
     "main.2449bb5e.css.map": "/daily-clef/static/css/main.2449bb5e.css.map",
-    "main.0dd638d3.js.map": "/daily-clef/static/js/main.0dd638d3.js.map"
+    "main.a77cc08f.js.map": "/daily-clef/static/js/main.a77cc08f.js.map"
   },
   "entrypoints": [
     "static/css/main.2449bb5e.css",
-    "static/js/main.0dd638d3.js"
+    "static/js/main.a77cc08f.js"
   ]
 }
