@@ -8,8 +8,9 @@ export default class APIService {
 	constructor() {
 		this.baseUrl = "https://midi-practice.herokuapp.com"
 		// this.baseUrl = "http://localhost:8000"
-		this.token = localStorage.getItem('token')
-		if (this.token !== null) {
+		this.access = localStorage.getItem('access_token')
+		console.log("access", this.access)
+		if (this.access !== null) {
 			this.userPromise = this.apiCall(`/api/current_user/`)
 				.then(
 					(response) => {
@@ -46,44 +47,93 @@ export default class APIService {
 	}
 
 	apiCall(path, params = {}, searchParams = {}, json = true) {
-		const url = new URL(`${this.baseUrl}${path}`)
+		const url = new URL(`${this.baseUrl}${path}`);
 		if (this.demoUser) {
-			url.searchParams.append('user', this.demoUser)
+		  url.searchParams.append('user', this.demoUser);
 		}
 		for (const key in searchParams) {
-			const value = decodeURIComponent(searchParams[key])
-			console.log(key, value)
-			url.searchParams.append(key, value)
-		}
-		let auth = {
-			headers: {
-				Authorization: `JWT ${localStorage.getItem('token')}`,
-				'Content-Type': 'application/json'
-			}
-		}
-		if (this.demo) {
-			auth = {}
-		}
-		const fullParams = deepmerge(params, auth);
-		const request = fetch(url, fullParams)
-		if (json) {
-			return request
-				.then(res => {
-					return res.json()
-				})
-				.then(res => {
-					if (res["detail"] !== undefined) {
-						console.log(`LOGOUT from: ${url}`)
-						localStorage.removeItem('token');
-						window.location.reload()
-					}
-					return res
-				})
-		} else {
-			return request
+		  const value = decodeURIComponent(searchParams[key]);
+		  console.log(key, value);
+		  url.searchParams.append(key, value);
 		}
 
-	}
+		let headers = {
+		  'Content-Type': 'application/json'
+		};
+
+		if (!this.demo) {
+		  const token = localStorage.getItem('access_token');
+		  console.log("token", token)
+		  if (token) {
+			headers['Authorization'] = `Bearer ${token}`;
+		  }
+		}
+
+		let options = {
+		  ...params,
+		  headers: {
+			...headers,
+			...params.headers
+		  }
+		};
+
+		if (json) {
+		  options.body = JSON.stringify(options.body);
+		}
+
+		return fetch(url, options)
+		  .then(response => {
+			if (!response.ok) {
+			  // If the response is a 401 (Unauthorized), the token might be expired
+			  if (response.status === 401) {
+				// Attempt to refresh the token
+				return this.refreshToken().then(success => {
+				  if (success) {
+					// If refresh was successful, retry the original request
+					return this.apiCall(path, params, searchParams, json);
+				  } else {
+					// If refresh failed, throw an error or handle as needed
+					throw new Error('Authentication failed');
+				  }
+				});
+			  }
+			  throw new Error('Network response was not ok');
+			}
+			return response.json();
+		  });
+	  }
+
+	  refreshToken() {
+		const refreshToken = localStorage.getItem('refresh_token');
+		if (!refreshToken) {
+		  return Promise.resolve(false);
+		}
+
+		return fetch(`${this.baseUrl}/api/token/refresh/`, {
+		  method: 'POST',
+		  headers: {
+			'Content-Type': 'application/json',
+		  },
+		  body: JSON.stringify({ refresh: refreshToken }),
+		})
+		  .then(response => {
+			if (!response.ok) {
+			  throw new Error('Token refresh failed');
+			}
+			return response.json();
+		  })
+		  .then(data => {
+			localStorage.setItem('access_token', data.access);
+			return true;
+		  })
+		  .catch(error => {
+			console.error('Error refreshing token:', error);
+			// Clear tokens on refresh failure
+			localStorage.removeItem('access_token');
+			localStorage.removeItem('refresh_token');
+			return false;
+		  });
+	  }
 
 	handle_login(data) {
 		return fetch(`${this.baseUrl}/api/token/`, {
@@ -95,16 +145,19 @@ export default class APIService {
 		})
 			.then(res => res.json())
 			.then(json => {
-				localStorage.setItem('token', json.token);
-				if (json.token !== null) {
-					return json.user.username
+				console.log("json", json)
+				localStorage.setItem('access_token', json.access);
+				localStorage.setItem('refresh_token', json.refresh);
+				if (json.access !== null) {
+					return "logged in?"
 				}
 				return false
 			});
 	}
 
 	handle_logout = () => {
-		localStorage.removeItem('token');
+		localStorage.removeItem('access_token');
+		localStorage.removeItem('refresh_token');
 	};
 
 	getStatus() {
