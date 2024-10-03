@@ -14,7 +14,7 @@ export default class Menubar extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			logged_in: localStorage.getItem('token') ? true : false,
+			logged_in: localStorage.getItem('access_token') ? true : false,
 			username: '',
 			status: "",
 		};
