@@ -6,7 +6,8 @@ import ModelGetter from './ModelGetter'
 
 export default class APIService {
 	constructor() {
-		this.baseUrl = "https://midi-practice.herokuapp.com"
+		this.baseUrl = "https://midi-practice.onrender.com"
+		// this.baseUrl = "https://midi-practice.herokuapp.com"
 		// this.baseUrl = "http://localhost:8000"
 		this.access = localStorage.getItem('access_token')
 		console.log("access", this.access)

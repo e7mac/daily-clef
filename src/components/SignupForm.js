@@ -18,7 +18,7 @@ const SignupForm = ({ api }) => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://midi-practice.herokuapp.com/api/users/', {
+      const response = await fetch('https://midi-practice.onrender.com/api/users/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
